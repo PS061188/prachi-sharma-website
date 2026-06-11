@@ -1,0 +1,32 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="40" fill="#F7F3EC"/>
+  <rect x="56" y="56" width="1488" height="888" rx="34" fill="#FFFDF9" stroke="#D8D0C5"/>
+  <rect x="118" y="118" width="220" height="44" rx="22" fill="#EEF2F4" stroke="#DDD5CA"/>
+  <text x="228" y="146" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">LLM Evaluation</text>
+  <text x="118" y="318" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="74" font-weight="800">Load Testing</text>
+  <text x="118" y="380" fill="#68727E" font-family="DM Sans, Arial, sans-serif" font-size="28" font-weight="500">LLM reliability under real traffic conditions</text>
+  <path d="M720 268H900" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="720" cy="268" r="14" fill="#E0A928"/>
+  <path d="M940 268H980" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1150 268H1185" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1168 312V360" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  
+    <rect x="980" y="220" width="170" height="92" rx="30" fill="#2F5BFF"/>
+    <text x="1065" y="271" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Traffic</text>
+  
+    <rect x="1185" y="220" width="170" height="92" rx="30" fill="#18B7A0"/>
+    <text x="1270" y="271" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Latency</text>
+  
+    <rect x="1082" y="360" width="170" height="92" rx="30" fill="#F26E5A"/>
+    <text x="1167" y="411" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Failures</text>
+  
+  
+      <rect x="760" y="208" width="156" height="120" rx="28" fill="#F4F7FB" stroke="#D8D0C5"/>
+      <path d="M804 294L838 250L874 276" stroke="#2A313A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="838" cy="250" r="10" fill="#E0A928"/>
+      <rect x="970" y="540" width="350" height="168" rx="32" fill="#FFFEFB" stroke="#D8D0C5"/>
+      <circle cx="1072" cy="624" r="44" fill="none" stroke="#2F5BFF" stroke-width="14"/>
+      <path d="M1072 580A44 44 0 0 1 1110 646" fill="none" stroke="#18B7A0" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="1192" cy="603" r="16" fill="#F26E5A"/>
+      <path d="M1192 588V610" stroke="#FFFDF9" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="1192" cy="622" r="3.5" fill="#FFFDF9"/>
+    
+</svg>

@@ -1,0 +1,56 @@
+<svg width="1200" height="980" viewBox="0 0 1200 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="980" rx="36" fill="#F7F2EA"/>
+  <text x="86" y="92" fill="#1E232B" font-family="Arial, sans-serif" font-size="38" font-weight="700">Candidate-to-reference proximity</text>
+  <text x="86" y="132" fill="#6E6A63" font-family="Arial, sans-serif" font-size="24">Closer to the right means the candidate stayed more faithful to the reference. The bar positions use the Cross-Encoder score as the lead semantic signal, with the human-judge score shown alongside it.</text>
+
+  <rect x="86" y="178" width="1028" height="496" rx="28" fill="#FFFFFF" stroke="#E5DDD1"/>
+  <text x="276" y="234" fill="#6E6A63" font-family="Arial, sans-serif" font-size="21" font-weight="700">0.0</text>
+  <text x="1000" y="234" fill="#6E6A63" font-family="Arial, sans-serif" font-size="21" font-weight="700">1.0</text>
+  <line x1="280" y1="246" x2="1008" y2="246" stroke="#DAD2C7" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="1008" cy="246" r="10" fill="#156A68"/>
+  <text x="1028" y="252" fill="#156A68" font-family="Arial, sans-serif" font-size="22" font-weight="700">Reference</text>
+
+  <text x="120" y="320" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Invoice</text>
+  <line x1="280" y1="310" x2="1008" y2="310" stroke="#E7E1D7" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="943" cy="310" r="16" fill="#E67E5F"/>
+  <text x="970" y="318" fill="#E67E5F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Cross-Encoder 0.91</text>
+  <text x="120" y="352" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">Human 0.92 · candidate: “Sure, I will send it.”</text>
+
+  <text x="120" y="424" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Injections</text>
+  <line x1="280" y1="414" x2="1008" y2="414" stroke="#E7E1D7" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="892" cy="414" r="16" fill="#E67E5F"/>
+  <text x="919" y="422" fill="#E67E5F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Cross-Encoder 0.84</text>
+  <text x="120" y="456" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">Human 0.82 · candidate: “Noted, will start injections.”</text>
+
+  <text x="120" y="528" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">XR order</text>
+  <line x1="280" y1="518" x2="1008" y2="518" stroke="#E7E1D7" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="921" cy="518" r="16" fill="#E67E5F"/>
+  <text x="948" y="526" fill="#E67E5F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Cross-Encoder 0.88</text>
+  <text x="120" y="560" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">Human 0.90 · candidate: “Order being printed now.”</text>
+
+  <text x="120" y="632" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Late-arrival</text>
+  <line x1="280" y1="622" x2="1008" y2="622" stroke="#E7E1D7" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="324" cy="622" r="16" fill="#E67E5F"/>
+  <text x="351" y="630" fill="#E67E5F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Cross-Encoder 0.06</text>
+  <text x="120" y="664" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">Human 0.10 · candidate: “You are welcome.”</text>
+
+  <text x="120" y="736" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Rescheduling</text>
+  <line x1="280" y1="726" x2="1008" y2="726" stroke="#E7E1D7" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="811" cy="726" r="16" fill="#E67E5F"/>
+  <text x="838" y="734" fill="#E67E5F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Cross-Encoder 0.73</text>
+  <text x="120" y="768" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">Human 0.70 · candidate: “Noted, will reschedule patients.”</text>
+
+  <rect x="86" y="710" width="1028" height="196" rx="28" fill="#FFFFFF" stroke="#E5DDD1"/>
+  <text x="118" y="760" fill="#1E232B" font-family="Arial, sans-serif" font-size="34" font-weight="700">What candidate-to-candidate diversity looks like</text>
+  <text x="118" y="802" fill="#6E6A63" font-family="Arial, sans-serif" font-size="22">For the invoice case, the three generated candidates are not equally diverse. Some are almost the same acknowledgment in different words.</text>
+  <rect x="128" y="832" width="216" height="56" rx="28" fill="#F3F7FA" stroke="#D4DEE5"/>
+  <text x="158" y="867" fill="#156A68" font-family="Arial, sans-serif" font-size="24" font-weight="700">Sure, I will send it.</text>
+  <rect x="460" y="832" width="214" height="56" rx="28" fill="#F3F7FA" stroke="#D4DEE5"/>
+  <text x="496" y="867" fill="#156A68" font-family="Arial, sans-serif" font-size="24" font-weight="700">I will email it shortly.</text>
+  <rect x="794" y="832" width="218" height="56" rx="28" fill="#F3F7FA" stroke="#D4DEE5"/>
+  <text x="824" y="867" fill="#156A68" font-family="Arial, sans-serif" font-size="24" font-weight="700">The invoice will be sent.</text>
+  <path d="M344 860C372 840 428 840 456 860" stroke="#E67E5F" stroke-width="4" stroke-linecap="round"/>
+  <text x="362" y="835" fill="#E67E5F" font-family="Arial, sans-serif" font-size="21" font-weight="700">ROUGE-1 F1 = 0.60</text>
+  <path d="M674 860C706 820 766 820 794 860" stroke="#7F7467" stroke-width="4" stroke-linecap="round"/>
+  <text x="694" y="812" fill="#7F7467" font-family="Arial, sans-serif" font-size="21" font-weight="700">ROUGE-1 F1 = 0.20</text>
+</svg>

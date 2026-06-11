@@ -1,0 +1,32 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" fill="#ffffff"/>
+  <rect x="64" y="64" width="1072" height="632" rx="28" fill="#FBFBFA" stroke="#E5E0D8"/>
+  <text x="112" y="146" fill="#1D232B" font-family="Karla, Arial, sans-serif" font-size="42" font-weight="700">Healthcare LLM evaluation is heavily skewed</text>
+  <text x="112" y="186" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="22">Accuracy dominates. Calibration, deployment, and fairness are still under-measured.</text>
+
+  <g font-family="IBM Plex Mono, monospace" font-size="18" fill="#1D232B" letter-spacing="2">
+    <text x="112" y="274">ACCURACY</text>
+    <text x="112" y="358">FAIRNESS / BIAS / TOXICITY</text>
+    <text x="112" y="442">ROBUSTNESS</text>
+    <text x="112" y="526">DEPLOYMENT</text>
+    <text x="112" y="610">CALIBRATION / UNCERTAINTY</text>
+  </g>
+
+  <g>
+    <rect x="470" y="242" width="560" height="36" rx="18" fill="#5F7692"/>
+    <rect x="470" y="326" width="93" height="36" rx="18" fill="#8896A6"/>
+    <rect x="470" y="410" width="87" height="36" rx="18" fill="#8896A6"/>
+    <rect x="470" y="494" width="28" height="36" rx="18" fill="#E5634A"/>
+    <rect x="470" y="578" width="8" height="36" rx="4" fill="#E5634A"/>
+  </g>
+
+  <g fill="#1D232B" font-family="Instrument Serif, Georgia, serif" font-size="38">
+    <text x="1054" y="269" text-anchor="end">95.4%</text>
+    <text x="588" y="353">15.8%</text>
+    <text x="582" y="437">14.8%</text>
+    <text x="525" y="521">4.6%</text>
+    <text x="505" y="605">1.2%</text>
+  </g>
+
+  <text x="112" y="668" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="20">Systematic review of 519 healthcare LLM studies: far more attention to answers than to reliability in care.</text>
+</svg>

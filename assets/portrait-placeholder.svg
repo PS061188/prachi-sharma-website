@@ -1,0 +1,11 @@
+<svg width="960" height="1200" viewBox="0 0 960 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="1200" rx="48" fill="#F3EADF"/>
+  <circle cx="479" cy="390" r="172" fill="#E6D5C4"/>
+  <path d="M262 928C262 764.519 394.519 632 558 632H558C721.481 632 854 764.519 854 928V969H262V928Z" fill="#D8C0A7"/>
+  <rect x="114" y="103" width="229" height="42" rx="21" fill="#D86C40" fill-opacity="0.22"/>
+  <rect x="114" y="165" width="320" height="25" rx="12.5" fill="#1D1A17" fill-opacity="0.11"/>
+  <rect x="114" y="205" width="260" height="25" rx="12.5" fill="#1D1A17" fill-opacity="0.08"/>
+  <rect x="114" y="1032" width="328" height="28" rx="14" fill="#1D1A17" fill-opacity="0.1"/>
+  <rect x="114" y="1076" width="245" height="28" rx="14" fill="#1D1A17" fill-opacity="0.06"/>
+  <text x="114" y="872" fill="#7A4C37" font-family="Arial, sans-serif" font-size="44" font-weight="700">Add your portrait here</text>
+</svg>

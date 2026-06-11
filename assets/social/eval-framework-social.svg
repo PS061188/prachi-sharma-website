@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FBFAF7"/>
+  <rect x="812" y="64" width="284" height="150" rx="26" fill="#E7EEF4"/>
+  <rect x="732" y="240" width="364" height="150" rx="26" fill="#F4E8DE"/>
+  <rect x="812" y="416" width="284" height="150" rx="26" fill="#E9EDF2"/>
+  <path d="M780 140H726" stroke="#5F7692" stroke-width="4"/>
+  <path d="M780 314H646" stroke="#E5634A" stroke-width="4"/>
+  <path d="M780 492H726" stroke="#5F7692" stroke-width="4"/>
+  <text x="76" y="98" fill="#5F7692" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">EVALUATION SERIES</text>
+  <text x="76" y="186" fill="#1D232B" font-size="68" font-family="Georgia, 'Times New Roman', serif">How I Evaluate</text>
+  <text x="76" y="256" fill="#1D232B" font-size="68" font-family="Georgia, 'Times New Roman', serif">Short Generated Text</text>
+  <text x="80" y="338" fill="#66707D" font-size="28" font-family="Arial, sans-serif">A multi-metric framework for lexical, semantic,</text>
+  <text x="80" y="376" fill="#66707D" font-size="28" font-family="Arial, sans-serif">and human-aligned evaluation.</text>
+  <text x="80" y="514" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="40" fill="#F7F3EC"/>
+  <rect x="56" y="56" width="1488" height="888" rx="34" fill="#FFFDF9" stroke="#D8D0C5"/>
+  <rect x="118" y="118" width="220" height="44" rx="22" fill="#EEF2F4" stroke="#DDD5CA"/>
+  <text x="228" y="146" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">LLM Evaluation</text>
+  <text x="118" y="318" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="74" font-weight="800">LLM Evaluation</text>
+  <text x="118" y="380" fill="#68727E" font-family="DM Sans, Arial, sans-serif" font-size="28" font-weight="500">Multi-signal quality measurement across large response sets</text>
+  <path d="M720 268H900" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="720" cy="268" r="14" fill="#E0A928"/>
+  <path d="M900 267H945" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1113 267H1150" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1234 312V350" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  
+    <rect x="945" y="222" width="168" height="90" rx="30" fill="#2F5BFF"/>
+    <text x="1029" y="273" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Semantic</text>
+  
+    <rect x="1150" y="222" width="168" height="90" rx="30" fill="#18B7A0"/>
+    <text x="1234" y="273" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Lexical</text>
+  
+    <rect x="1048" y="350" width="168" height="90" rx="30" fill="#7C5CFF"/>
+    <text x="1132" y="401" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Judge</text>
+  
+  
+      <rect x="720" y="202" width="146" height="130" rx="26" fill="#F4F7FB" stroke="#D8D0C5"/>
+      <path d="M758 286H828" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+      <path d="M758 252H806" stroke="#E0A928" stroke-width="5" stroke-linecap="round"/>
+      <rect x="934" y="536" width="410" height="200" rx="34" fill="#FFFEFB" stroke="#D8D0C5"/>
+      <circle cx="1030" cy="630" r="46" fill="none" stroke="#2F5BFF" stroke-width="14"/>
+      <path d="M1030 584A46 46 0 0 1 1068 659" fill="none" stroke="#83C67A" stroke-width="14" stroke-linecap="round"/>
+      <rect x="1110" y="598" width="158" height="16" rx="8" fill="#DCE4ED"/>
+      <rect x="1110" y="634" width="120" height="16" rx="8" fill="#DCE4ED"/>
+      <circle cx="1264" cy="629" r="16" fill="#F26E5A"/>
+      <path d="M1264 616V634" stroke="#FFFDF9" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="1264" cy="642" r="3.5" fill="#FFFDF9"/>
+    
+</svg>

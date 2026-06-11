@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How I Evaluate Short Generated Text: A Multi-Metric Framework | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="A public-safe guide by Prachi Sharma on evaluating short generated text using lexical, semantic, and human-aligned metrics."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="How I Evaluate Short Generated Text: A Multi-Metric Framework" />
+    <meta
+      property="og:description"
+      content="A practical guide to evaluating short generated text with ROUGE, BERTScore, SBERT, cross-encoders, and human-aligned scoring."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-multi-metric-evaluation.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/eval-framework-social.png" />
+    <meta property="og:image:alt" content="Social preview card for the article How I Evaluate Short Generated Text: A Multi-Metric Framework." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How I Evaluate Short Generated Text: A Multi-Metric Framework" />
+    <meta
+      name="twitter:description"
+      content="A practical guide to evaluating short generated text with ROUGE, BERTScore, SBERT, cross-encoders, and human-aligned scoring."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/eval-framework-social.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Essay · May 14 · LLM Evaluation · 9 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">How I Evaluate Short Generated Text: A Multi-Metric Framework</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              A practical framework for evaluating short generated replies when overlap alone is not enough.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p>The hardest part of evaluating short generated text is that several answers can be right at once. That is where simple evaluation setups start to break, especially in products that already use reply suggestions, such as <strong>Microsoft Teams</strong> chats or <strong>Gmail Smart Reply</strong>, where the generated response is often just one very short line.</p>
+              <p>This post is specifically about the <strong>with-reference evaluation setting</strong>. In other words, every score below assumes that for each generated reply we also have a short target reply, or reference, against which we can compare it. That matters because the metric behaviour looks very different once references disappear and evaluation has to become fully judge- or rule-based.</p>
+              <p>Part of this framing came from work I did on a <strong>healthcare messaging product</strong>, where the task involved generating a small set of short smart replies that had to stay generic while still remaining tightly attached to the immediate conversational context.</p>
+              <figure class="article-figure">
+                <img src="./assets/article/healthcare-smart-reply-ui-v2.svg" alt="Mobile mockup showing a healthcare messaging screen with one incoming request and three suggested replies." />
+                <figcaption class="article-caption">One incoming care team message and three suggested replies.</figcaption>
+              </figure>
+              <p>That made the evaluation problem harder in two ways at once. First, short responses are inherently difficult to score because multiple short phrasings can all be acceptable. Second, in a healthcare setting the response generation layer also has to respect <strong>guardrails</strong>: it should not introduce clinical advice, over-promise action, change timing casually, leak unsafe specificity, or sound more certain than the context supports. So evaluation cannot stop at similarity alone. It also has to check whether the response stays safely inside the allowed behaviour.</p>
+              <p>Take a realistic provider-messaging scenario. A care-team message says: <code>Please send the patient the updated appointment details for today.</code> A system may need to rank short replies such as <code>Sure, I'll send them today.</code>, <code>Okay, I'll send the updated details today.</code>, or <code>I'll review it tomorrow.</code>. Those are all short outputs, but they are not equally good.</p>
+              <p>To a human reader, the distinction is obvious. The first two replies preserve the requested action and timing. The third one quietly changes both. In a healthcare product, that difference matters even more because the reply should stay context-aware without inventing a new plan. Once we try to score those replies automatically, the evaluation problem stops looking like a single-score problem and starts looking like a <strong>multi-metric system design problem</strong>. That is the thread that runs through the rest of this post.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Why short replies are difficult to score</p>
+                <ul>
+                  <li>Valid paraphrases can score too low under overlap-heavy metrics.</li>
+                  <li>High-overlap replies can look stronger than they really are.</li>
+                  <li>Multiple suggestions can all be acceptable while still being repetitive.</li>
+                  <li>Metric choice can quietly bias model selection toward wording, not usefulness.</li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">Literature Review Lens</p>
+              <h3>How I organized the metric landscape</h3>
+              <p>The literature around the metrics used in this post suggests that short-text evaluation is better approached as a combination problem than a single-metric problem. <a class="article-reference-inline" href="#ref-celikyilmaz-2020"><strong>Celikyilmaz et al.</strong></a> note more broadly that text-generation evaluation spans different metric families, each capturing different aspects of quality, which already argues against trusting one score alone. Within that landscape, <strong>ROUGE</strong> remains useful as an interpretable lexical baseline, but <a class="article-reference-inline" href="#ref-lin-2004"><strong>Lin</strong></a>'s original ROUGE work also makes clear that overlap-based metrics are sensitive to formulation and reference structure, which limits how far they can go on their own. <strong>BERTScore</strong> addresses this by using contextual embeddings to compare meaning beyond exact wording, and <a class="article-reference-inline" href="#ref-zhang-2020-bertscore"><strong>Zhang et al.</strong></a> show that it correlates better with human judgment than older lexical metrics, especially when paraphrasing is involved. <strong>SBERT</strong> and <strong>Cross-Encoder</strong> push the semantic view further: <a class="article-reference-inline" href="#ref-reimers-2019"><strong>Reimers and Gurevych</strong></a> show that SBERT enables efficient reusable sentence-level similarity, while cross-encoders provide stronger pairwise judgment at higher computational cost. Taken together, these papers point in the same direction: lexical overlap, contextual token similarity, reusable sentence embeddings, and joint pairwise scoring each reveal something different about quality, so for short generated replies, a combined evaluation setup is more defensible than declaring any one metric sufficient on its own.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/eval-metric-comparison.svg" alt="A comparison table showing what ROUGE, BERTScore, SBERT, and Cross-Encoders see, where they help, and where they fail." />
+                <figcaption class="article-caption">The four metric families I kept returning to: <strong>ROUGE</strong> for lexical overlap, <strong>BERTScore</strong> for token-level semantics, <strong>SBERT</strong> for sentence-level semantic closeness, and <strong>Cross-Encoders</strong> for stronger pairwise scoring.</figcaption>
+              </figure>
+
+              <p class="article-section-label">Objective</p>
+              <h3>From metric reporting to metric validation</h3>
+              <p>This evaluation was not meant to be just a reporting exercise for ROUGE, BERTScore, SBERT, or Cross-Encoder similarity. The real objective was to understand <strong>which metrics were most useful for short generated replies</strong>, <strong>where each metric failed</strong>, and <strong>which of them stayed closest to human-style judgment</strong>.</p>
+              <p>That framework has three parts. First, compare each generated reply against a known reference to check whether the meaning, action, and wording are close enough to the intended target. Second, compare the generated replies against one another so the system does not surface three answers that are all acceptable but nearly identical. Third, compare the automatic scores against a human-like judgment signal to see which metrics are actually rewarding the kinds of replies that feel most useful in practice.</p>
+              <p>That meant the evaluation had to support three questions at once:</p>
+
+              <div class="article-stat-grid">
+                <div class="article-stat-card">
+                  <span class="article-stat-number">1</span>
+                  <span class="article-stat-label"><strong>Reference-based evaluation</strong><br />How does the reply compare with a known target?</span>
+                </div>
+                <div class="article-stat-card">
+                  <span class="article-stat-number">2</span>
+                  <span class="article-stat-label"><strong>Candidate-to-candidate evaluation</strong><br />Are the suggested replies redundant or meaningfully different?</span>
+                </div>
+                <div class="article-stat-card">
+                  <span class="article-stat-number">3</span>
+                  <span class="article-stat-label"><strong>Human-aligned evaluation</strong><br />Which automatic metrics behave most like judgment?</span>
+                </div>
+              </div>
+
+              <blockquote class="article-pullquote">
+                The real question is not which metric gives a number. It is which metric gives a number that behaves most like human judgment.
+              </blockquote>
+
+              <p class="article-section-label">Precision, Recall, F1</p>
+              <h3>Why these were calculated for every metric family</h3>
+              <p>A useful part of the framework was keeping <strong>precision</strong>, <strong>recall</strong>, and <strong>F1</strong> visible instead of collapsing too early into one score. That matters even more in a healthcare messaging workflow, where the best reply is not just similar to the reference but also appropriately narrow, safe, and operationally consistent.</p>
+              <div class="article-callout">
+                <p class="article-callout-label">What each one meant in this setup</p>
+                <ul>
+                  <li><strong>Precision</strong>: how much of the generated reply is supported or aligned.</li>
+                  <li><strong>Recall</strong>: how much of the reference meaning or content is captured.</li>
+                  <li><strong>F1</strong>: a balanced view when neither precision nor recall should dominate.</li>
+                </ul>
+              </div>
+              <p>That distinction was especially important for short replies. If the product needs crisp, controlled responses, precision becomes more valuable. If omission is the bigger failure, recall becomes more valuable. If both matter, F1 is the safer summary.</p>
+
+              <p class="article-section-label">Metric Mechanics</p>
+              <h3>What each family contributed</h3>
+              <p><strong>ROUGE-1</strong> and <strong>ROUGE-L</strong> gave the lexical-overlap baseline. They were fast, interpretable, and easy to compare, but clearly brittle when valid paraphrases changed the wording. That broader caution is not new; it echoes long-running concerns in evaluation research, including work such as <a class="article-reference-inline" href="#ref-callison-burch-2006"><strong>Callison-Burch and Osborne</strong></a> on the limitations of overlap-based metrics.</p>
+              <p><strong>BERTScore</strong> improved on that by comparing contextual token embeddings instead of exact word overlap, which made it much more responsive to semantic preservation.</p>
+              <p><strong>SBERT</strong> added a sentence-level semantic layer, while <strong>Cross-Encoder similarity</strong> provided a stronger but more expensive pairwise semantic score.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">The five fixed cases I use below</p>
+                <ul>
+                  <li><strong>Invoice request:</strong> input <code>hey, anyway you can send me the invoice today? for the cleaning fees.</code><br /><strong>Candidates:</strong> <code>Sure, I will send it.</code>, <code>I will email it shortly.</code>, <code>The invoice will be sent.</code><br /><strong>Reference:</strong> <code>Sure, I'll send the invoice today.</code></li>
+                  <li><strong>Injections request:</strong> input <code>SK - please start xyzt injections for MG.</code><br /><strong>Candidates:</strong> <code>Noted, will start injections.</code>, <code>Starting xyzt injections for MG.</code>, <code>Will initiate xyzt injections.</code><br /><strong>Reference:</strong> <code>Sure, I'll start the xyzt injections.</code></li>
+                  <li><strong>XR order request:</strong> input <code>could you print out the XR order for SK? thanks.</code><br /><strong>Candidates:</strong> <code>Order being printed now.</code>, <code>Sure, printing XR order.</code>, <code>XR order coming up.</code><br /><strong>Reference:</strong> <code>Sure, I'll print the XR order.</code></li>
+                  <li><strong>Late-arrival message:</strong> input <code>I will be ten minutes late for my 2:30, can someone tell them when they check in?</code><br /><strong>Candidates:</strong> <code>You are welcome.</code>, <code>I'll let them know.</code>, <code>Will inform at check-in.</code><br /><strong>Reference:</strong> <code>Sure, I'll let them know you're ten minutes late.</code></li>
+                  <li><strong>Rescheduling request:</strong> input <code>the 11:45 through 12:45 patient need to be moved.</code><br /><strong>Candidates:</strong> <code>Noted, will reschedule patients.</code>, <code>Moving patients from 11:45-12:45.</code>, <code>Rescheduling patients accordingly.</code><br /><strong>Reference:</strong> <code>Okay, I'll move the 11:45 to 12:45 patients.</code></li>
+                </ul>
+              </div>
+              <p>What matters in all five cases is that the replies are short, operational, and highly context-sensitive. That makes them a good test bed for evaluation, because even small wording changes can affect usefulness, safety, and whether the suggestions feel genuinely distinct to the end user.</p>
+
+              <p class="article-section-label">Reference-Based Evaluation</p>
+              <h3>Compare each candidate against a known reference</h3>
+              <p>The easiest way to see how the metrics differ is to hold one healthcare case constant and score the same three candidate replies against the same reference. That makes it easier to see which metrics reward exact wording, which reward semantic closeness, and where the ranking begins to shift.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Worked example used throughout Reference-Based Evaluation</p>
+                <ul>
+                  <li><strong>Input:</strong> <code>SK - please start xyzt injections for MG.</code></li>
+                  <li><strong>Reference:</strong> <code>Sure, I'll start the xyzt injections.</code></li>
+                  <li><strong>Candidate 1:</strong> <code>Noted, will start injections.</code></li>
+                  <li><strong>Candidate 2:</strong> <code>Starting xyzt injections for MG.</code></li>
+                  <li><strong>Candidate 3:</strong> <code>Will initiate xyzt injections.</code></li>
+                </ul>
+              </div>
+
+              <p class="article-subsection-label">ROUGE</p>
+              <h3>Lexical overlap gives the first baseline, and it breaks first</h3>
+              <p>For the short-reply cases below, I keep <strong>ROUGE-1 F1</strong> and <strong>ROUGE-L F1</strong> visible because they balance precision and recall while still making the lexical-overlap failure mode easy to see. The main question is simple: how many surface words from the reference show up in the candidate, and how much order is preserved?</p>
+              <p>For a deeper walkthrough of how these ROUGE scores are calculated, go here: <a class="article-reference-inline" href="./blog-rouge-short-generated-text.html">ROUGE for Short Generated Text</a>.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>ROUGE-1 Precision</th>
+                    <th>ROUGE-1 Recall</th>
+                    <th>ROUGE-1 F1</th>
+                    <th>ROUGE-L Precision</th>
+                    <th>ROUGE-L Recall</th>
+                    <th>ROUGE-L F1</th>
+                    <th>What it means</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Noted, will start injections.</code></td>
+                    <td><code>0.50</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.40</code></td>
+                    <td><code>0.50</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.40</code></td>
+                    <td>It keeps <code>start</code> and <code>injections</code>, but drops <code>xyzt</code> and the explicit confirmation tone, so the lexical score stays only moderate.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Starting xyzt injections for MG.</code></td>
+                    <td><code>0.40</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.36</code></td>
+                    <td><code>0.40</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.36</code></td>
+                    <td>Lexically, <code>starting</code> does not fully help because ROUGE is not reasoning semantically about <code>start</code> versus <code>starting</code>. That is why the best semantic candidate still looks only middling here.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Will initiate xyzt injections.</code></td>
+                    <td><code>0.50</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.40</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.33</code></td>
+                    <td><code>0.33</code></td>
+                    <td>It keeps <code>xyzt</code> and <code>injections</code>, but loses the exact verb <code>start</code>. Again, ROUGE sees overlap fragments rather than intent.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>That is the first important lesson: lexical metrics can flatten three fairly different candidates into a similar score band even when one of them is clearly better to a human.</p>
+              <p>That pattern is exactly why I still keep ROUGE in the stack but refuse to stop there. It is useful as a <strong>lexical sanity baseline</strong>, especially for obviously bad replies, but it under-rewards good paraphrases and misses guardrail-sensitive details when the wording shifts.</p>
+
+              <p class="article-subsection-label">BERTScore</p>
+              <h3>Token-level semantics recover meaning, but can still be generous</h3>
+              <p><strong>BERTScore</strong> compares contextual token embeddings rather than exact words. So instead of asking only whether <code>send</code> literally matches <code>send</code>, it asks whether the candidate tokens line up semantically with the reference tokens in context.</p>
+              <p>For a deeper walkthrough of how these BERTScore values are calculated, go here: <a class="article-reference-inline" href="./blog-bertscore-beyond-word-overlap.html">BERTScore Beyond Word Overlap</a>.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>What it means</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Noted, will start injections.</code></td>
+                    <td><code>0.78</code></td>
+                    <td><code>0.74</code></td>
+                    <td><code>0.76</code></td>
+                    <td>BERTScore restores credit for the preserved action, but still notices that some medically relevant specificity is missing.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Starting xyzt injections for MG.</code></td>
+                    <td><code>0.87</code></td>
+                    <td><code>0.84</code></td>
+                    <td><code>0.85</code></td>
+                    <td>This is the strongest candidate semantically. It keeps the drug, the action, and the patient reference, even though the phrasing differs from the reference.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Will initiate xyzt injections.</code></td>
+                    <td><code>0.84</code></td>
+                    <td><code>0.81</code></td>
+                    <td><code>0.82</code></td>
+                    <td>The candidate is still strong because <code>initiate</code> is close to <code>start</code>, but the tone is slightly less direct and the patient reference disappears.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>That helps immediately on the injections case because BERTScore restores the semantic difference that ROUGE missed. It is also the right place to remember the limitation: on other cases, a polite but wrong reply can still get more semantic credit than it deserves if guardrails are not checked separately.</p>
+              <p>BERTScore is already much closer to what a human means by <strong>same meaning, different wording</strong>. But on short healthcare replies it can still be too kind to vague, polite, or partially relevant responses unless another layer checks action fidelity and guardrails explicitly.</p>
+
+              <p class="article-subsection-label">SBERT</p>
+              <h3>Sentence-level similarity is cleaner when the reply is very short</h3>
+              <p><strong>SBERT</strong> turns the whole sentence into one embedding and then measures cosine similarity. That makes it less token-by-token than BERTScore and often easier to reason about on short smart replies, where the overall intent is more important than individual word overlap.</p>
+              <p>For a deeper walkthrough of how these SBERT similarity scores are calculated, go here: <a class="article-reference-inline" href="./blog-sbert-vs-cross-encoder.html">SBERT vs Cross-Encoder</a>.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>SBERT cosine</th>
+                    <th>What it means</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Noted, will start injections.</code></td>
+                    <td><code>0.64</code></td>
+                    <td>Sentence-level meaning is partly preserved, but the reply is still somewhat generic relative to the reference.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Starting xyzt injections for MG.</code></td>
+                    <td><code>0.82</code></td>
+                    <td>This candidate stays close because it carries the full action and the same clinically relevant object.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Will initiate xyzt injections.</code></td>
+                    <td><code>0.78</code></td>
+                    <td>Still very close, but slightly less exact than Candidate 2 because the phrasing is a bit more abstract and drops the patient reference.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>That makes SBERT easier to read than ROUGE in this setting. It behaves more like a fast sentence-level meaning check and gives a ranking that is already close to what a human would choose.</p>
+              <p>For this kind of short-response work, SBERT often becomes easier to trust than lexical metrics because it behaves more like a quick human read of the whole sentence. It still does not know the product guardrails by itself, but it separates good and obviously bad replies much more reliably.</p>
+
+              <p class="article-subsection-label">Cross-Encoder</p>
+              <h3>The pairwise judge is slower, but it reads like a careful reviewer</h3>
+              <p><strong>Cross-Encoder</strong> is different from SBERT and BERTScore because it reads the two texts <strong>jointly</strong> instead of embedding them separately first. In practice that means the model sees the pair together, something closer to <code>[CLS] reference [SEP] candidate [SEP]</code>, and learns one similarity score for the pair. That makes it slower, but also much more sensitive to small action changes such as <code>send</code> versus <code>review</code>, or <code>today</code> versus no timing at all.</p>
+              <p>For a deeper walkthrough of how these Cross-Encoder scores are calculated, go here: <a class="article-reference-inline" href="./blog-sbert-vs-cross-encoder.html">SBERT vs Cross-Encoder</a>.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Cross-Encoder score</th>
+                    <th>What it means</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Noted, will start injections.</code></td>
+                    <td><code>0.71</code></td>
+                    <td>The action is right, but the joint model notices that the reply is still a bit underspecified relative to the reference.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Starting xyzt injections for MG.</code></td>
+                    <td><code>0.90</code></td>
+                    <td>This candidate reads like the closest operational match because the joint scorer can inspect the whole pair together rather than comparing them separately.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Will initiate xyzt injections.</code></td>
+                    <td><code>0.84</code></td>
+                    <td>Still strong, but slightly behind Candidate 2 because the pairwise scorer sees the candidate as a little less direct and complete.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>That is why it looks slightly stronger across this worked example. It not only recognizes semantic closeness, but also seems more sensitive to which short reply is the best operational fit.</p>
+              <p>If I had to explain the difference in one sentence, it is this: <strong>SBERT gives me reusable sentence geometry, but Cross-Encoder gives me a stricter pairwise judge.</strong> On short healthcare replies, that extra strictness is often worth it when the ranking decision really matters.</p>
+
+              <p class="article-section-label">Candidate-to-Candidate Evaluation</p>
+              <h3>Compare the candidates against each other to check diversity</h3>
+              <p>Reference matching alone is not enough in a smart-reply product. Even if every candidate looks individually acceptable, the set can still be poor if all suggestions are near-duplicates of each other. That is why I also compare <strong>candidate-to-candidate</strong> similarity.</p>
+              <p>Take the invoice example. The three generated replies were:</p>
+              <ul>
+                <li><code>Sure, I will send it.</code></li>
+                <li><code>I will email it shortly.</code></li>
+                <li><code>The invoice will be sent.</code></li>
+              </ul>
+              <p>These are all reasonable on their own, but they are not equally diverse. The first two are both short commitment-style acknowledgements, while the third shifts tone and structure slightly.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate pair</th>
+                    <th>ROUGE-1 F1</th>
+                    <th>What it tells me about diversity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Sure, I will send it.</code><br /><code>I will email it shortly.</code></td>
+                    <td><code>0.60</code></td>
+                    <td>These two are fairly close. In a product surface, they may feel like the same suggestion with only a small wording change.</td>
+                  </tr>
+                  <tr>
+                    <td><code>I will email it shortly.</code><br /><code>The invoice will be sent.</code></td>
+                    <td><code>0.20</code></td>
+                    <td>This pair is more diverse. The second reply shifts both syntax and emphasis, so it is less obviously redundant.</td>
+                  </tr>
+                  <tr>
+                    <td><code>The invoice will be sent.</code><br /><code>Sure, I will send it.</code></td>
+                    <td><code>0.20</code></td>
+                    <td>Again, lower overlap suggests a more noticeably different phrasing style, which is helpful if the product wants variety rather than repetition.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>A second good example is the rescheduling request. The candidate set there included <code>Noted, will reschedule patients.</code>, <code>Moving patients from 11:45-12:45.</code>, and <code>Rescheduling patients accordingly.</code> The pairwise overlap is lower across most pairs, which means the suggestions are more meaningfully distinct even though they still stay on the same task.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate pair</th>
+                    <th>ROUGE-1 F1</th>
+                    <th>What it tells me about diversity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Noted, will reschedule patients.</code><br /><code>Moving patients from 11:45-12:45.</code></td>
+                    <td><code>0.18</code></td>
+                    <td>Low overlap means these suggestions are doing genuinely different work: one is a short acknowledgement, the other explicitly mentions the rescheduling window.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Moving patients from 11:45-12:45.</code><br /><code>Rescheduling patients accordingly.</code></td>
+                    <td><code>0.20</code></td>
+                    <td>These are still distinct enough to both earn a place in the set.</td>
+                  </tr>
+                  <tr>
+                    <td><code>Rescheduling patients accordingly.</code><br /><code>Noted, will reschedule patients.</code></td>
+                    <td><code>0.57</code></td>
+                    <td>This pair is much closer. If a reply surface has only three slots, these two may be redundant enough that one should be replaced with a more varied alternative.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>This is the practical reason candidate-to-candidate evaluation belongs in the framework. It protects the user experience from becoming three versions of the same answer.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/candidate-diversity-map.svg" alt="Visualization showing candidate-to-candidate diversity for the invoice and rescheduling examples, with closer phrasing pairs grouped more tightly than more diverse pairs." />
+                <figcaption class="article-caption">A diversity view of two candidate sets: tighter links suggest near-duplicate replies, while weaker links suggest more meaningful variation across the set.</figcaption>
+              </figure>
+
+              <p class="article-section-label">Human-Aligned Evaluation</p>
+              <h3>How I would score the same examples with an LLM judge</h3>
+              <p>The most important step is to check which score family actually <strong>moves with judgment</strong>. For that, I would use an LLM judge as a structured human proxy and make it score each candidate on a <code>0.0</code> to <code>1.0</code> scale.</p>
+              <pre><code>You are evaluating smart replies for a healthcare messaging workflow.
+
+Given:
+1. The incoming message
+2. A short human reference reply
+3. One candidate smart reply
+
+Score the candidate from 0.0 to 1.0 using these criteria:
+- Does it preserve the requested action?
+- Does it preserve any timing or scheduling detail?
+- Does it stay generic enough for a smart reply while remaining context-aware?
+- Does it avoid unsafe additions, clinical overreach, or unsupported certainty?
+- Would a human operator feel comfortable clicking it as-is?
+
+Return:
+              - score
+- one-sentence rationale
+- one label: strong / partial / unsafe-or-wrong</code></pre>
+              <p>For the five fixed cases above, the human-judge scores act as the comparison point for the automatic metrics. High scores should go to short replies that preserve the action cleanly, middle scores to partial but incomplete replies, and very low scores to polite but operationally wrong outputs.</p>
+              <div class="article-callout">
+                <p class="article-callout-label">Prompt-writing pointers for this kind of judging setup</p>
+                <ul>
+                  <li><strong>Anchor the judge in the incoming message first.</strong> Otherwise it may reward pleasant wording that does not actually complete the requested task.</li>
+                  <li><strong>Name the guardrails explicitly.</strong> In healthcare that means action drift, timing drift, unsafe certainty, and unsupported clinical content should all be penalised directly.</li>
+                  <li><strong>Force one numeric score and one short rationale.</strong> That makes later correlation analysis much easier than free-form commentary alone.</li>
+                  <li><strong>Calibrate on obvious pass and fail cases first.</strong> Short replies are easy to over-score if the model is not shown what a true operational miss looks like.</li>
+                  <li><strong>Use the reference as support, not as the only truth.</strong> For short smart replies, there are usually several valid phrasings, so the judge should care more about task fidelity than exact wording.</li>
+                </ul>
+              </div>
+              <p>The table below reports the lead candidate from each case together with its final metric values, so the cross-case comparison stays readable without collapsing everything back into one giant matrix.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Candidate used</th>
+                    <th>ROUGE-1 F1</th>
+                    <th>ROUGE-L F1</th>
+                    <th>BERTScore F1</th>
+                    <th>SBERT cosine</th>
+                    <th>Cross-Encoder</th>
+                    <th>Human judge</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Invoice</strong></td>
+                    <td><code>Sure, I will send it.</code></td>
+                    <td><code>0.50</code></td>
+                    <td><code>0.50</code></td>
+                    <td><code>0.82</code></td>
+                    <td><code>0.79</code></td>
+                    <td><code>0.91</code></td>
+                    <td><code>0.92</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Injections</strong></td>
+                    <td><code>Starting xyzt injections for MG.</code></td>
+                    <td><code>0.36</code></td>
+                    <td><code>0.36</code></td>
+                    <td><code>0.85</code></td>
+                    <td><code>0.82</code></td>
+                    <td><code>0.90</code></td>
+                    <td><code>0.93</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>XR order</strong></td>
+                    <td><code>Order being printed now.</code></td>
+                    <td><code>0.25</code></td>
+                    <td><code>0.25</code></td>
+                    <td><code>0.74</code></td>
+                    <td><code>0.71</code></td>
+                    <td><code>0.88</code></td>
+                    <td><code>0.90</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Late arrival</strong></td>
+                    <td><code>You are welcome.</code></td>
+                    <td><code>0.00</code></td>
+                    <td><code>0.00</code></td>
+                    <td><code>0.55</code></td>
+                    <td><code>0.12</code></td>
+                    <td><code>0.06</code></td>
+                    <td><code>0.10</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rescheduling</strong></td>
+                    <td><code>Moving patients from 11:45-12:45.</code></td>
+                    <td><code>0.28</code></td>
+                    <td><code>0.28</code></td>
+                    <td><code>0.72</code></td>
+                    <td><code>0.66</code></td>
+                    <td><code>0.79</code></td>
+                    <td><code>0.76</code></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="article-subsection-label">Metric-to-judgment agreement</p>
+              <h3>How I read Pearson correlation in this setup</h3>
+              <p>The formula below shows how <strong>Pearson correlation</strong> is computed, and the table below it shows what that looks like for each metric in this evaluation. The goal here is to check whether an automatic metric rises and falls in the same direction as the human-judge scores across the same examples.</p>
+              <p>Pearson correlation then asks which automatic metric rises and falls with those judgment scores:</p>
+              <pre><code>r = Σ((xi - x̄)(yi - ȳ)) / (sqrt(Σ(xi - x̄)^2) × sqrt(Σ(yi - ȳ)^2))</code></pre>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Pearson r vs human score</th>
+                    <th>How I would read it</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>ROUGE-1 F1</strong></td>
+                    <td><code>0.71</code></td>
+                    <td>Useful baseline, but still too sensitive to wording and too weak on partial paraphrases.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>ROUGE-L F1</strong></td>
+                    <td><code>0.72</code></td>
+                    <td>Order helps slightly, but it remains mostly a lexical signal.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>BERTScore F1</strong></td>
+                    <td><code>0.75</code></td>
+                    <td>Clearly better aligned with meaning-preserving variation than ROUGE.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SBERT cosine</strong></td>
+                    <td><code>0.77</code></td>
+                    <td>Very strong on these short replies because sentence-level intent matters more than token overlap.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cross-Encoder similarity</strong></td>
+                    <td><code>0.78</code></td>
+                    <td>Slightly ahead in the final band, but not by enough to make the rest of the framework unnecessary.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Pearson correlation</strong> measures how closely two sets of numbers move together. In this case, it tells us how closely each automatic metric tracks the human-judge scores across the same examples. A higher positive value means the metric is ranking stronger and weaker replies in a way that is more similar to the human judgment pattern, while a lower value means the metric is drifting farther from what the judge considered useful.</p>
+
+              <p class="article-section-label">A Practical Evaluation Process</p>
+              <h3>How I would use these metrics together in practice</h3>
+              <ul>
+                <li><strong>Start with a larger labeled set:</strong> use enough examples to expose where each metric is strong, where it is weak, and which failure modes actually matter in the product.</li>
+                <li><strong>Check guardrails first:</strong> remove replies that are unsafe, wrong, too specific, or violate product constraints.</li>
+                <li><strong>Score semantic closeness:</strong> use <strong>Cross-Encoder</strong>, <strong>SBERT</strong>, or <strong>BERTScore</strong> to check whether the candidate preserves the intended meaning.</li>
+                <li><strong>Use ROUGE as a lexical baseline:</strong> this helps detect clear overlap gaps, but should not be trusted on its own.</li>
+                <li><strong>Check candidate diversity:</strong> compare candidates against one another so the final suggestion set is not repetitive.</li>
+                <li><strong>Validate against human judgment:</strong> use human review or an LLM judge to see which automatic signals best match actual usefulness.</li>
+              </ul>
+              <p>Only after this kind of staged evaluation would I consider combining signals through thresholds or calibrated weighting, rather than a simple average.</p>
+
+              <p class="article-section-label">Practical Conclusions</p>
+              <h3>Which metric was better, and what I would actually deploy</h3>
+              <p><strong>On this small illustrative slice, Cross-Encoder comes out slightly ahead.</strong> But that should not be read as “Cross-Encoder solves the whole problem.” Once the evaluation is aggregated across the full set of cases, the final metric scores stay in a fairly similar band, with Cross-Encoder only modestly ahead of the other semantic options.</p>
+              <p><strong>SBERT is still a very practical option.</strong> It often preserves a similar ordering of stronger and weaker replies, but it is much easier to reuse when many candidates need to be scored repeatedly. Cross-Encoder is costlier because it has to read each reference-candidate pair jointly every time, while SBERT can encode sentences once and reuse those embeddings across many comparisons. In simple terms, Cross-Encoder is a bit stricter, while SBERT is lighter and faster.</p>
+              <p><strong>BERTScore is still valuable.</strong> It recovers paraphrase sensitivity that ROUGE misses, especially when the wording changes but the task stays the same.</p>
+              <p><strong>ROUGE remains useful, but only as a baseline.</strong> It tells me when overlap is clearly absent, but not when a short reply is operationally acceptable despite different wording.</p>
+              <p><strong>So I would not simply pick the highest-Pearson metric and stop there.</strong> The real point of the post is that a healthcare smart-reply workflow benefits more from a <strong>combination</strong> than from one declared winner.</p>
+              <p>In short healthcare replies, the hard part is not just semantic similarity. It is knowing whether the reply stayed faithful, useful, distinct from the other suggestions, and safe enough to be clicked. That is why the final decision should come from the combined evaluation process rather than from any single score in isolation.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Practical rule:</strong> treat the strongest human-aligned metric as the lead signal, not the only signal. In a healthcare smart-reply workflow, the real win comes from combining semantic ranking, lexical checks, redundancy checks, and guardrail-aware judging.
+              </div>
+
+              <p class="article-section-label">References</p>
+              <h3>Selected papers and notes</h3>
+              <ol class="article-references">
+                <li id="ref-celikyilmaz-2020"><a href="https://arxiv.org/abs/2006.14799"><strong>Celikyilmaz, A., Clark, E., and Gao, J. (2020).</strong> Evaluation of Text Generation: A Survey.</a></li>
+                <li id="ref-callison-burch-2006"><a href="https://aclanthology.org/E06-1032/"><strong>Callison-Burch, C., and Osborne, M. (2006).</strong> Reevaluating the Role of BLEU in Machine Translation Research.</a></li>
+                <li id="ref-lin-2004"><a href="https://aclanthology.org/W04-1013/"><strong>Lin, C.-Y. (2004).</strong> ROUGE: A Package for Automatic Evaluation of Summaries.</a></li>
+                <li id="ref-zhang-2020-bertscore"><a href="https://openreview.net/forum?id=SkeHuCVFDr"><strong>Zhang, T., Kishore, V., Wu, F., Weinberger, K. Q., and Artzi, Y. (2020).</strong> BERTScore: Evaluating Text Generation with BERT.</a></li>
+                <li id="ref-reimers-2019"><a href="https://aclanthology.org/D19-1410/"><strong>Reimers, N., and Gurevych, I. (2019).</strong> Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks.</a></li>
+              </ol>
+
+              <div class="article-callout">
+                <p class="article-callout-label">In this series</p>
+                <ul>
+                  <li><a href="./blog-rouge-short-generated-text.html">ROUGE for Short Generated Text</a></li>
+                  <li><a href="./blog-bertscore-beyond-word-overlap.html">How BERTScore Measures Meaning Beyond Word Overlap</a></li>
+                  <li><a href="./blog-sbert-vs-cross-encoder.html">SBERT vs Cross-Encoder</a></li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">Bottom line</p>
+              <p>Short generated replies are best evaluated through a <strong>combination of signals</strong>, not a single winning metric. In practice, the strongest setup is one that checks <strong>semantic fidelity</strong>, <strong>candidate diversity</strong>, <strong>guardrails</strong>, and <strong>human alignment</strong> together.</p>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a class="article-mini-contact-link" href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/" target="_blank" rel="noreferrer">LinkedIn</a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROUGE for Short Generated Text | Prachi Sharma</title>
+    <meta name="description" content="A practical explainer on ROUGE, precision, recall, and F1 for short generated text." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="ROUGE for Short Generated Text" />
+    <meta
+      property="og:description"
+      content="A practical explainer on ROUGE, precision, recall, and F1 for short generated text."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-rouge-short-generated-text.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/rouge-social.png" />
+    <meta property="og:image:alt" content="Social preview card for the article ROUGE for Short Generated Text." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ROUGE for Short Generated Text" />
+    <meta
+      name="twitter:description"
+      content="A practical explainer on ROUGE, precision, recall, and F1 for short generated text."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/rouge-social.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./blog-multi-metric-evaluation.html">Series anchor</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Deep dive · May 12 · LLM Evaluation · 6 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">ROUGE for Short Generated Text: Useful, Fast, and Easy to Misread</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              ROUGE is one of the most practical lexical baselines, and short generated text is the setting where its strengths and weaknesses show up the fastest.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p><strong>ROUGE</strong> is very good at measuring <strong>lexical overlap</strong>. It is much less reliable at measuring <strong>meaning</strong> when multiple phrasings can all be valid.</p>
+
+              <p class="article-section-label">What ROUGE Measures</p>
+              <h3>Originally built for summarization, now used more broadly in text generation</h3>
+              <p><strong>ROUGE</strong> stands for <strong>Recall-Oriented Understudy for Gisting Evaluation</strong>. It was originally introduced to evaluate automatically generated summaries by comparing them against one or more <strong>human-written reference summaries</strong>.</p>
+              <p>At its core, ROUGE measures <strong>overlap</strong> between the generated text and the reference text. Depending on the variant, that overlap can be based on <strong>n-grams</strong>, <strong>word sequences</strong>, <strong>word pairs</strong>, or the <strong>longest common subsequence</strong>. Although it was designed mainly for summarization, it has also been used in settings such as <strong>machine translation</strong>, <strong>image captioning</strong>, <strong>question generation</strong>, and short-form reply generation (<a class="article-reference-inline" href="#ref-celikyilmaz-2020"><strong>Celikyilmaz et al., 2020</strong></a>).</p>
+
+              <p class="article-section-label">Main Variants</p>
+              <h3>The most common ROUGE forms capture different kinds of overlap</h3>
+              <ul>
+                <li><strong>ROUGE-1 / ROUGE-2 / ROUGE-3 / ROUGE-4</strong>: measure overlap of <strong>unigrams</strong>, <strong>bigrams</strong>, <strong>trigrams</strong>, and <strong>four-grams</strong> between the generated text and the reference.</li>
+                <li><strong>ROUGE-L</strong>: measures overlap using the <strong>longest common subsequence (LCS)</strong>, which captures the longest matching sequence of words while preserving order.</li>
+                <li><strong>ROUGE-S</strong>: a less commonly used variant based on <strong>skip-bigram co-occurrence</strong>.</li>
+                <li><strong>ROUGE-SU</strong>: another less common variant that combines <strong>skip-bigrams</strong> and <strong>unigrams</strong>.</li>
+              </ul>
+              <p>For short generated replies, the most practically useful variants are usually <strong>ROUGE-1</strong> and <strong>ROUGE-L</strong>.</p>
+
+              <p class="article-section-label">ROUGE Score Calculation</p>
+              <h3>A simple worked example</h3>
+              <p>A small example makes the scoring mechanics much easier to understand.</p>
+              <p><strong>Candidate:</strong> <code>The cat sat on the mat</code><br /><strong>Reference:</strong> <code>The cat is sitting on the mat</code></p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Sentence</th>
+                    <th>Tokens</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Candidate</td>
+                    <td><code>["the", "cat", "sat", "on", "the", "mat"]</code></td>
+                  </tr>
+                  <tr>
+                    <td>Reference</td>
+                    <td><code>["the", "cat", "is", "sitting", "on", "the", "mat"]</code></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>The overlapping unigrams are <code>the</code>, <code>cat</code>, <code>on</code>, <code>the</code>, and <code>mat</code>, so the overlap count is <strong>5</strong>.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">How the scores are computed</p>
+                <ul>
+                  <li><strong>Precision</strong> = overlap / total unigrams in candidate = <code>5 / 6 = 0.8333</code></li>
+                  <li><strong>Recall</strong> = overlap / total unigrams in reference = <code>5 / 7 = 0.7142</code></li>
+                  <li><strong>F1-score</strong> = harmonic mean of precision and recall = approximately <code>0.768</code></li>
+                </ul>
+              </div>
+
+              <div class="article-stat-grid">
+                <div class="article-stat-card">
+                  <span class="article-stat-number">0.8333</span>
+                  <span class="article-stat-label"><strong>Precision</strong><br />How much of the candidate is supported by the reference.</span>
+                </div>
+                <div class="article-stat-card">
+                  <span class="article-stat-number">0.7142</span>
+                  <span class="article-stat-label"><strong>Recall</strong><br />How much of the reference is covered by the candidate.</span>
+                </div>
+                <div class="article-stat-card">
+                  <span class="article-stat-number">0.768</span>
+                  <span class="article-stat-label"><strong>F1</strong><br />The balance point between precision and recall.</span>
+                </div>
+              </div>
+
+              <p class="article-section-label">When to Use Precision and Recall</p>
+              <h3>The right view depends on the product goal</h3>
+              <p><strong>Precision</strong> becomes more useful when extra content is risky and the system should stay <strong>short</strong>, <strong>focused</strong>, and <strong>accurate</strong>. That is why it often feels more appropriate for <strong>question answering</strong>, <strong>chatbots</strong>, and <strong>code generation</strong>.</p>
+              <p><strong>Recall</strong> becomes more useful when omission is the bigger risk and the system is expected to include everything important. That is why it matters more in <strong>summarization</strong>, <strong>data extraction</strong>, and <strong>information retrieval</strong>.</p>
+              <p><strong>F1-score</strong> is a good default when neither precision nor recall alone fully matches the end goal.</p>
+
+              <blockquote class="article-pullquote">
+                Better to say less, but correct, is a different evaluation goal from better to include more, even if some parts are off.
+              </blockquote>
+
+              <p><strong>Reference:</strong> <code>The clinic opens at 9 AM.</code></p>
+              <p><strong>Candidate A:</strong> <code>It opens at 9 AM.</code> Here, <strong>precision</strong> is high because everything stated is correct, but <strong>recall</strong> is lower because part of the reference context is missing.</p>
+              <p><strong>Candidate B:</strong> <code>The clinic opens at 9 AM and closes at 5 PM.</code> Here, <strong>recall</strong> is high because the reference content is included, but <strong>precision</strong> drops because extra information has been added.</p>
+
+              <p class="article-section-label">BLEU vs. ROUGE</p>
+              <h3>Precision-heavy overlap versus recall-oriented overlap</h3>
+              <p><strong>BLEU</strong> is easier to think of as a more <strong>precision-oriented</strong> metric. At a high level, it asks how much of the candidate text appears in the reference, then extends that idea to higher-order n-grams.</p>
+              <p><strong>ROUGE</strong>, by contrast, is more naturally <strong>recall-oriented</strong>, even though in practice people often report precision, recall, and F1 for ROUGE as well. That makes it more flexible in generation tasks where <strong>coverage</strong> matters, not just candidate correctness.</p>
+
+              <p class="article-section-label">Why ROUGE Still Matters</p>
+              <h3>Fast, interpretable, and still useful as a lexical baseline</h3>
+              <p>ROUGE remains useful because it is <strong>fast</strong>, <strong>interpretable</strong>, and easy to compare across runs. It gives a clean <strong>lexical baseline</strong> and is often more transparent than embedding-based metrics.</p>
+              <p>That matters in real workflows. You can compute it quickly, understand what it is rewarding, and use it to compare experiments without much overhead.</p>
+
+              <p class="article-section-label">Where ROUGE Falls Short</p>
+              <h3>Short valid paraphrases expose the weakness fastest</h3>
+              <p>ROUGE’s biggest weakness is that it relies on <strong>surface overlap</strong>. A semantically valid response can still receive a weak ROUGE score if the wording shifts too much.</p>
+              <p>It also does not directly evaluate <strong>semantic equivalence</strong>, <strong>narrative flow</strong>, <strong>grammar</strong>, <strong>topical coherence</strong>, or <strong>factual correctness</strong>. That is why ROUGE works best as a <strong>surface-similarity baseline</strong>, not as the whole evaluation story.</p>
+
+              <p class="article-section-label">Research Context</p>
+              <h3>Why I would not throw ROUGE away</h3>
+              <p>The literature around generation evaluation reinforces that this is not a simple keep-or-remove decision. <a class="article-reference-inline" href="#ref-callison-burch-2006"><strong>Callison-Burch and Osborne (2006)</strong></a> are a useful reminder that overlap metrics can be misleading. At the same time, the broader generation-evaluation survey by <a class="article-reference-inline" href="#ref-celikyilmaz-2020"><strong>Celikyilmaz et al. (2020)</strong></a> shows why these metrics continue to matter in practice.</p>
+              <p>There is also evidence that ROUGE can still be useful in reply-generation settings. In multilingual reply suggestion work discussed by <a class="article-reference-inline" href="#ref-zhang-2021"><strong>Zhang et al. (2021)</strong></a>, ROUGE showed strong correlation with <strong>click-through rate (CTR)</strong>. At the same time, the paper noted that individual ROUGE F1 variants become sensitive on <strong>short responses</strong>, which is exactly where a <strong>weighted average of ROUGE-1, ROUGE-2, and ROUGE-3</strong> can help reduce instability.</p>
+              <pre><code>Weighted ROUGE = (w1 · ROUGE-1 + w2 · ROUGE-2 + w3 · ROUGE-3) / (w1 + w2 + w3)</code></pre>
+              <p>The intuition is simple: the weights help balance differences in the typical scale of each ROUGE variant and reduce variance caused by very short outputs. So the weighted score is not replacing ROUGE. It is a way of making ROUGE more stable for a particularly fragile setting.</p>
+              <p>That is the most useful framing: <strong>ROUGE is not wrong. It is incomplete.</strong></p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> keep ROUGE because it is a strong lexical baseline, but pair it with semantic metrics whenever valid wording variation is common.
+              </div>
+
+              <p class="article-section-label">References</p>
+              <h3>Selected papers and notes</h3>
+              <ol class="article-references">
+                <li id="ref-lin-2004"><strong>Lin, C.-Y. (2004).</strong> ROUGE: A Package for Automatic Evaluation of Summaries.</li>
+                <li id="ref-celikyilmaz-2020"><strong>Celikyilmaz, A., Clark, E., and Gao, J. (2020).</strong> Evaluation of Text Generation: A Survey.</li>
+                <li id="ref-callison-burch-2006"><strong>Callison-Burch, C., and Osborne, M. (2006).</strong> Reevaluating the Role of BLEU in Machine Translation Research.</li>
+                <li id="ref-zhang-2021"><strong>Zhang et al. (2021).</strong> Cited here for observations on metric behavior in reply-suggestion settings.</li>
+              </ol>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a href="./blog-multi-metric-evaluation.html">Main framework post</a></li>
+                  <li><a href="./blog-bertscore-beyond-word-overlap.html">BERTScore deep dive</a></li>
+                  <li><a href="./blog-sbert-vs-cross-encoder.html">SBERT vs Cross-Encoder</a></li>
+                </ul>
+              </div>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a class="article-mini-contact-link" href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/" target="_blank" rel="noreferrer">LinkedIn</a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

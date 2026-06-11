@@ -1,0 +1,37 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="820" fill="#ffffff"/>
+  <rect x="64" y="64" width="1072" height="692" rx="28" fill="#FBFBFA" stroke="#E5E0D8"/>
+  <text x="112" y="146" fill="#1D232B" font-family="Karla, Arial, sans-serif" font-size="42" font-weight="700">Clinical notes contain more text than signal</text>
+  <text x="112" y="186" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="22">TRACE removed duplicated or templated chart text while preserving downstream performance.</text>
+
+  <circle cx="356" cy="426" r="170" fill="#F1EFEA"/>
+  <path d="M356 256 A170 170 0 1 1 191.5 470.5 L262 451.5 A97 97 0 1 0 356 329 Z" fill="#5F7692"/>
+  <circle cx="356" cy="426" r="97" fill="#FBFBFA"/>
+  <text x="356" y="412" text-anchor="middle" fill="#1D232B" font-family="Instrument Serif, Georgia, serif" font-size="54">47.3%</text>
+  <text x="356" y="448" text-anchor="middle" fill="#66707D" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">TEXT REMOVED</text>
+
+  <g>
+    <rect x="632" y="288" width="430" height="56" rx="28" fill="#5F7692"/>
+    <rect x="632" y="358" width="430" height="56" rx="28" fill="#E5634A"/>
+    <rect x="632" y="428" width="430" height="56" rx="28" fill="#8896A6"/>
+    <text x="632" y="270" fill="#1D232B" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">WHY IT MATTERS</text>
+    <text x="654" y="315" fill="#ffffff" font-family="Karla, Arial, sans-serif" font-size="18">
+      <tspan x="654" dy="0">Less duplicated text, less noise</tspan>
+      <tspan x="654" dy="22">for downstream NLP</tspan>
+    </text>
+    <text x="654" y="385" fill="#ffffff" font-family="Karla, Arial, sans-serif" font-size="18">
+      <tspan x="654" dy="0">Lower LLM inference cost</tspan>
+      <tspan x="654" dy="22">at deployment scale</tspan>
+    </text>
+    <text x="654" y="455" fill="#ffffff" font-family="Karla, Arial, sans-serif" font-size="18">
+      <tspan x="654" dy="0">Same task performance</tspan>
+      <tspan x="654" dy="22">with cleaner inputs</tspan>
+    </text>
+  </g>
+
+  <text x="632" y="548" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="24" font-weight="700">Key idea</text>
+  <text x="632" y="586" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="24">
+    <tspan x="632" dy="0">More chart text does not automatically mean</tspan>
+    <tspan x="632" dy="34">more clinical information.</tspan>
+  </text>
+</svg>

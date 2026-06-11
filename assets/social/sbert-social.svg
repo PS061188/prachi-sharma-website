@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FBFAF7"/>
+  <rect x="766" y="78" width="350" height="474" rx="28" fill="#E9EDF2"/>
+  <rect x="820" y="132" width="70" height="176" rx="18" fill="#FFFFFF"/>
+  <rect x="992" y="132" width="70" height="176" rx="18" fill="#FFFFFF"/>
+  <rect x="820" y="328" width="70" height="176" rx="18" fill="#FFFFFF"/>
+  <rect x="992" y="328" width="70" height="176" rx="18" fill="#FFFFFF"/>
+  <path d="M890 220C937 220 945 220 992 220" stroke="#5F7692" stroke-width="4"/>
+  <path d="M890 416C937 416 945 416 992 416" stroke="#E5634A" stroke-width="4"/>
+  <text x="76" y="98" fill="#5F7692" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">DEEP DIVE · SBERT</text>
+  <text x="76" y="186" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">SBERT vs</text>
+  <text x="76" y="256" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">Cross-Encoder</text>
+  <text x="80" y="350" fill="#66707D" font-size="28" font-family="Arial, sans-serif">Two different ways to compare meaning:</text>
+  <text x="80" y="388" fill="#66707D" font-size="28" font-family="Arial, sans-serif">scalable embeddings versus direct pair scoring.</text>
+  <text x="80" y="530" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>

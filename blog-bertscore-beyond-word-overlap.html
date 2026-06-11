@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How BERTScore Measures Meaning Beyond Word Overlap | Prachi Sharma</title>
+    <meta name="description" content="A practical explainer on BERTScore, greedy matching, contextual embeddings, and rescaling." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="How BERTScore Measures Meaning Beyond Word Overlap" />
+    <meta
+      property="og:description"
+      content="A practical explainer on BERTScore, greedy matching, contextual embeddings, and rescaling."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-bertscore-beyond-word-overlap.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/bertscore-social.png" />
+    <meta property="og:image:alt" content="Social preview card for the article How BERTScore Measures Meaning Beyond Word Overlap." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How BERTScore Measures Meaning Beyond Word Overlap" />
+    <meta
+      name="twitter:description"
+      content="A practical explainer on BERTScore, greedy matching, contextual embeddings, and rescaling."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/bertscore-social.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./blog-multi-metric-evaluation.html">Series anchor</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Deep dive · May 13 · LLM Evaluation · 7 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">How BERTScore Measures Meaning Beyond Word Overlap</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              BERTScore becomes useful the moment a semantically correct reply gets penalized simply because it did not reuse the reference wording.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p class="article-section-label">What is BERTScore?</p>
+              <h3>Language generation evaluation metric based on pre-trained BERT contextual embeddings</h3>
+              <p><strong>BERTScore</strong> is a language generation evaluation metric based on <strong>pre-trained BERT contextual embeddings</strong>. It computes the similarity of two sentences as a sum of <strong>cosine similarities</strong> between their tokens’ embeddings.</p>
+              <figure class="article-figure">
+                <img src="./assets/article/bertscore-p1-img0.png" alt="BERTScore figure showing contextual embeddings, pairwise cosine similarity, maximum similarity, and importance weighting." />
+                <figcaption class="article-caption">Figure from the original <a class="article-reference-inline" href="#ref-zhang-2020-bertscore">BERTScore paper</a>: contextual embeddings, pairwise cosine similarity, maximum similarity, and importance weighting.</figcaption>
+              </figure>
+              <p>This figure illustrates how <strong>BERTScore recall</strong> is computed. The reference and candidate sentences are first converted into <strong>contextual token embeddings</strong>, and <strong>cosine similarity</strong> is calculated between all token pairs. Since this is <strong>recall</strong>, each token in the reference looks for its most similar token in the candidate, and those best matches are highlighted in red. The recall score is then obtained by averaging these maximum similarities, optionally with <strong>IDF-based importance weighting</strong> so that more informative words contribute more strongly than common ones. If we instead wanted <strong>precision</strong>, we would reverse the direction and let each token in the candidate find its best match in the reference. The <strong>F1-score</strong> is then computed as the harmonic mean of precision and recall, giving a balanced view of both <strong>semantic correctness</strong> and <strong>semantic coverage</strong>.</p>
+              <p>This matching-based view also makes it easier to see why <strong>BERTScore</strong> is often more useful than pure <strong>n-gram overlap</strong>. In particular, it helps address two common pitfalls in n-gram-based metrics:</p>
+              <ul>
+                <li><strong>n-gram models</strong> often fail to robustly match <strong>paraphrases</strong>. For example, given the reference <code>people like foreign cars</code>, <strong>BLEU</strong> and <strong>METEOR</strong> incorrectly give a higher score to <code>people like visiting places abroad</code> compared to <code>consumers prefer imported cars</code>. This leads to <strong>performance underestimation</strong> when semantically-correct phrases are penalised because they differ from the surface form of the reference.</li>
+                <li><strong>n-gram models</strong> fail to capture <strong>distant dependencies</strong> and penalise <strong>semantically-critical ordering changes</strong>. For example, given a small window of size two, BLEU will only mildly penalise swapping of cause and effect clauses: reference sentence <code>She failed the exam because she did not study</code> and candidate sentence <code>She did not study because she failed the exam</code>, especially when the arguments are long phrases. In contrast, <strong>contextualised embeddings</strong> are trained to effectively capture distant dependencies and ordering.</li>
+              </ul>
+
+              <p class="article-section-label">How BERTScore is Calculated?</p>
+              <h3>Greedy matching based on cosine similarity between contextual embeddings</h3>
+              <p><strong>BERTScore</strong> is computed by comparing the <strong>contextual embeddings</strong> of tokens in the reference and candidate sentences and measuring their similarity using <strong>cosine similarity</strong>. The central matching step in this process is called <strong>greedy matching</strong>.</p>
+              <p>In <strong>greedy matching</strong>, each token is paired with the most similar token in the other sentence based on cosine similarity between their contextual embeddings. The idea is simple: at each step, choose the strongest available <strong>semantic match</strong> so that the overall comparison captures meaning rather than exact word overlap. This matching is performed in <strong>both directions</strong> between the two sentences.</p>
+              <p>Example</p>
+              <p>Reference sentence: <code>"The cat is sleeping on the sofa."</code><br />Candidate sentence: <code>"A cat is napping on the couch."</code></p>
+              <p>Steps in greedy matching</p>
+              <ul>
+                <li>Compute similarity for each token pair using cosine similarity in embedding space.</li>
+                <li>For each token in the candidate, find the most similar token in the reference.</li>
+              </ul>
+              <p>Example matches:</p>
+              <ul>
+                <li><code>"A"</code> → <code>"The"</code> (similarity: <code>0.92</code>)</li>
+                <li><code>"cat"</code> → <code>"cat"</code> (similarity: <code>1.00</code>)</li>
+                <li><code>"is"</code> → <code>"is"</code> (similarity: <code>1.00</code>)</li>
+                <li><code>"napping"</code> → <code>"sleeping"</code> (similarity: <code>0.89</code>)</li>
+                <li><code>"on"</code> → <code>"on"</code> (similarity: <code>1.00</code>)</li>
+                <li><code>"the"</code> → <code>"the"</code> (similarity: <code>1.00</code>)</li>
+                <li><code>"couch"</code> → <code>"sofa"</code> (similarity: <code>0.87</code>)</li>
+              </ul>
+              <p>The same process is then repeated in the opposite direction, from reference to candidate. The highest similarity scores from these two passes are averaged to compute <strong>BERTScore precision, recall, and F1</strong>.</p>
+
+              <p class="article-section-label">Importance Weighting</p>
+              <h3>Rare words can be more indicative for sentence similarity than common words</h3>
+              <p><strong>Rare words</strong> are often more informative for <strong>sentence similarity</strong> than very common ones. <strong>BERTScore</strong> captures this through optional <strong>importance weighting</strong> using <strong>inverse document frequency (IDF)</strong> scores computed from the test corpus. If you want to enable or customize this weighting in practice, the <code>score()</code> package exposes two main parameters:</p>
+              <ul>
+                <li><code>idf (bool)</code>: a boolean to specify whether to use IDF or not</li>
+                <li><code>idf_sents (List of str)</code>: the list of sentences used to compute the IDF weights</li>
+              </ul>
+
+              <p class="article-section-label">Why BERTScore values almost never go below 0?</p>
+              <h3>Cosine similarity compares direction, but real language embeddings rarely show perfect negative alignment</h3>
+              <p><strong>Cosine similarity</strong> measures the directional similarity between two vectors and ranges from:</p>
+              <ul>
+                <li><code>+1</code>: vectors point in the same direction, indicating a perfect match</li>
+                <li><code>0</code>: vectors are orthogonal, indicating no similarity</li>
+                <li><code>-1</code>: vectors point in opposite directions</li>
+              </ul>
+              <p>In <strong>language models</strong>, words that appear in similar contexts tend to lie closer together in <strong>embedding space</strong>. Even unrelated words often do not become strongly negative. As a result, <strong>BERTScore values</strong> rarely approach <code>-1</code> in practice.</p>
+              <p>There are two main reasons for this:</p>
+              <ul>
+                <li>During <strong>pretraining</strong>, <strong>BERT</strong> is not explicitly learning oppositional meanings in the same way that raw mathematical vectors might be arranged in space.</li>
+                <li>The embedding space learned by <strong>BERT</strong> is <strong>dense</strong>, <strong>high-dimensional</strong>, and not symmetrically distributed around the origin, which makes perfectly negative alignment uncommon.</li>
+              </ul>
+              <p>A simple real-world intuition looks like this:</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Pair</th>
+                    <th>Cosine Similarity (approx)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>"car"</code> vs. <code>"vehicle"</code></td>
+                    <td><code>0.95</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>"car"</code> vs. <code>"banana"</code></td>
+                    <td><code>0.2–0.4</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>"car"</code> vs. <code>"askjdlaksjd"</code> (nonsense)</td>
+                    <td><code>~0.0</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>"car"</code> vs. <code>"not car"</code></td>
+                    <td>still positive (<code>~0.5</code>)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>This is why, although <strong>cosine similarity</strong> is theoretically defined from <code>-1</code> to <code>1</code>, <strong>BERTScore values</strong> in practice usually stay in a narrower and mostly positive range.</p>
+
+              <p class="article-section-label">Rescaling with Baseline</p>
+              <h3>BERTScore is easier to interpret if it has a natural range</h3>
+              <p><strong>BERTScore</strong> computes a <strong>sentence-level similarity score</strong> from token-level similarities, where each token comparison is based on <strong>cosine similarity</strong> between contextual embeddings. In theory, its numerical range is the same as cosine similarity, from <code>-1</code> to <code>1</code>.</p>
+              <p>In practice, however, BERTScore usually falls within a much narrower range. In an extreme case, scores computed with a large <strong>RoBERTa</strong> model are often clustered between <code>0.85</code> and <code>0.95</code>.</p>
+              <p>Even though BERTScore still correlates strongly with <strong>human judgment</strong>, this narrow range can make the values harder to interpret directly. <strong>Rescaling</strong> makes the scores more intuitive to read, typically by shifting them toward a more natural range such as <code>0</code> to <code>1</code>, without changing their correlation behavior.</p>
+              <p>Occasionally, some individual similarity entries may become negative after rescaling, but that does not affect the final BERTScore because the rescaling is applied <strong>after the score has already been computed</strong>.</p>
+              <p>You can enable <strong>baseline rescaling</strong> directly in the <code>bert-score</code> package, either through the functional <code>score()</code> API or the object-oriented <code>BERTScorer</code> API.</p>
+              <pre><code># Install the package
+!pip install bert-score
+
+from bert_score import score
+
+# Functional API
+precision, recall, f1 = score(
+    candidates,
+    references,
+    lang="en",
+    rescale_with_baseline=True,
+)
+
+# Object-oriented API
+# If you plan to call BERTScore repeatedly, it is more efficient to
+# cache the model inside a scorer object instead of rebuilding it each time.
+from bert_score import BERTScorer
+
+scorer = BERTScorer(
+    lang="en",
+    rescale_with_baseline=True,
+)
+
+precision, recall, f1 = scorer.score(candidates, references)</code></pre>
+
+              <p class="article-subsection-label">How Rescaling with Baseline is Done?</p>
+              <h3>Simple linear transformation</h3>
+              <p>Let the <strong>BERTScore</strong> for a candidate-reference pair be denoted by <code>X</code>.</p>
+              <p>Let <code>Base</code> represent a lower bound that BERTScore values typically take in practice, where <code>-1 &lt; Base &lt; 1</code> because the underlying similarity comes from <strong>cosine similarity</strong>.</p>
+              <p>The <strong>rescaled BERTScore</strong>, denoted by <code>X^</code>, is then obtained through a <strong>simple linear transformation</strong>:</p>
+              <pre><code>X^ = (X - Base) / (1 - Base)</code></pre>
+              <p>With a reliable <strong>baseline value</strong>, the rescaled score <code>X^</code> will typically fall between <code>0</code> and <code>1</code>, making it easier to interpret than the raw score.</p>
+
+              <p class="article-subsection-label">How to get the Base value?</p>
+              <h3>Random pairing and average BERTScore</h3>
+              <p>The original <strong>BERTScore authors</strong> computed these baseline values by using <strong>random candidate-reference pairs</strong> drawn from a large corpus.</p>
+              <p>The process was:</p>
+              <ul>
+                <li>Step 1: From a large corpus of roughly one million sentences, sentences were randomly grouped into candidate-reference pairs, resulting in about half a million random pairs.</li>
+                <li>Step 2: For each contextual embedding model, BERTScore was computed on these random pairs, and the average score was taken as the baseline.</li>
+              </ul>
+              <p>These steps were carried out by the <strong>BERTScore authors</strong> for the released baseline files. If you want to compute baselines for your own model or setup, you can follow the same process yourself.</p>
+              <p>The baseline is computed for different <strong>representation layers</strong>, and separate baseline values are provided for <strong>precision</strong>, <strong>recall</strong>, and <strong>F1</strong>.</p>
+              <p>The baseline files for different models are provided in the official BERTScore repository here:
+                <a class="article-reference-inline" href="https://github.com/Tiiiger/bert_score/tree/master/bert_score/rescale_baseline" target="_blank" rel="noreferrer">BERTScore rescale baselines</a>.
+              </p>
+              <p>The example below shows how these <strong>author-provided baseline values</strong> are applied in practice to rescale raw <strong>precision</strong>, <strong>recall</strong>, and <strong>F1</strong> scores.</p>
+              <p>Example:</p>
+              <pre><code># Below values are the precision, recall, and F1 scores calculated using
+# microsoft/deberta-xlarge-mnli, where F1 is the harmonic mean of
+# precision and recall.
+precision = tensor([0.7033, 0.4807, 0.4953, 0.5119, ...])
+recall = tensor([0.7910, 0.6069, 0.6123, 0.6553, ...])
+f1 = tensor([0.7446, 0.5365, 0.5476, 0.5748, ...])
+
+# The baseline values for microsoft/deberta-xlarge-mnli at layer 40 are:
+# precision = 0.5169066
+# recall    = 0.5170288
+# f1        = 0.5150192
+
+# One example:
+# (0.7033 - 0.5169066) / (1 - 0.5169066) = 0.3858330501</code></pre>
+              <p>In this setup, the <strong>rescaled F1 score</strong> will not be exactly equal to the harmonic mean of rescaled precision and rescaled recall, because each of the three metrics uses its own <strong>baseline value</strong>.</p>
+
+              <p class="article-subsection-label">When to Use Rescaling and When Not To</p>
+              <h3>Good for thresholds and readability, not for comparing different models’ rescaled values</h3>
+              <p>If your goal is to define a <strong>practical threshold</strong> for deciding whether two sentences are similar enough for a given application, <strong>rescaling</strong> can be very helpful. It makes the scores easier to interpret and gives you a cleaner range from which to choose a threshold value.</p>
+              <p>However, <strong>rescaled scores</strong> are less suitable when you want to compare embeddings from two or more different <strong>pretrained models</strong> using BERTScore. That is because each model has its own <strong>baseline value</strong>, so the rescaled numbers are not directly comparable across models.</p>
+
+              <p class="article-section-label">Important Points</p>
+              <h3>Package behavior, language support, and length limitation</h3>
+              <ul>
+                <li>The outputs of the <code>score()</code> function are tensors for <strong>precision</strong>, <strong>recall</strong>, and <strong>F1</strong>. Each tensor has the same number of items as the candidate and reference lists, and each item is a scalar score for the corresponding candidate-reference pair.</li>
+                <li>BERTScore supports <strong>104 languages</strong>.</li>
+                <li>Unlike BERT, RoBERTa uses a <strong>GPT-2 style tokenizer</strong>, which can create additional space tokens when multiple spaces appear together. To avoid this, it is recommended to normalize repeated spaces beforehand, for example with <code>sent = re.sub(r' +', ' ', sent)</code> or <code>sent = re.sub(r'\\s+', ' ', sent)</code>.</li>
+                <li>A practical limitation is sequence length. Because BERT, RoBERTa, and XLM with learned positional embeddings were pre-trained with a maximum input length of <code>512</code>, BERTScore becomes undefined for sentences longer than <code>510</code> tokens once <code>[CLS]</code> and <code>[SEP]</code> are added. In such cases, the input will be truncated. For much longer inputs, models such as <strong>XLNet</strong> may be a better choice.</li>
+              </ul>
+
+              <p class="article-subsection-label">Using <code>score()</code> and <code>BERTScorer()</code> in Practice</p>
+              <h3>Key parameters and default language models</h3>
+              <p>If you plan to use the <strong>Python package</strong> directly, the most useful parameters to tune in practice are the <strong>model</strong>, <strong>layer</strong>, <strong>language</strong>, <strong>IDF weighting</strong>, <strong>batch settings</strong>, and <strong>baseline-rescaling options</strong>.</p>
+              <ul>
+                <li><code>model_type (str)</code>: contextual embedding model specification. You must specify at least one of <code>model_type</code> or <code>lang</code>.</li>
+                <li><code>num_layers (int)</code>: the representation layer to use.</li>
+                <li><code>lang (str)</code>: the language of the candidate and reference sentences.</li>
+                <li><code>idf (bool)</code> and <code>idf_sents (List[str])</code>: control whether IDF weighting is used and which sentence corpus is used to compute it.</li>
+                <li><code>rescale_with_baseline (bool)</code> and <code>baseline_path (str)</code>: control baseline-based rescaling.</li>
+                <li><code>device (str)</code>, <code>batch_size (int)</code>, and <code>nthreads (int)</code>: affect runtime and execution behavior.</li>
+                <li><code>return_hash (bool)</code> and <code>use_fast_tokenizer (bool)</code>: optional configuration details for reproducibility and tokenizer behavior.</li>
+              </ul>
+              <p>The strongest released model is often reported as <code>microsoft/deberta-xlarge-mnli</code>, while <code>microsoft/deberta-large-mnli</code> can be a useful <strong>faster alternative</strong>.</p>
+              <p>Default models for some common language settings are:</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Language</th>
+                    <th>Default model</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>en</code></td><td><code>roberta-large</code></td></tr>
+                  <tr><td><code>en-sci</code></td><td><code>allenai/scibert_scivocab_uncased</code></td></tr>
+                  <tr><td><code>zh</code></td><td><code>bert-base-chinese</code></td></tr>
+                  <tr><td><code>tr</code></td><td><code>dbmdz/bert-base-turkish-cased</code></td></tr>
+                  <tr><td><code>others</code></td><td><code>bert-base-multilingual-cased</code></td></tr>
+                </tbody>
+              </table>
+
+              <p class="article-section-label">Resources for Future Exploration</p>
+              <h3>Good places to go deeper with BERTScore</h3>
+              <p>If you want to explore BERTScore further, these are the most useful next stops:</p>
+              <ul>
+                <li><a class="article-reference-inline" href="https://docs.google.com/spreadsheets/d/1RKOVpselB98Nnh_EOC4A2BYn8_201tmPODpNWu4w7xI/edit?usp=sharing" target="_blank" rel="noreferrer"><strong>BERTScore model ranking sheet</strong></a> for supported models, best layers, Pearson correlation values, and ranking on the WMT16 to-English benchmark.</li>
+                <li><a class="article-reference-inline" href="https://huggingface.co/spaces/evaluate-metric/bertscore" target="_blank" rel="noreferrer"><strong>Hugging Face Evaluate: BERTScore</strong></a> for a practical metric card, parameter overview, and quick experimentation.</li>
+              </ul>
+              <p>A practical strategy is to first choose the embedding model you want to evaluate with, then test whether plain BERTScore, IDF weighting, and baseline rescaling actually improve correlation on your own dataset rather than assuming the default configuration will be best.</p>
+
+              <p class="article-section-label">References</p>
+              <h3>Selected papers and notes</h3>
+              <ol class="article-references">
+                <li id="ref-zhang-2020-bertscore"><strong>Zhang, T., Kishore, V., Wu, F., Weinberger, K. Q., and Artzi, Y. (2020).</strong> BERTScore: Evaluating Text Generation with BERT.</li>
+                <li id="ref-devlin-2019"><strong>Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. (2019).</strong> BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.</li>
+              </ol>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a href="./blog-multi-metric-evaluation.html">Main framework post</a></li>
+                  <li><a href="./blog-rouge-short-generated-text.html">ROUGE deep dive</a></li>
+                  <li><a href="./blog-sbert-vs-cross-encoder.html">SBERT vs Cross-Encoder</a></li>
+                </ul>
+              </div>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a class="article-mini-contact-link" href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/" target="_blank" rel="noreferrer">LinkedIn</a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

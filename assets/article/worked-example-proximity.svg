@@ -1,0 +1,80 @@
+<svg width="1280" height="940" viewBox="0 0 1280 940" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="940" rx="40" fill="#F7F2EA"/>
+
+  <text x="76" y="84" fill="#1E232B" font-family="Arial, sans-serif" font-size="38" font-weight="700">
+    <tspan x="76" dy="0">Worked example: how the same three candidates rank</tspan>
+    <tspan x="76" dy="44">against one reference under each metric</tspan>
+  </text>
+
+  <text x="76" y="168" fill="#6E6A63" font-family="Arial, sans-serif" font-size="23">
+    <tspan x="76" dy="0">Reference reply: “Sure, I'll start the xyzt injections.”</tspan>
+    <tspan x="76" dy="32">Each horizontal scale runs from 0.0 to 1.0. Farther right means the candidate stays closer to the reference.</tspan>
+  </text>
+
+  <rect x="76" y="222" width="1128" height="540" rx="28" fill="#FFFFFF" stroke="#E5DDD1"/>
+
+  <text x="286" y="272" fill="#6E6A63" font-family="Arial, sans-serif" font-size="20" font-weight="700">0.0</text>
+  <text x="1094" y="272" fill="#6E6A63" font-family="Arial, sans-serif" font-size="20" font-weight="700">1.0</text>
+  <line x1="292" y1="286" x2="1100" y2="286" stroke="#DDD5CA" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="1100" cy="286" r="9" fill="#156A68"/>
+  <text x="1122" y="292" fill="#156A68" font-family="Arial, sans-serif" font-size="20" font-weight="700">Reference</text>
+
+  <text x="112" y="350" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">ROUGE-1 F1</text>
+  <line x1="292" y1="340" x2="1100" y2="340" stroke="#E9E3DA" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="615" cy="340" r="15" fill="#E67E5F"/>
+  <text x="640" y="346" fill="#E67E5F" font-family="Arial, sans-serif" font-size="20" font-weight="700">C1 0.40</text>
+  <circle cx="583" cy="340" r="15" fill="#5F7692"/>
+  <text x="608" y="346" fill="#5F7692" font-family="Arial, sans-serif" font-size="20" font-weight="700">C2 0.36</text>
+  <circle cx="615" cy="376" r="15" fill="#8F6B9A"/>
+  <text x="640" y="382" fill="#8F6B9A" font-family="Arial, sans-serif" font-size="20" font-weight="700">C3 0.40</text>
+
+  <text x="112" y="452" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">ROUGE-L F1</text>
+  <line x1="292" y1="442" x2="1100" y2="442" stroke="#E9E3DA" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="615" cy="442" r="15" fill="#E67E5F"/>
+  <text x="640" y="448" fill="#E67E5F" font-family="Arial, sans-serif" font-size="20" font-weight="700">C1 0.40</text>
+  <circle cx="583" cy="442" r="15" fill="#5F7692"/>
+  <text x="608" y="448" fill="#5F7692" font-family="Arial, sans-serif" font-size="20" font-weight="700">C2 0.36</text>
+  <circle cx="558" cy="478" r="15" fill="#8F6B9A"/>
+  <text x="583" y="484" fill="#8F6B9A" font-family="Arial, sans-serif" font-size="20" font-weight="700">C3 0.33</text>
+
+  <text x="112" y="554" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">BERTScore F1</text>
+  <line x1="292" y1="544" x2="1100" y2="544" stroke="#E9E3DA" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="903" cy="544" r="15" fill="#E67E5F"/>
+  <text x="928" y="550" fill="#E67E5F" font-family="Arial, sans-serif" font-size="20" font-weight="700">C1 0.76</text>
+  <circle cx="975" cy="544" r="15" fill="#5F7692"/>
+  <text x="1000" y="550" fill="#5F7692" font-family="Arial, sans-serif" font-size="20" font-weight="700">C2 0.85</text>
+  <circle cx="950" cy="580" r="15" fill="#8F6B9A"/>
+  <text x="975" y="586" fill="#8F6B9A" font-family="Arial, sans-serif" font-size="20" font-weight="700">C3 0.82</text>
+
+  <text x="112" y="656" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">SBERT cosine</text>
+  <line x1="292" y1="646" x2="1100" y2="646" stroke="#E9E3DA" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="809" cy="646" r="15" fill="#E67E5F"/>
+  <text x="834" y="652" fill="#E67E5F" font-family="Arial, sans-serif" font-size="20" font-weight="700">C1 0.64</text>
+  <circle cx="955" cy="646" r="15" fill="#5F7692"/>
+  <text x="980" y="652" fill="#5F7692" font-family="Arial, sans-serif" font-size="20" font-weight="700">C2 0.82</text>
+  <circle cx="922" cy="682" r="15" fill="#8F6B9A"/>
+  <text x="947" y="688" fill="#8F6B9A" font-family="Arial, sans-serif" font-size="20" font-weight="700">C3 0.78</text>
+
+  <text x="112" y="758" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Cross-Encoder</text>
+  <line x1="292" y1="748" x2="1100" y2="748" stroke="#E9E3DA" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="865" cy="748" r="15" fill="#E67E5F"/>
+  <text x="890" y="754" fill="#E67E5F" font-family="Arial, sans-serif" font-size="20" font-weight="700">C1 0.71</text>
+  <circle cx="1019" cy="748" r="15" fill="#5F7692"/>
+  <text x="1044" y="754" fill="#5F7692" font-family="Arial, sans-serif" font-size="20" font-weight="700">C2 0.90</text>
+  <circle cx="970" cy="784" r="15" fill="#8F6B9A"/>
+  <text x="995" y="790" fill="#8F6B9A" font-family="Arial, sans-serif" font-size="20" font-weight="700">C3 0.84</text>
+
+  <rect x="76" y="796" width="1128" height="112" rx="20" fill="#FFFFFF" stroke="#E5DDD1"/>
+
+  <circle cx="114" cy="840" r="10" fill="#E67E5F"/>
+  <text x="136" y="832" fill="#1E232B" font-family="Arial, sans-serif" font-size="20" font-weight="700">Candidate 1</text>
+  <text x="136" y="858" fill="#1E232B" font-family="Arial, sans-serif" font-size="19">“Noted, will start injections.”</text>
+
+  <circle cx="454" cy="840" r="10" fill="#5F7692"/>
+  <text x="476" y="832" fill="#1E232B" font-family="Arial, sans-serif" font-size="20" font-weight="700">Candidate 2</text>
+  <text x="476" y="858" fill="#1E232B" font-family="Arial, sans-serif" font-size="19">“Starting xyzt injections for MG.”</text>
+
+  <circle cx="850" cy="840" r="10" fill="#8F6B9A"/>
+  <text x="872" y="832" fill="#1E232B" font-family="Arial, sans-serif" font-size="20" font-weight="700">Candidate 3</text>
+  <text x="872" y="858" fill="#1E232B" font-family="Arial, sans-serif" font-size="19">“Will initiate xyzt injections.”</text>
+</svg>

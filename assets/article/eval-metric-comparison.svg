@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" fill="none">
+  <rect width="1400" height="820" rx="32" fill="#FBF8F2"/>
+  <text x="80" y="90" fill="#18263A" font-family="Georgia, serif" font-size="48" font-weight="700">What each metric family actually sees</text>
+  <rect x="80" y="140" width="1240" height="88" rx="18" fill="#E7EEF7"/>
+  <text x="120" y="193" fill="#2B4768" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Metric</text>
+  <text x="340" y="193" fill="#2B4768" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">What it sees</text>
+  <text x="720" y="193" fill="#2B4768" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Best for</text>
+  <text x="1048" y="193" fill="#2B4768" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">Main limit</text>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <rect x="80" y="250" width="1240" height="108" rx="18" fill="#FFFFFF" stroke="#E1E5EB" stroke-width="2"/>
+    <text x="120" y="312" fill="#18263A" font-size="28" font-weight="700">ROUGE</text>
+    <text x="340" y="292" fill="#425363" font-size="20">Word overlap, coverage,</text>
+    <text x="340" y="318" fill="#425363" font-size="20">sequence matching through</text>
+    <text x="340" y="344" fill="#425363" font-size="20">precision, recall, and F1</text>
+    <text x="720" y="305" fill="#425363" font-size="20">Fast lexical baseline</text>
+    <text x="720" y="331" fill="#425363" font-size="20">when wording matters</text>
+    <text x="1048" y="305" fill="#425363" font-size="20">Brittle on paraphrases</text>
+    <text x="1048" y="331" fill="#425363" font-size="20">and short variation</text>
+
+    <rect x="80" y="382" width="1240" height="108" rx="18" fill="#FFFFFF" stroke="#E1E5EB" stroke-width="2"/>
+    <text x="120" y="444" fill="#18263A" font-size="28" font-weight="700">BERTScore</text>
+    <text x="340" y="424" fill="#425363" font-size="20">Token-level semantic</text>
+    <text x="340" y="450" fill="#425363" font-size="20">similarity with contextual</text>
+    <text x="340" y="476" fill="#425363" font-size="20">embeddings and greedy matching</text>
+    <text x="720" y="437" fill="#425363" font-size="20">Paraphrase-friendly</text>
+    <text x="720" y="463" fill="#425363" font-size="20">comparison when wording shifts</text>
+    <text x="1048" y="437" fill="#425363" font-size="20">Harder to interpret</text>
+    <text x="1048" y="463" fill="#425363" font-size="20">raw scores without context</text>
+
+    <rect x="80" y="514" width="1240" height="108" rx="18" fill="#FFFFFF" stroke="#E1E5EB" stroke-width="2"/>
+    <text x="120" y="576" fill="#18263A" font-size="28" font-weight="700">SBERT</text>
+    <text x="340" y="556" fill="#425363" font-size="20">Sentence-level semantic</text>
+    <text x="340" y="582" fill="#425363" font-size="20">closeness through embedding</text>
+    <text x="340" y="608" fill="#425363" font-size="20">cosine similarity</text>
+    <text x="720" y="569" fill="#425363" font-size="20">Scalable semantic comparison</text>
+    <text x="720" y="595" fill="#425363" font-size="20">across many candidates</text>
+    <text x="1048" y="569" fill="#425363" font-size="20">Depends heavily on the chosen</text>
+    <text x="1048" y="595" fill="#425363" font-size="20">embedding model family</text>
+
+    <rect x="80" y="646" width="1240" height="108" rx="18" fill="#FFFFFF" stroke="#E1E5EB" stroke-width="2"/>
+    <text x="120" y="708" fill="#18263A" font-size="28" font-weight="700">Cross-Encoder</text>
+    <text x="340" y="688" fill="#425363" font-size="20">Joint pairwise scoring of the full</text>
+    <text x="340" y="714" fill="#425363" font-size="20">candidate-reference</text>
+    <text x="340" y="740" fill="#425363" font-size="20">sentence pair</text>
+    <text x="720" y="692" fill="#425363" font-size="20">Strong local pairwise</text>
+    <text x="720" y="718" fill="#425363" font-size="20">judgment when accuracy</text>
+    <text x="720" y="744" fill="#425363" font-size="20">matters more than scale</text>
+    <text x="1048" y="705" fill="#425363" font-size="20">Expensive and not reusable</text>
+    <text x="1048" y="731" fill="#425363" font-size="20">for large-scale comparison</text>
+  </g>
+</svg>

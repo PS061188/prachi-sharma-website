@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#F8F5EF"/>
+  <circle cx="1048" cy="110" r="184" fill="#DDE6EF"/>
+  <circle cx="1128" cy="502" r="212" fill="#F1D8CF"/>
+  <rect x="74" y="72" width="170" height="34" rx="17" fill="#5F7692" fill-opacity="0.12"/>
+  <text x="96" y="94" fill="#5F7692" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">PRACHI SHARMA</text>
+  <text x="76" y="224" fill="#1D232B" font-size="68" font-family="Georgia, 'Times New Roman', serif">AI Systems,</text>
+  <text x="76" y="296" fill="#1D232B" font-size="68" font-family="Georgia, 'Times New Roman', serif">Evaluation,</text>
+  <text x="76" y="368" fill="#1D232B" font-size="68" font-family="Georgia, 'Times New Roman', serif">and Applied AI</text>
+  <text x="80" y="434" fill="#66707D" font-size="27" font-family="Arial, sans-serif">Research rigor, real-world systems,</text>
+  <text x="80" y="470" fill="#66707D" font-size="27" font-family="Arial, sans-serif">and production-minded AI work.</text>
+  <line x1="79" y1="516" x2="455" y2="516" stroke="#E5634A" stroke-width="4"/>
+  <text x="80" y="560" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>

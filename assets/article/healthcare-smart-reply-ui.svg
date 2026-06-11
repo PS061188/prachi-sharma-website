@@ -1,0 +1,41 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="36" fill="#F6F1E8"/>
+  <rect x="90" y="86" width="1020" height="728" rx="44" fill="#1C1F26"/>
+  <rect x="118" y="114" width="964" height="672" rx="34" fill="#FAF8F4"/>
+  <rect x="428" y="134" width="344" height="30" rx="15" fill="#262A33"/>
+
+  <rect x="118" y="184" width="964" height="92" fill="#156A68"/>
+  <circle cx="172" cy="230" r="18" stroke="#FAF8F4" stroke-width="4"/>
+  <path d="M176 220L166 230L176 240" stroke="#FAF8F4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="214" y="238" fill="#FAF8F4" font-family="Arial, sans-serif" font-size="40" font-weight="700">Care Team</text>
+  <circle cx="1018" cy="230" r="6" fill="#FAF8F4"/>
+  <circle cx="994" cy="230" r="6" fill="#FAF8F4"/>
+  <circle cx="970" cy="230" r="6" fill="#FAF8F4"/>
+
+  <text x="490" y="340" fill="#8F8B81" font-family="Arial, sans-serif" font-size="28" font-weight="600">Today</text>
+
+  <rect x="166" y="382" width="648" height="194" rx="26" fill="#E9EEF2"/>
+  <text x="196" y="426" fill="#7B7F87" font-family="Arial, sans-serif" font-size="26" font-weight="600">Clinic Ops</text>
+  <text x="196" y="474" fill="#22242A" font-family="Arial, sans-serif" font-size="38" font-weight="500">Please send the patient</text>
+  <text x="196" y="522" fill="#22242A" font-family="Arial, sans-serif" font-size="38" font-weight="500">the updated appointment</text>
+  <text x="196" y="570" fill="#22242A" font-family="Arial, sans-serif" font-size="38" font-weight="500">details for today.</text>
+  <text x="196" y="622" fill="#8E918F" font-family="Arial, sans-serif" font-size="28">11:18 AM</text>
+
+  <text x="166" y="686" fill="#7F7467" font-family="Arial, sans-serif" font-size="26" font-weight="700">Suggested replies</text>
+
+  <rect x="166" y="714" width="280" height="70" rx="35" fill="#FFFFFF" stroke="#D3D8DE" stroke-width="3"/>
+  <text x="214" y="759" fill="#156A68" font-family="Arial, sans-serif" font-size="32" font-weight="700">Will send today</text>
+
+  <rect x="466" y="714" width="222" height="70" rx="35" fill="#FFFFFF" stroke="#D3D8DE" stroke-width="3"/>
+  <text x="522" y="759" fill="#156A68" font-family="Arial, sans-serif" font-size="32" font-weight="700">Sharing now</text>
+
+  <rect x="708" y="714" width="138" height="70" rx="35" fill="#FFFFFF" stroke="#D3D8DE" stroke-width="3"/>
+  <text x="752" y="759" fill="#156A68" font-family="Arial, sans-serif" font-size="32" font-weight="700">On it</text>
+
+  <rect x="166" y="806" width="772" height="86" rx="28" fill="#FFFFFF" stroke="#D8D2C8" stroke-width="3"/>
+  <text x="214" y="860" fill="#A39A8E" font-family="Arial, sans-serif" font-size="34">Type message…</text>
+  <circle cx="998" cy="849" r="32" fill="#E67E5F"/>
+  <path d="M982 850L1004 839L997 860L994 851L982 850Z" fill="#FAF8F4"/>
+
+  <text x="117" y="60" fill="#7B7368" font-family="Arial, sans-serif" font-size="28" font-weight="700">Illustrative mobile smart-reply mockup</text>
+</svg>

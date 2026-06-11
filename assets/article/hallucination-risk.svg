@@ -1,0 +1,39 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" fill="#ffffff"/>
+  <rect x="64" y="64" width="1072" height="632" rx="28" fill="#FBFBFA" stroke="#E5E0D8"/>
+  <text x="112" y="146" fill="#1D232B" font-family="Karla, Arial, sans-serif" font-size="42" font-weight="700">
+    <tspan x="112" dy="0">Hallucinations are rarer than omissions,</tspan>
+    <tspan x="112" dy="48">but often riskier</tspan>
+  </text>
+  <text x="112" y="186" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="22">
+    <tspan x="112" dy="0">In note-generation studies, hallucinations were less frequent than omissions</tspan>
+    <tspan x="112" dy="30">but more likely to be major clinical errors.</tspan>
+  </text>
+
+  <g>
+    <rect x="140" y="282" width="312" height="222" rx="24" fill="#ffffff" stroke="#E5E0D8"/>
+    <text x="296" y="348" text-anchor="middle" fill="#1D232B" font-family="Instrument Serif, Georgia, serif" font-size="72">1.47%</text>
+    <text x="296" y="396" text-anchor="middle" fill="#66707D" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">HALLUCINATION RATE</text>
+    <text x="296" y="448" text-anchor="middle" fill="#E5634A" font-family="Instrument Serif, Georgia, serif" font-size="40">44%</text>
+    <text x="296" y="480" text-anchor="middle" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="20">were major errors</text>
+  </g>
+
+  <g>
+    <rect x="500" y="282" width="312" height="222" rx="24" fill="#ffffff" stroke="#E5E0D8"/>
+    <text x="656" y="348" text-anchor="middle" fill="#1D232B" font-family="Instrument Serif, Georgia, serif" font-size="72">3.45%</text>
+    <text x="656" y="396" text-anchor="middle" fill="#66707D" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">OMISSION RATE</text>
+    <text x="656" y="448" text-anchor="middle" fill="#5F7692" font-family="Instrument Serif, Georgia, serif" font-size="40">16.7%</text>
+    <text x="656" y="480" text-anchor="middle" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="20">were major errors</text>
+  </g>
+
+  <g>
+    <rect x="860" y="282" width="216" height="222" rx="24" fill="#ffffff" stroke="#E5E0D8"/>
+    <text x="968" y="348" text-anchor="middle" fill="#1D232B" font-family="Instrument Serif, Georgia, serif" font-size="72">191</text>
+    <text x="968" y="396" text-anchor="middle" fill="#66707D" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">HALLUCINATED</text>
+    <text x="968" y="424" text-anchor="middle" fill="#66707D" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">SENTENCES</text>
+    <text x="968" y="472" text-anchor="middle" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="20">out of 12,999</text>
+  </g>
+
+  <text x="112" y="598" fill="#1D232B" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="2">WHY THIS MATTERS</text>
+  <text x="112" y="640" fill="#66707D" font-family="Karla, Arial, sans-serif" font-size="24">A fluent note can still contain a clinically dangerous invention.</text>
+</svg>

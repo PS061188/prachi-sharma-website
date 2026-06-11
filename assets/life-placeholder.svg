@@ -1,0 +1,9 @@
+<svg width="640" height="760" viewBox="0 0 640 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="760" rx="40" fill="#F6EEE3"/>
+  <rect x="70" y="72" width="188" height="34" rx="17" fill="#5A9A80" fill-opacity="0.2"/>
+  <rect x="70" y="130" width="360" height="22" rx="11" fill="#1D1A17" fill-opacity="0.12"/>
+  <rect x="70" y="168" width="296" height="22" rx="11" fill="#1D1A17" fill-opacity="0.08"/>
+  <circle cx="320" cy="394" r="152" fill="#E1D3BF"/>
+  <path d="M118 688C118 563.736 218.736 463 343 463H343C467.264 463 568 563.736 568 688V688H118V688Z" fill="#CAB497"/>
+  <text x="70" y="612" fill="#6A5A4C" font-family="Arial, sans-serif" font-size="34" font-weight="700">A candid personal image can go here</text>
+</svg>

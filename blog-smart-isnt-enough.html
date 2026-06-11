@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Hard Part of Healthcare AI Isn’t Intelligence | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="A long-form essay by Prachi Sharma on safety, trust, evaluation, and real-world deployment in healthcare AI."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="The Hard Part of Healthcare AI Isn’t Intelligence" />
+    <meta
+      property="og:description"
+      content="A long-form essay by Prachi Sharma on safety, trust, evaluation, and what real-world healthcare AI actually demands."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-smart-isnt-enough.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/healthcare-essay-social.png" />
+    <meta property="og:image:alt" content="Social preview card for the article The Hard Part of Healthcare AI Isn’t Intelligence." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Hard Part of Healthcare AI Isn’t Intelligence" />
+    <meta
+      name="twitter:description"
+      content="A long-form essay by Prachi Sharma on safety, trust, evaluation, and what real-world healthcare AI actually demands."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/healthcare-essay-social.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <div class="article-editor" id="article-editor-panel" aria-label="Blog editor toolbar" hidden>
+              <div class="article-editor-bar" role="toolbar" aria-label="Formatting tools">
+                <div class="editor-group" aria-label="Text formatting">
+                  <p class="editor-group-label">Text</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="bold" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="editor-button" data-command="italic" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="editor-button" data-command="underline" aria-label="Underline"><span class="editor-underline">U</span></button>
+                    <button type="button" class="editor-button" data-command="formatBlock" data-value="p" aria-label="Paragraph">P</button>
+                    <button type="button" class="editor-button" data-command="formatBlock" data-value="h3" aria-label="Subheading">H3</button>
+                    <button type="button" class="editor-button" data-command="blockquote" aria-label="Block quote">“ ”</button>
+                    <button type="button" class="editor-button" data-command="removeFormat" aria-label="Clear formatting">Clear</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Lists and structure">
+                  <p class="editor-group-label">Structure</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="insertUnorderedList" aria-label="Bulleted list">• List</button>
+                    <button type="button" class="editor-button" data-command="insertOrderedList" aria-label="Numbered list">1. List</button>
+                    <button type="button" class="editor-button" data-command="indent" aria-label="Indent">→</button>
+                    <button type="button" class="editor-button" data-command="outdent" aria-label="Outdent">←</button>
+                    <button type="button" class="editor-button" data-command="createLink" aria-label="Insert link">Link</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Editorial blocks">
+                  <p class="editor-group-label">Blocks</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="sectionLabel" aria-label="Section label">Label</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="pullquote" aria-label="Pull quote">Pullquote</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="lessonQuote" aria-label="Lesson quote">Lesson quote</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="callout" aria-label="Callout box">Callout</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="checklist" aria-label="Checklist box">Checklist</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="takeaway" aria-label="Takeaway box">Takeaway</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="figure" aria-label="Figure block">Figure</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Colors and emphasis">
+                  <p class="editor-group-label">Color</p>
+                  <div class="editor-group-controls">
+                    <label class="editor-color-chip" aria-label="Text color">
+                      <span>Text</span>
+                      <input type="color" id="editor-text-color" value="#5f7692" />
+                    </label>
+                    <label class="editor-color-chip" aria-label="Highlight color">
+                      <span>Mark</span>
+                      <input type="color" id="editor-highlight-color" value="#fff3a6" />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Attachments and embeds">
+                  <p class="editor-group-label">Attach</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="uploadImage" aria-label="Upload image">Image</button>
+                    <button type="button" class="editor-button" data-command="uploadVideo" aria-label="Upload video">Video</button>
+                    <button type="button" class="editor-button" data-command="uploadFile" aria-label="Attach file">File</button>
+                    <button type="button" class="editor-button" data-command="embedYouTube" aria-label="Embed YouTube video">YouTube</button>
+                  </div>
+                </div>
+              </div>
+              <div class="article-editor-actions">
+                <button type="button" class="editor-action" id="save-article-edits">Save edits</button>
+                <button type="button" class="editor-action editor-action-muted" id="reset-article-edits">Reset</button>
+                <p class="editor-note" id="article-editor-status">Edit mode is on. Saved edits stay only in this browser.</p>
+              </div>
+            </div>
+
+            <input type="file" id="editor-image-input" accept="image/*" hidden />
+            <input type="file" id="editor-video-input" accept="video/*" hidden />
+            <input type="file" id="editor-file-input" hidden />
+
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Essay · Aug 14 · Healthcare AI · 9 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">The Hard Part of Healthcare AI Isn’t Intelligence</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              In healthcare, a model that sounds impressive but behaves unpredictably is not a breakthrough. It is a risk. The real test of AI is not whether it looks intelligent in a demo, but whether it can be trusted inside care.
+            </p>
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p>Most conversations about AI still over-index on model cleverness: exam scores, benchmark wins, human-like phrasing, longer context windows, and demo fluency. In healthcare, that instinct can be actively misleading. A model that appears sophisticated but behaves inconsistently under real clinical pressure is not impressive. It is unsafe.</p>
+              <p>The deeper issue is that healthcare AI succeeds under very different rules than consumer AI. Clinical viability is rooted in <strong>constraint</strong>, <strong>reviewability</strong>, <strong>workflow fit</strong>, and <strong>risk management</strong>, not just raw expressiveness. In medicine, <strong>safe beats smart</strong> every single time.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">At a glance</p>
+                <ul>
+                  <li>Healthcare AI fails most often at the boundary between model output and real workflow.</li>
+                  <li>More data does not help if the record is noisy or the wrong context is retrieved.</li>
+                  <li>Accuracy alone is a weak proxy for clinical usefulness.</li>
+                  <li>Trust is built after launch, through monitoring, correction, and staged rollout.</li>
+                  <li>Hallucinations in healthcare are dangerous precisely because they often look plausible.</li>
+                </ul>
+              </div>
+
+              <p>This essay is a case for a different way of thinking. If we want AI to matter in healthcare, we have to move beyond demo-friendly intelligence and ask a harder question: <em>Can this system be trusted when the stakes are real?</em></p>
+
+              <p class="article-section-label">Lesson 1</p>
+              <h3>Healthcare AI must be safe before it is smart</h3>
+              <blockquote class="article-pullquote">
+                The most powerful healthcare AI may be the one that quietly removes risk instead of loudly showing intelligence.
+              </blockquote>
+              <p>There is a cultural tension at the center of healthcare AI. In tech, success often means reach: more tasks, more users, more automation, more scale. In healthcare, success begins with risk: What happens if the model is wrong? Who is affected? Can the mistake be detected? Can it be reversed? Can a human safely intervene?</p>
+              <p>That is why healthcare AI should not be designed as a smart model first. It should be designed as a <strong>safe clinical system</strong>. A model that performs beautifully in isolation can still fail in care if it is not integrated, bounded, reviewable, and trusted.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/mckinsey-healthcare-ai-barriers.png" alt="McKinsey survey graphic showing US healthcare leaders' barriers to scaling generative AI and top risk concerns." />
+                <figcaption class="article-caption">McKinsey survey graphic on barriers to scaling generative AI in healthcare and top risk concerns. <a class="article-reference-inline" href="#ref-1">McKinsey (2024)</a></figcaption>
+              </figure>
+
+              <p>The picture here is more revealing than a simple model-quality debate. Healthcare leaders are not only asking whether an AI system performs well in isolation. They are asking whether it can be used safely and reliably inside the daily reality of care. Workflow integration stands out as the biggest barrier at 59%, with risk concerns close behind at 43%. And those risks are not abstract: they include inaccuracy, bias, security, compliance, ethics, and privacy.</p>
+
+              <p>Those concerns become even more understandable when we look at how LLMs can behave in practice. A 2025 <em>Nature Medicine</em> study tested nine LLMs across more than 1.7 million outputs from emergency department cases. The medical facts were held constant, but socioeconomic and demographic context varied. Even then, recommendations still shifted in ways that affected triage, diagnostic testing, treatment approach, and mental health evaluation. <a class="article-reference-inline" href="#ref-2">Nature Medicine study</a></p>
+              <p>That is exactly why teams should not begin with broad deployment. The safer path is to start with bounded use cases where the task is clear, the data source is known, the output is easy to review, and failure can be contained.</p>
+
+              <div class="article-checklist">
+                <p class="article-callout-label">Better first use cases</p>
+                <ul>
+                  <li>Drafting visit summaries for clinician review</li>
+                  <li>Extracting prior authorization details</li>
+                  <li>Organizing inbox messages by urgency</li>
+                  <li>Summarizing long referral documents</li>
+                  <li>Preparing chart-review snippets before a visit</li>
+                </ul>
+              </div>
+
+              <p>These tasks are useful precisely because they leave room for human judgment. A safe healthcare AI system should work inside the workflow, add review where risk is high, make uncertainty visible, protect patient data by design, and earn scale gradually instead of assuming it.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> Smart models may create interest. Safe systems create adoption.
+              </div>
+
+              <p class="article-section-label">Lesson 2</p>
+              <h3>More data is not the same as better signal</h3>
+              <blockquote class="article-pullquote">
+                Healthcare AI does not learn from reality. It learns from the record of reality — and that record is often messy.
+              </blockquote>
+              <p>Clinical notes are full of copied-forward text, stale diagnoses, templated language, incomplete context, and documentation shortcuts.</p>
+              <p>That creates two separate signal problems. First, noisy records weaken the input. Second, poor context selection weakens the output. One is about cleaning what the model learns from. The other is about deciding what the model should see for a specific task.</p>
+
+              <blockquote class="article-pullquote">
+                More context helps a model see more. It does not guarantee the model understands what matters.
+              </blockquote>
+
+              <p>A large 2026 study on clinical note bloat found that 47.3% of chart text could be removed while preserving performance on downstream tasks such as information extraction and clinical outcome prediction. That is a sharp reminder that more chart text does not automatically mean more useful clinical signal. <a class="article-reference-inline" href="#ref-3">TRACE study</a></p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/note-bloat.svg" alt="Editorial chart showing that a large share of clinical note text can be templated, copied forward, or otherwise low-signal for downstream AI tasks." />
+                <figcaption class="article-caption">Custom editorial graphic based on the TRACE note-bloat findings, used here to highlight the broader signal problem rather than reproduce the full paper figure. <a class="article-reference-inline" href="#ref-3">TRACE study</a></figcaption>
+              </figure>
+
+              <div class="article-checklist">
+                <p class="article-callout-label">How bad signal shows up in practice</p>
+                <ul>
+                  <li>A discontinued medication still appears because an old list was copied forward.</li>
+                  <li>A resolved diagnosis keeps resurfacing in new notes.</li>
+                  <li>Repeated social history looks more important than it is.</li>
+                  <li>Administrative language gets mistaken for clinical meaning.</li>
+                </ul>
+              </div>
+
+              <p>Even when the information is valid, the model still needs help deciding what matters right now. A 2025 study on longitudinal clinical summarization and diagnosis prediction showed that bigger context windows are not enough. Models still struggled with temporal reasoning, clinical prioritization, rare disease prediction, and hallucination. <a class="article-reference-inline" href="#ref-4">longitudinal summarization study</a></p>
+              <p>Better healthcare AI comes from <strong>cleaner records</strong> and <strong>better retrieval</strong>, not just more tokens. Remove duplicated text, separate stale facts from current ones, prioritize active problems over resolved history, and make key claims traceable to source evidence.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> Data cleaning improves the input. Context selection improves the output.
+              </div>
+
+              <p class="article-section-label">Lesson 3</p>
+              <h3>One score cannot capture healthcare reality</h3>
+              <blockquote class="article-pullquote">
+                The leaderboard rewards answers. Healthcare rewards judgment.
+              </blockquote>
+              <p>Healthcare AI evaluation still has an accuracy problem, not because accuracy is unimportant, but because it is still treated as the main proof of quality.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/eval-imbalance.svg" alt="Editorial bar chart showing accuracy dominating healthcare LLM evaluation compared with calibration, deployment, robustness, and fairness." />
+                <figcaption class="article-caption">Custom graphic based on a systematic review of healthcare LLM studies reported in JAMA Network Open. <a class="article-reference-inline" href="#ref-5">JAMA Network Open review</a></figcaption>
+              </figure>
+
+              <p>A JAMA systematic review makes the imbalance clear. Most systems are tested for whether they can produce the right answer, but far fewer are tested for whether they know when they might be wrong, whether they hold up under messy real-world conditions, or whether they behave fairly across patient groups. <a class="article-reference-inline" href="#ref-5">JAMA Network Open review</a></p>
+              <p>This is a serious blind spot. A model may answer a clinical question correctly while sounding too confident when evidence is weak. A summarization tool may be fluent but omit an abnormal lab. A triage assistant may perform well on average but still behave differently across demographic groups. A documentation model may look accurate offline and still be too slow, too hard to review, or poorly integrated into workflow.</p>
+              <p>Healthcare AI needs a balanced scorecard: factuality, safety, calibration, robustness, fairness, usability, and workflow fit.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> Accuracy may get a model onto the leaderboard. It does not prove the model belongs in care.
+              </div>
+
+              <p class="article-section-label">Lesson 4</p>
+              <h3>Healthcare AI earns trust in production, not in the demo</h3>
+              <p>Getting a healthcare AI system into production is not the end of the work. It is the beginning of two responsibilities: keeping the system reliable after launch, and scaling only after reliability has been demonstrated.</p>
+              <p>Healthcare keeps changing. Patient populations shift. Clinical workflows evolve. EHR templates are updated. Prompts change. New edge cases appear. A model that worked well yesterday may not continue to work safely tomorrow.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">What has to be monitored after launch</p>
+                <ul>
+                  <li>Model drift</li>
+                  <li>Clinician corrections</li>
+                  <li>Failure patterns</li>
+                  <li>Workflow friction</li>
+                  <li>Version-to-version behavior changes</li>
+                  <li>Performance across patient groups</li>
+                </ul>
+              </div>
+
+              <figure class="article-figure">
+                <img src="./assets/article/production-reliability.svg" alt="Editorial diagram showing the production loop for healthcare AI: launch a bounded use case, monitor reliability, review failures, and scale only after evidence supports expansion." />
+                <figcaption class="article-caption">Custom diagram illustrating a safer production pattern for healthcare AI: launch narrowly, monitor closely, review failures, and scale only after reliability has been demonstrated.</figcaption>
+              </figure>
+
+              <p>A 2025 <em>JAMA Health Forum</em> piece defines model drift as performance degradation after deployment. In practical terms, this can look like a sepsis model becoming less reliable as populations change, a summarization tool missing medication changes after an EHR update, or a triage assistant becoming overconfident after a prompt change. <a class="article-reference-inline" href="#ref-6">JAMA Health Forum piece</a></p>
+              <p>Scaling also has to be earned. A successful pilot is not proof that a system should spread everywhere. The right pattern is staged expansion: one bounded use case, close monitoring, learning from failure, and only then expansion into adjacent use cases. Recent industry surveys suggest many organizations have already moved from experimentation into live end-user deployment, which makes disciplined scaling even more important. <a class="article-reference-inline" href="#ref-7">McKinsey healthcare survey</a></p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> In healthcare AI, launch is not validation. It is the beginning of validation.
+              </div>
+
+              <p class="article-section-label">Lesson 5</p>
+              <h3>Hallucinations hit harder in healthcare</h3>
+              <blockquote class="article-pullquote">
+                The most harmful hallucinations do not shout. They blend into the note.
+              </blockquote>
+              <p>Hallucinations are not just an AI accuracy problem. In healthcare, they are a <strong>trust</strong> and <strong>safety</strong> problem. Unsupported information can enter the workflow sounding polished, fluent, and clinically reasonable even when it is wrong.</p>
+              <p>Vectara’s category-level hallucination views make the point more clearly: a model can look strong overall and still hallucinate more often on medicine-related content. That matters because healthcare AI often depends on <strong>grounded generation</strong>, where unsupported details can still appear polished and trustworthy. <a class="article-reference-inline" href="#ref-9">Vectara hallucination leaderboard</a></p>
+
+              <p>That broader risk also shows up in clinical-note generation itself. A 2025 <em>npj Digital Medicine</em> study found a 1.47% hallucination rate and a 3.45% omission rate across 12,999 clinician-annotated sentences in LLM-generated clinical notes. More importantly, 44% of hallucinated sentences were major errors, meaning they could affect diagnosis or management if left uncorrected. <a class="article-reference-inline" href="#ref-8">npj Digital Medicine benchmark</a></p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/hallucination-risk.svg" alt="Editorial cards comparing hallucination rate, omission rate, and major error share in LLM-generated clinical notes." />
+                <figcaption class="article-caption">Custom graphic based on a benchmark for measuring omissions and hallucinations in synthetic clinical notes. <a class="article-reference-inline" href="#ref-8">npj Digital Medicine benchmark</a></figcaption>
+              </figure>
+
+              <div class="article-checklist">
+                <p class="article-callout-label">What a dangerous hallucination can look like</p>
+                <ul>
+                  <li>Adding a medication that was never prescribed</li>
+                  <li>Mentioning a symptom the patient never reported</li>
+                  <li>Presenting an old diagnosis as current</li>
+                  <li>Omitting a recent abnormal lab</li>
+                  <li>Turning uncertainty into false certainty</li>
+                </ul>
+              </div>
+
+              <p>That is why healthcare AI should favor evidence-based output over confident output. Safer systems should show where statements came from, make unsupported claims easy to catch, preserve uncertainty when evidence is weak, and allow the model to abstain when the record does not support a conclusion.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> In healthcare AI, unsupported information becomes dangerous when it enters workflow looking like clinical truth.
+              </div>
+
+              <p class="article-section-label">Bottom line</p>
+              <p>The real challenge in healthcare AI is not making a model sound intelligent. It is making a system behave safely, predictably, and usefully inside care. Demos may reward fluency. Clinical adoption rewards trust.</p>
+              <p class="article-section-label">References</p>
+              <h3>Selected papers and notes</h3>
+              <ol class="article-references">
+                <li id="ref-1">McKinsey. <em>The State of AI in Early 2024: Gen AI Adoption Spikes and Starts to Generate Value.</em> <a href="https://www.mckinsey.com/industries/healthcare/our-insights/the-state-of-ai-in-early-2024-gen-ai-adoption-spikes-and-starts-to-generate-value" target="_blank" rel="noreferrer">Open source</a></li>
+                <li id="ref-2">Nature Medicine study on LLM recommendation shifts across emergency department cases with varying patient background context. <a href="https://www.nature.com/" target="_blank" rel="noreferrer">Publisher</a></li>
+                <li id="ref-3"><em>Tracing and Reclaiming Administrative Text in Clinical Event Notes.</em> TRACE study on note bloat and removable chart text. <a href="https://arxiv.org/abs/2504.12984" target="_blank" rel="noreferrer">Open source</a></li>
+                <li id="ref-4">Study on longitudinal clinical summarization and diagnosis prediction using MIMIC-III and EHRShot. <a href="https://arxiv.org/" target="_blank" rel="noreferrer">Publisher / preprint source</a></li>
+                <li id="ref-5">JAMA Network Open systematic review of healthcare LLM evaluation dimensions. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2832118" target="_blank" rel="noreferrer">Open source</a></li>
+                <li id="ref-6">JAMA Health Forum article on model drift after deployment. <a href="https://jamanetwork.com/journals/jama-health-forum" target="_blank" rel="noreferrer">Publisher</a></li>
+                <li id="ref-7">McKinsey healthcare survey reporting live generative AI deployment to end users. <a href="https://www.mckinsey.com/industries/healthcare/our-insights" target="_blank" rel="noreferrer">Open source</a></li>
+                <li id="ref-8"><em>A benchmark for measuring omissions and hallucinations in synthetic clinical notes.</em> <a href="https://www.nature.com/articles/s41746-025-01779-8" target="_blank" rel="noreferrer">Open source</a></li>
+                <li id="ref-9">Vectara. <em>Introducing the Next Generation of Vectara’s Hallucination Leaderboard.</em> Category-level hallucination rates show that domain performance can diverge from overall performance, including on medicine-related content. <a href="https://www.vectara.com/blog/introducing-the-next-generation-of-vectaras-hallucination-leaderboard" target="_blank" rel="noreferrer">Open source</a></li>
+              </ol>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

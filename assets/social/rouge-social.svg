@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FCFAF6"/>
+  <rect x="770" y="96" width="340" height="438" rx="28" fill="#F4E8DE"/>
+  <rect x="808" y="148" width="264" height="60" rx="14" fill="#FFFFFF"/>
+  <rect x="808" y="232" width="264" height="60" rx="14" fill="#FFFFFF"/>
+  <rect x="808" y="316" width="264" height="60" rx="14" fill="#FFFFFF"/>
+  <text x="840" y="187" fill="#1D232B" font-size="28" font-family="Arial, sans-serif">Precision</text>
+  <text x="1000" y="187" fill="#5F7692" font-size="28" font-family="Arial, sans-serif">5 / 6</text>
+  <text x="840" y="271" fill="#1D232B" font-size="28" font-family="Arial, sans-serif">Recall</text>
+  <text x="1000" y="271" fill="#5F7692" font-size="28" font-family="Arial, sans-serif">5 / 7</text>
+  <text x="840" y="355" fill="#1D232B" font-size="28" font-family="Arial, sans-serif">F1</text>
+  <text x="1000" y="355" fill="#E5634A" font-size="28" font-family="Arial, sans-serif">0.768</text>
+  <text x="76" y="98" fill="#5F7692" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">DEEP DIVE · ROUGE</text>
+  <text x="76" y="186" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">ROUGE for</text>
+  <text x="76" y="256" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">Short Generated Text</text>
+  <text x="80" y="350" fill="#66707D" font-size="28" font-family="Arial, sans-serif">Precision, recall, F1, and why lexical overlap</text>
+  <text x="80" y="388" fill="#66707D" font-size="28" font-family="Arial, sans-serif">helps, but also misleads, on short replies.</text>
+  <text x="80" y="530" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>

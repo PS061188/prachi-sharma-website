@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FBF8F3"/>
+  <circle cx="1016" cy="110" r="168" fill="#F0DDD5"/>
+  <circle cx="1120" cy="478" r="202" fill="#E6EBF0"/>
+  <rect x="76" y="78" width="188" height="34" rx="17" fill="#E5634A" fill-opacity="0.14"/>
+  <text x="98" y="101" fill="#E5634A" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">HEALTHCARE AI</text>
+  <text x="76" y="188" fill="#1D232B" font-size="64" font-family="Georgia, 'Times New Roman', serif">The Hard Part of</text>
+  <text x="76" y="258" fill="#1D232B" font-size="64" font-family="Georgia, 'Times New Roman', serif">Healthcare AI</text>
+  <text x="76" y="328" fill="#1D232B" font-size="64" font-family="Georgia, 'Times New Roman', serif">Isn't Intelligence</text>
+  <text x="80" y="414" fill="#66707D" font-size="28" font-family="Arial, sans-serif">Trust, safety, workflow fit, and what</text>
+  <text x="80" y="452" fill="#66707D" font-size="28" font-family="Arial, sans-serif">real-world deployment actually demands.</text>
+  <text x="80" y="530" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>

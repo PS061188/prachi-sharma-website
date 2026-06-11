@@ -1,0 +1,67 @@
+<svg width="1280" height="820" viewBox="0 0 1280 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="820" rx="40" fill="#F7F2EA"/>
+
+  <text x="76" y="84" fill="#1E232B" font-family="Arial, sans-serif" font-size="38" font-weight="700">
+    <tspan x="76" dy="0">Candidate-to-candidate diversity matters because</tspan>
+    <tspan x="76" dy="44">a smart-reply tray should not be three clones</tspan>
+  </text>
+  <text x="76" y="170" fill="#6E6A63" font-family="Arial, sans-serif" font-size="23">
+    <tspan x="76" dy="0">Thicker, darker links mark higher lexical overlap between two generated replies.</tspan>
+    <tspan x="76" dy="32">That usually means the pair feels more redundant in the product UI.</tspan>
+  </text>
+
+  <rect x="76" y="232" width="530" height="516" rx="28" fill="#FFFFFF" stroke="#E5DDD1"/>
+  <text x="106" y="282" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Invoice example</text>
+  <text x="106" y="314" fill="#6E6A63" font-family="Arial, sans-serif" font-size="20">A stronger duplicate pair should look visually closer.</text>
+
+  <line x1="246" y1="458" x2="432" y2="374" stroke="#E67E5F" stroke-width="8" stroke-linecap="round"/>
+  <text x="314" y="400" fill="#E67E5F" font-family="Arial, sans-serif" font-size="21" font-weight="700">0.60</text>
+
+  <line x1="214" y1="490" x2="278" y2="622" stroke="#B9AF9F" stroke-width="4" stroke-linecap="round"/>
+  <text x="198" y="586" fill="#8B8070" font-family="Arial, sans-serif" font-size="20" font-weight="700">0.20</text>
+
+  <line x1="432" y1="406" x2="320" y2="618" stroke="#B9AF9F" stroke-width="4" stroke-linecap="round"/>
+  <text x="394" y="556" fill="#8B8070" font-family="Arial, sans-serif" font-size="20" font-weight="700">0.20</text>
+
+  <rect x="126" y="430" width="190" height="68" rx="18" fill="#F8EFE8" stroke="#E6DACE"/>
+  <text x="146" y="458" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 1</text>
+  <text x="146" y="484" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“Sure, I will send it.”</text>
+
+  <rect x="364" y="338" width="198" height="92" rx="18" fill="#EEF4F8" stroke="#D7E2EA"/>
+  <text x="384" y="366" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 2</text>
+  <text x="384" y="392" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“I will email it</text>
+  <text x="384" y="414" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">shortly.”</text>
+
+  <rect x="224" y="618" width="230" height="92" rx="18" fill="#F3EDF7" stroke="#DDD2E8"/>
+  <text x="244" y="646" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 3</text>
+  <text x="244" y="672" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“The invoice will</text>
+  <text x="244" y="694" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">be sent.”</text>
+
+  <rect x="674" y="232" width="530" height="516" rx="28" fill="#FFFFFF" stroke="#E5DDD1"/>
+  <text x="704" y="282" fill="#1E232B" font-family="Arial, sans-serif" font-size="28" font-weight="700">Rescheduling example</text>
+  <text x="704" y="314" fill="#6E6A63" font-family="Arial, sans-serif" font-size="20">Here the replies vary more, except for one near-duplicate pair.</text>
+
+  <line x1="834" y1="466" x2="1024" y2="374" stroke="#B9AF9F" stroke-width="4" stroke-linecap="round"/>
+  <text x="912" y="398" fill="#8B8070" font-family="Arial, sans-serif" font-size="20" font-weight="700">0.18</text>
+
+  <line x1="1020" y1="414" x2="980" y2="630" stroke="#B9AF9F" stroke-width="4" stroke-linecap="round"/>
+  <text x="998" y="540" fill="#8B8070" font-family="Arial, sans-serif" font-size="20" font-weight="700">0.20</text>
+
+  <line x1="840" y1="502" x2="954" y2="630" stroke="#E67E5F" stroke-width="8" stroke-linecap="round"/>
+  <text x="850" y="596" fill="#E67E5F" font-family="Arial, sans-serif" font-size="21" font-weight="700">0.57</text>
+
+  <rect x="724" y="430" width="228" height="92" rx="18" fill="#F8EFE8" stroke="#E6DACE"/>
+  <text x="744" y="458" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 1</text>
+  <text x="744" y="484" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“Noted, will</text>
+  <text x="744" y="506" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">reschedule patients.”</text>
+
+  <rect x="972" y="338" width="190" height="92" rx="18" fill="#EEF4F8" stroke="#D7E2EA"/>
+  <text x="992" y="366" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 2</text>
+  <text x="992" y="392" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“Moving patients</text>
+  <text x="992" y="414" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">from 11:45-12:45.”</text>
+
+  <rect x="884" y="628" width="234" height="92" rx="18" fill="#F3EDF7" stroke="#DDD2E8"/>
+  <text x="904" y="656" fill="#1E232B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Candidate 3</text>
+  <text x="904" y="682" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">“Rescheduling patients</text>
+  <text x="904" y="704" fill="#1E232B" font-family="Arial, sans-serif" font-size="17">accordingly.”</text>
+</svg>

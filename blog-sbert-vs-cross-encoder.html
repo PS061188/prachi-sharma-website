@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBERT vs Cross-Encoder | Prachi Sharma</title>
+    <meta name="description" content="A practical comparison of SBERT and cross-encoders for sentence similarity." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="SBERT vs Cross-Encoder" />
+    <meta
+      property="og:description"
+      content="A practical comparison of SBERT and cross-encoders for sentence similarity."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-sbert-vs-cross-encoder.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/sbert-social.png" />
+    <meta property="og:image:alt" content="Social preview card for the article SBERT vs Cross-Encoder." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SBERT vs Cross-Encoder" />
+    <meta
+      name="twitter:description"
+      content="A practical comparison of SBERT and cross-encoders for sentence similarity."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/sbert-social.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./blog-multi-metric-evaluation.html">Series anchor</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Deep dive · May 11 · LLM Evaluation · 7 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">SBERT vs Cross-Encoder: Two Different Ways to Measure Meaning</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              Once lexical overlap stops being enough, the next choice is not simply “use embeddings.” It is deciding whether you want reusable sentence geometry or a heavier pairwise judge.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p>Once you move beyond lexical overlap, the next question is not whether to use a semantic metric. It is <strong>which kind of semantic metric you actually need</strong>.</p>
+
+              <p class="article-section-label">SBERT</p>
+              <h3>Sentence embeddings made semantic comparison scalable</h3>
+              <p><strong>Sentence-BERT (SBERT)</strong> is a modification of the BERT architecture designed for <strong>efficient semantic similarity comparison between sentences</strong>.</p>
+              <p>Unlike vanilla BERT, which is mainly built for classification-style tasks and is not efficient for repeated sentence-pair comparison, SBERT produces <strong>dense sentence embeddings</strong> that can be compared directly using <strong>cosine similarity</strong>. That makes it much more practical for tasks where we need to compare many sentences quickly.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/sbert-p1-img0.png" alt="SentenceBERT figure showing the siamese network architecture for sentence embeddings." />
+                <figcaption class="article-caption">Figure from the original <a class="article-reference-inline" href="#ref-reimers-2019">Sentence-BERT paper</a>. The <strong>siamese architecture</strong> is what allows SBERT to produce reusable sentence embeddings efficiently.</figcaption>
+              </figure>
+
+              <p class="article-subsection-label">SBERT Calculation</p>
+              <h3>How SBERT Score Is Calculated</h3>
+              <p>SBERT is based on a <strong>siamese architecture</strong>, where the same underlying model with <strong>shared weights</strong> processes two different input sentences in parallel.</p>
+              <p>During inference:</p>
+              <ul>
+                <li>sentence A is passed through one copy of the model</li>
+                <li>sentence B is passed through another identical copy</li>
+                <li>each sentence is independently encoded into a fixed-size embedding vector, typically using <strong>mean pooling</strong></li>
+                <li>the two sentence embeddings are then compared using <strong>cosine similarity</strong> or another distance metric</li>
+              </ul>
+              <p>This structure is called <strong>siamese</strong> because it works like twins: two identical models operating side by side on different inputs.</p>
+              <pre><code>Similarity(u, v) = (u · v) / (||u|| ||v||)</code></pre>
+              <p>A small Python example makes this more concrete:</p>
+              <pre><code>from sentence_transformers import SentenceTransformer, util
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+candidate = "Sure, I will do it."
+references = ["Sure, will do!", "Okay, I will do it."]
+
+# Get embeddings
+cand_emb = model.encode(candidate, convert_to_tensor=True)
+ref_embs = model.encode(references, convert_to_tensor=True)
+
+# Compute cosine similarity with each reference
+similarities = util.cos_sim(cand_emb, ref_embs)
+
+# => tensor([[0.6927, 0.7653]])</code></pre>
+              <p>This means the second reference is semantically closer to the candidate than the first one.</p>
+
+              <p class="article-subsection-label">How SBERT Is Trained</p>
+              <h3>Different training objectives create different similarity behavior</h3>
+              <p>SBERT is fine-tuned using supervised sentence-pair data, such as <strong>Natural Language Inference (NLI)</strong> or <strong>Semantic Textual Similarity (STS)</strong> datasets. It supports several training strategies, and that matters because the training objective shapes the kind of similarity the model is good at.</p>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">Classification Loss</p>
+              <h4>Useful for NLI-style sentence relationships</h4>
+              <p>In <strong>NLI datasets</strong>, sentence pairs are labeled as <strong>entailment</strong>, <strong>contradiction</strong>, or <strong>neutral</strong>. The sentence embeddings are combined and passed to a classifier, often in a form like:</p>
+              <pre><code>[Embedding A, Embedding B, |A - B|]</code></pre>
+              <p>A softmax layer is then trained to predict the correct relationship label.</p>
+              <p><strong>Example:</strong></p>
+              <ul>
+                <li>Sentence A: <code>"The patient missed the appointment."</code></li>
+                <li>Sentence B: <code>"The patient did not attend the visit."</code></li>
+                <li>Label: <strong>entailment</strong></li>
+              </ul>
+              <p>Another pair:</p>
+              <ul>
+                <li>Sentence A: <code>"The patient missed the appointment."</code></li>
+                <li>Sentence B: <code>"The patient attended the visit."</code></li>
+                <li>Label: <strong>contradiction</strong></li>
+              </ul>
+              <p>And another:</p>
+              <ul>
+                <li>Sentence A: <code>"The patient missed the appointment."</code></li>
+                <li>Sentence B: <code>"The clinic opens at 8 AM."</code></li>
+                <li>Label: <strong>neutral</strong></li>
+              </ul>
+              <p><strong>What the model learns:</strong> It learns to use the sentence embeddings to predict whether the second sentence follows from, contradicts, or is unrelated to the first one.</p>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">Regression Loss</p>
+              <h4>Useful for graded semantic similarity</h4>
+              <p>In datasets such as <strong>STS Benchmark</strong>, sentence pairs are assigned a similarity score, typically in the range <code>0</code> to <code>5</code>. SBERT compares the two sentence embeddings using <strong>cosine similarity</strong>, and that score is trained to match the gold similarity value using <strong>mean squared error (MSE)</strong> loss.</p>
+              <p><strong>Example:</strong></p>
+              <ul>
+                <li>Sentence A: <code>"The doctor prescribed antibiotics."</code></li>
+                <li>Sentence B: <code>"The physician gave the patient antibiotics."</code></li>
+                <li>Gold similarity score: <strong>4.8 / 5</strong></li>
+              </ul>
+              <p>Another pair:</p>
+              <ul>
+                <li>Sentence A: <code>"The doctor prescribed antibiotics."</code></li>
+                <li>Sentence B: <code>"The weather is very hot today."</code></li>
+                <li>Gold similarity score: <strong>0.2 / 5</strong></li>
+              </ul>
+              <p><strong>What the model learns:</strong> It learns to make the cosine similarity between embeddings match the gold similarity score as closely as possible.</p>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">Triplet Loss</p>
+              <h4>Anchor, positive, negative</h4>
+              <p>A triplet consists of an <strong>anchor</strong>, a <strong>positive</strong> sentence similar to the anchor, and a <strong>negative</strong> sentence that is dissimilar. The loss function encourages the anchor to stay closer to the positive than to the negative by a margin.</p>
+              <p><strong>Example:</strong></p>
+              <ul>
+                <li><strong>Anchor:</strong> <code>"How do I reset my password?"</code></li>
+                <li><strong>Positive:</strong> <code>"What’s the way to recover my login?"</code></li>
+                <li><strong>Negative:</strong> <code>"She is baking a cake."</code></li>
+              </ul>
+              <p><strong>What the model learns:</strong> It learns to place the anchor closer to the positive example than to the negative one by a margin.</p>
+
+              <p class="article-subsection-label">Models Used in SBERT</p>
+              <h3>General-purpose, retrieval-oriented, and multilingual options</h3>
+              <p>The SBERT ecosystem includes several model families, and the right choice depends on whether you care more about <strong>general semantic similarity</strong>, <strong>speed</strong>, <strong>semantic search</strong>, or <strong>multilingual support</strong>.</p>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">General-purpose <code>all-*</code> models</p>
+              <h4>Strong default baselines for semantic similarity</h4>
+              <p>The <code>all-*</code> models were trained on a very large sentence-pair corpus and are intended as <strong>general-purpose sentence embedding models</strong>.</p>
+              <ul>
+                <li><code>all-mpnet-base-v2</code> provides some of the best quality among general-purpose SBERT models.</li>
+                <li><code>all-MiniLM-L6-v2</code> is much faster while still offering strong quality.</li>
+              </ul>
+              <p><code>all-mpnet-base-v2</code> uses <code>microsoft/mpnet-base</code> as the base model, is trained on around <strong>1 billion sentence pairs</strong>, and produces embeddings of dimension <strong>768</strong>.</p>
+              <p><code>all-MiniLM-L6-v2</code> is based on a compact <strong>6-layer</strong> version derived from <code>microsoft/MiniLM-L12-H384-uncased</code>, is also trained on around <strong>1 billion sentence pairs</strong>, and produces embeddings of dimension <strong>384</strong>.</p>
+              <p>Both use a <strong>contrastive objective</strong>, which pulls similar sentences closer together and pushes dissimilar ones farther apart in embedding space.</p>
+              <p>The core intuition is simple: if <code>(A, B)</code> is a similar pair and <code>(A, C)</code> is not, the model learns to make <code>cosine_similarity(A, B)</code> high and <code>cosine_similarity(A, C)</code> low.</p>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">Semantic search model: <code>multi-qa-mpnet-base-cos-v1</code></p>
+              <h4>Built more for retrieval than for generic similarity</h4>
+              <p>This model is tuned more specifically for <strong>semantic search</strong> and question-answer retrieval.</p>
+              <ul>
+                <li>base model: <code>microsoft/mpnet-base</code></li>
+                <li>fine-tuned on about <strong>215 million question-answer pairs</strong></li>
+                <li>embedding dimension: <strong>768</strong></li>
+                <li>training objective: <strong>contrastive learning</strong></li>
+              </ul>
+
+              <p class="article-subsubsection-label article-subsubsection-label-underlined">Multilingual model: <code>paraphrase-multilingual-mpnet-base-v2</code></p>
+              <h4>Useful when similarity must work across languages</h4>
+              <p>This model is useful when sentence similarity must work across multiple languages. It follows a multilingual student-teacher style approach, where a strong English paraphrase model acts as the <strong>teacher</strong> and a multilingual transformer such as <strong>XLM-RoBERTa</strong> acts as the <strong>student</strong>.</p>
+              <p>The student is trained to mimic the teacher’s embedding behavior across many languages, allowing the model to produce semantically useful sentence embeddings in <strong>100+ languages</strong>.</p>
+              <table class="article-data-table">
+                <thead>
+                  <tr>
+                    <th>Sentence A</th>
+                    <th>Sentence B</th>
+                    <th>Label</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>"How do I reset my password?"</code></td>
+                    <td><code>"What’s the way to recover my login?"</code></td>
+                    <td>Paraphrase (<code>1</code>)</td>
+                  </tr>
+                  <tr>
+                    <td><code>"He is running."</code></td>
+                    <td><code>"She is baking a cake."</code></td>
+                    <td>Not paraphrase (<code>0</code>)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>The above table gives a simple example of the kind of <strong>paraphrase supervision</strong> used to train the model. Sentence pairs that express the same meaning are labeled as <strong>paraphrases</strong>, while unrelated pairs are labeled as <strong>not paraphrases</strong>. Training on examples like these helps the multilingual model learn which sentence pairs should be placed closer together in embedding space, even when the wording differs.</p>
+
+              <p class="article-section-label">Cross-Encoder</p>
+              <h3>Joint pairwise scoring instead of reusable embeddings</h3>
+              <figure class="article-figure">
+                <img src="./assets/article/sbert-p3-img0.png" alt="SentenceBERT figure showing sentence similarity comparison behavior and architecture details." />
+                <figcaption class="article-caption">Figure adapted from the <a class="article-reference-inline" href="#ref-reimers-2019">Sentence-BERT paper</a>, contrasting reusable bi-encoder embeddings with joint pairwise Cross-Encoder scoring.</figcaption>
+              </figure>
+              <p>A <strong>Cross-Encoder</strong> works differently from SBERT. In a bi-encoder / siamese setup, sentence A and sentence B are encoded independently into sentence embeddings <code>u</code> and <code>v</code>, and those embeddings are compared using cosine similarity.</p>
+              <p>In a Cross-Encoder, both sentences are passed into the transformer <strong>together during inference</strong>:</p>
+              <pre><code>[CLS] Text 1 [SEP] Text 2 [SEP]</code></pre>
+              <p>The model then outputs a single similarity score, typically between <code>0</code> and <code>1</code>.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">The tradeoff</p>
+                <ul>
+                  <li><strong>SBERT</strong>: scalable, efficient, reusable embeddings</li>
+                  <li><strong>Cross-Encoder</strong>: often stronger pairwise scoring, but slower and heavier at scale</li>
+                </ul>
+              </div>
+
+              <p>Cross-Encoders often achieve <strong>better pairwise scoring quality</strong> than bi-encoders, but they do <strong>not produce reusable sentence embeddings</strong>. That makes them far less practical for indexing, retrieval, or large-scale repeated comparison.</p>
+              <p>A sample Cross-Encoder input can look like this:</p>
+              <pre><code>{
+  'question': 'how to transfer bookmarks from one laptop to another?',
+  'answer': 'Using an External Drive Just about any external drive, including a USB thumb drive, or an SD card can be used to transfer your files from one laptop to another. Connect the drive to your old laptop; drag your files to the drive, then disconnect it and transfer the drive contents onto your new laptop.',
+  'label': 0
+}</code></pre>
+
+              <p class="article-subsection-label">Model used for Cross-Encoder evaluation</p>
+              <h3><code>stsb-roberta-large</code></h3>
+              <p>For evaluation, a strong Cross-Encoder model choice is <code>stsb-roberta-large</code>. It was trained on the <strong>STS Benchmark</strong> dataset and is commonly chosen because of its strong semantic similarity performance.</p>
+
+              <p class="article-subsection-label">Cross-Encoder score calculation in Python</p>
+              <h3>A small example</h3>
+              <pre><code>from sentence_transformers import CrossEncoder
+
+model = CrossEncoder("cross-encoder/stsb-roberta-base")
+
+scores = model.predict([
+    ("It's a wonderful day outside.", "It's so sunny today!"),
+    ("It's a wonderful day outside.", "He drove to work earlier.")
+])
+
+# => array([0.60443085, 0.00240758], dtype=float32)</code></pre>
+              <p>The first pair receives a high similarity score, while the second pair is correctly judged as much less similar.</p>
+
+              <p class="article-section-label">Why This Matters</p>
+              <h3>Not all semantic metrics are interchangeable</h3>
+              <p>An <strong>SBERT-style bi-encoder</strong> and a <strong>Cross-Encoder</strong> can both be called semantic metrics, but they solve different operational problems. One is better for repeated large-scale comparison. The other is often stronger when local pairwise judgment quality matters more than reuse.</p>
+
+              <blockquote class="article-pullquote">
+                SBERT is often the better systems choice. Cross-Encoders are often the better pairwise judgment choice.
+              </blockquote>
+
+              <p class="article-section-label">Practical Takeaway</p>
+              <h3>Choose based on the actual workload</h3>
+              <p>Use <strong>SBERT</strong> when you need <strong>efficient sentence embeddings</strong> for many comparisons, ranking, or retrieval. Use a <strong>Cross-Encoder</strong> when you want <strong>stronger pairwise scoring</strong> and can afford the extra computation.</p>
+
+              <div class="article-takeaway-box">
+                <strong>Takeaway:</strong> both are useful, but they should be chosen for different reasons. The right choice depends on whether the bottleneck is semantic precision, scalability, or both.
+              </div>
+
+              <p class="article-section-label">Resources for Future Exploration</p>
+              <h3>Benchmark strength is only the starting point</h3>
+              <p>If you want to test other semantic similarity models, these are good places to start:</p>
+              <ul>
+                <li><a class="article-reference-inline" href="https://www.sbert.net/docs/sentence_transformer/pretrained_models.html" target="_blank" rel="noreferrer"><strong>Sentence Transformers pretrained SBERT model list</strong></a> for general-purpose, multilingual, retrieval, and semantic-search oriented bi-encoder models.</li>
+                <li><a class="article-reference-inline" href="https://www.sbert.net/docs/cross_encoder/pretrained_models.html" target="_blank" rel="noreferrer"><strong>Sentence Transformers pretrained Cross-Encoder model list</strong></a> for pairwise ranking, reranking, STS, and classification-style models.</li>
+                <li><a class="article-reference-inline" href="https://huggingface.co/spaces/mteb/leaderboard" target="_blank" rel="noreferrer"><strong>MTEB leaderboard</strong></a> for a broader benchmark comparison across embedding models on retrieval, clustering, reranking, and semantic similarity tasks.</li>
+              </ul>
+              <p>A practical strategy is simple: pick a strong benchmark model, test it on your own data, and compare <strong>quality</strong>, <strong>speed</strong>, and <strong>scalability</strong> together. The best benchmark model is not always the best model for your actual workload.</p>
+
+              <p class="article-section-label">References</p>
+              <h3>Selected papers and notes</h3>
+              <ol class="article-references">
+                <li id="ref-reimers-2019"><strong>Reimers, N., and Gurevych, I. (2019).</strong> Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks.</li>
+                <li id="ref-devlin-2019"><strong>Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. (2019).</strong> BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.</li>
+                <li id="ref-thakur-2021"><strong>Thakur, N., Reimers, N., Rücklé, A., Srivastava, A., and Gurevych, I. (2021).</strong> BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models.</li>
+              </ol>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a href="./blog-multi-metric-evaluation.html">Main framework post</a></li>
+                  <li><a href="./blog-rouge-short-generated-text.html">ROUGE deep dive</a></li>
+                  <li><a href="./blog-bertscore-beyond-word-overlap.html">BERTScore deep dive</a></li>
+                </ul>
+              </div>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a class="article-mini-contact-link" href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/" target="_blank" rel="noreferrer">LinkedIn</a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

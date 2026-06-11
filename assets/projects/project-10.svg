@@ -1,0 +1,29 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="40" fill="#F7F3EC"/>
+  <rect x="56" y="56" width="1488" height="888" rx="34" fill="#FFFDF9" stroke="#D8D0C5"/>
+  <rect x="118" y="118" width="220" height="44" rx="22" fill="#EEF2F4" stroke="#DDD5CA"/>
+  <text x="228" y="146" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">Model Evaluation</text>
+  <text x="118" y="318" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="74" font-weight="800">Model Evaluation</text>
+  <text x="118" y="380" fill="#68727E" font-family="DM Sans, Arial, sans-serif" font-size="28" font-weight="500">Comparing deep architectures and optimizers for ISL recognition</text>
+  <path d="M720 268H900" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="720" cy="268" r="14" fill="#E0A928"/>
+  <path d="M894 269H944" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1098 269H1130" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1284 269H1316" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  
+    <rect x="944" y="226" width="154" height="86" rx="30" fill="#2F5BFF"/>
+    <text x="1021" y="277" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">CNN</text>
+  
+    <rect x="1130" y="226" width="154" height="86" rx="30" fill="#F26E5A"/>
+    <text x="1207" y="277" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Optimizer</text>
+  
+    <rect x="1316" y="226" width="154" height="86" rx="30" fill="#83C67A"/>
+    <text x="1393" y="277" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Metrics</text>
+  
+  
+      <rect x="728" y="196" width="120" height="320" rx="24" fill="#FFFEFB" stroke="#D8D0C5"/>
+      <rect x="864" y="166" width="120" height="350" rx="24" fill="#FFF6EE" stroke="#E7D7C3"/>
+      <rect x="1000" y="230" width="120" height="286" rx="24" fill="#F3F6FB" stroke="#D6DCE7"/>
+      <rect x="1136" y="276" width="120" height="240" rx="24" fill="#F2FAF7" stroke="#D5E7E0"/>
+      <path d="M780 550H1220" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+      <rect x="1016" y="594" width="254" height="18" rx="9" fill="#DCE4ED"/>
+    
+</svg>

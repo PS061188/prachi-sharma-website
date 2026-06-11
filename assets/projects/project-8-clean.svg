@@ -1,0 +1,28 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="40" fill="#F7F3EC"/>
+  <rect x="56" y="56" width="1488" height="888" rx="34" fill="#FFFDF9" stroke="#D8D0C5"/>
+  <rect x="118" y="118" width="220" height="44" rx="22" fill="#EEF2F4" stroke="#DDD5CA"/>
+  <text x="228" y="146" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">Vision Research</text>
+  <text x="118" y="318" fill="#2A313A" font-family="DM Sans, Arial, sans-serif" font-size="74" font-weight="800">Static ISL</text>
+  <text x="118" y="380" fill="#68727E" font-family="DM Sans, Arial, sans-serif" font-size="28" font-weight="500">Depth-based gesture recognition for static Indian Sign Language</text>
+  <path d="M720 268H900" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="720" cy="268" r="14" fill="#E0A928"/>
+  <path d="M924 274H972" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1140 274H1178" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/><path d="M1262 318V356" stroke="#2A313A" stroke-width="5" stroke-linecap="round"/>
+  
+    <rect x="972" y="230" width="168" height="88" rx="30" fill="#18B7A0"/>
+    <text x="1056" y="281" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Depth</text>
+  
+    <rect x="1178" y="230" width="168" height="88" rx="30" fill="#7C5CFF"/>
+    <text x="1262" y="281" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Features</text>
+  
+    <rect x="1076" y="356" width="168" height="88" rx="30" fill="#2F5BFF"/>
+    <text x="1160" y="407" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Classify</text>
+  
+  
+      <circle cx="810" cy="308" r="108" fill="#F4F7FB" stroke="#D8D0C5"/>
+      <path d="M774 396C772 368 774 306 774 272C774 248 790 230 814 230C834 230 846 242 850 262C858 246 874 236 894 236C920 236 938 254 938 282V360C938 386 920 404 894 404H814C792 404 776 390 774 396Z" fill="#2F5BFF"/>
+      <rect x="996" y="548" width="330" height="150" rx="32" fill="#FFFEFB" stroke="#D8D0C5"/>
+      <circle cx="1084" cy="624" r="18" fill="#83C67A"/>
+      <rect x="1122" y="614" width="138" height="18" rx="9" fill="#DCE4ED"/>
+    
+</svg>

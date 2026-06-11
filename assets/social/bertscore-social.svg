@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#FBFAF7"/>
+  <rect x="780" y="72" width="320" height="480" rx="28" fill="#E9F0F5"/>
+  <rect x="828" y="128" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.24"/>
+  <rect x="908" y="128" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.42"/>
+  <rect x="988" y="128" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.18"/>
+  <rect x="828" y="208" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.18"/>
+  <rect x="908" y="208" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.32"/>
+  <rect x="988" y="208" width="54" height="54" rx="10" fill="#E5634A" fill-opacity="0.42"/>
+  <rect x="828" y="288" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.24"/>
+  <rect x="908" y="288" width="54" height="54" rx="10" fill="#E5634A" fill-opacity="0.28"/>
+  <rect x="988" y="288" width="54" height="54" rx="10" fill="#5F7692" fill-opacity="0.52"/>
+  <path d="M855 155L935 235L1015 315" stroke="#1D232B" stroke-width="3" stroke-linecap="round"/>
+  <text x="76" y="98" fill="#5F7692" font-size="18" font-family="Arial, sans-serif" letter-spacing="2.4">DEEP DIVE · BERTSCORE</text>
+  <text x="76" y="186" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">How BERTScore</text>
+  <text x="76" y="256" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">Measures Meaning</text>
+  <text x="76" y="326" fill="#1D232B" font-size="66" font-family="Georgia, 'Times New Roman', serif">Beyond Word Overlap</text>
+  <text x="80" y="412" fill="#66707D" font-size="28" font-family="Arial, sans-serif">Contextual embeddings, greedy matching,</text>
+  <text x="80" y="450" fill="#66707D" font-size="28" font-family="Arial, sans-serif">importance weighting, and baseline rescaling.</text>
+  <text x="80" y="530" fill="#66707D" font-size="20" font-family="Courier New, monospace" letter-spacing="1.8">prachi-sharma.vercel.app</text>
+</svg>
