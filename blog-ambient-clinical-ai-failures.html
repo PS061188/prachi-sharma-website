@@ -79,7 +79,7 @@
 
             <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
               <blockquote class="article-pullquote">
-                31% of AI-generated clinical notes contained hallucinated content, against 20% in the human-authored notes used as the comparison baseline — and reviewers still preferred the AI notes overall.
+                31% of AI-generated clinical notes contained hallucinated content, against 20% in the human-authored notes used as the comparison baseline. And reviewers still preferred the AI notes overall.
               </blockquote>
 
               <p>That's not a worst-case demo failure. That's a peer-reviewed average, across <a class="article-reference-inline" href="#ref-1">97 real outpatient encounters in five specialties</a>. A model listens to a patient visit and generates a <strong>structured clinical note</strong>. When it works, it gives clinicians real time back — see <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the numbers behind the taxonomy</a> below for exactly how much. When it fails, the failures are <strong>not random</strong>. They cluster into a small set of patterns that show up across every product in this category, and this post is the map.</p>
@@ -89,15 +89,15 @@
                 <figcaption class="article-caption">Where ambient documentation breaks down: the gap between what was said and what gets written.</figcaption>
               </figure>
 
-              <p>I saw this kind of project up close — how outputs were scored, what feedback came back from real providers, and how that feedback turned into changes to <strong>prompts and guardrails</strong>. After enough cycles, the failures stopped looking like surprises and started to look like a taxonomy.</p>
+              <p>I saw this kind of project up close: how outputs were scored, what feedback came back from real providers, and how that feedback turned into changes to <strong>prompts and guardrails</strong>. After enough cycles, the failures stopped looking like surprises and started to look like a taxonomy.</p>
 
-              <p>This post is that taxonomy — the first of two parts. It is for teams building, buying, or evaluating ambient AI for clinical workflows. This part covers the <strong>nine recurring failure patterns</strong>: what each one looks like, why it happens, and what to do about it. <a class="article-part-link" href="./blog-ambient-clinical-ai-triage-and-fixes.html">Part 2</a> covers how to triage any reported issue fast, find exactly which layer in the pipeline broke, and prove your fix actually worked.</p>
+              <p>This post is that taxonomy, the first of two parts. It is for teams building, buying, or evaluating ambient AI for clinical workflows. This part covers the <strong>nine recurring failure patterns</strong>: what each one looks like, why it happens, and what to do about it. <a class="article-part-link" href="./blog-ambient-clinical-ai-triage-and-fixes.html">Part 2</a> covers how to triage any reported issue fast, find exactly which layer in the pipeline broke, and prove your fix actually worked.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">At a glance</p>
                 <ul>
                   <li>Ambient clinical AI failures cluster into nine repeating patterns. Most production issues you'll hit are a variant of one of them.</li>
-                  <li>Each pattern has a distinct root cause and mechanism — not "the model hallucinated," but a specific architectural reason it happened.</li>
+                  <li>Each pattern has a distinct root cause: a specific architectural reason it happened, traceable to a layer in the pipeline.</li>
                   <li>The hardest failures are not the obvious hallucinations. They are quieter: a section misplaced, a diagnosis subtly generalised, a translator's speech treated as the patient's. These erode clinician trust faster than dramatic errors do.</li>
                   <li>Each pattern includes a fix you can act on. <a class="article-part-link" href="./blog-ambient-clinical-ai-triage-and-fixes.html">Part 2</a> covers what to do when a complaint lands and you cannot yet tell which pattern you are looking at.</li>
                 </ul>
@@ -158,11 +158,11 @@
               </table>
               <p class="article-caption article-caption--center">[<a class="article-reference-inline" href="#ref-5">5</a>, <a class="article-reference-inline" href="#ref-6">6</a>]</p>
 
-              <p>Hold both tables in your head at once. The <strong>time savings are real</strong>. So is the <strong>error rate</strong>. Neither cancels the other out — which is exactly why the taxonomy below exists.</p>
+              <p>Hold both tables in your head at once. The <strong>time savings are real</strong>. So is the <strong>error rate</strong>. Neither cancels the other out, which is exactly why the taxonomy below exists.</p>
 
               <p class="article-section-label">Nine patterns</p>
               <h3>The nine failure patterns</h3>
-              <p>Here are the nine. The names are mine; the patterns are everyone's — they show up across every vendor in this category.</p>
+              <p>Here are the nine. The names are mine; the patterns are everyone's. They show up across every vendor in this category.</p>
 
               <figure class="article-figure article-figure--wide">
                 <img src="./assets/article/ambient-clinical-ai-nine-patterns.png" alt="3x3 icon grid of the nine failure patterns, each tile color-coded by severity from critical to medium." />
@@ -188,11 +188,11 @@
               <p>The deeper issue is architectural: most pipelines validate the transcript once, at ingestion, then trust it as <strong>ground truth</strong> for every stage after. Shallow validation lets a partial payload through looking complete. A pipeline that <strong>fails closed</strong> catches this before generation runs. A pipeline that <strong>fails open</strong> generates a confident note anyway — and confidence scoring won't catch it, because the model is being accurate about incomplete input, not inaccurate about complete input.</p>
               <div class="article-callout">
                 <p class="article-callout-label">Example</p>
-                <p>The provider's closing instructions and follow-up plan vanish entirely — the recording stopped before the visit did, and the system has no way to flag what it never heard.</p>
+                <p>The provider's closing instructions and follow-up plan vanish entirely. The recording stopped before the visit did, and the system has no way to flag what it never heard.</p>
               </div>
               <p>The first check on any "the note is wrong" report should be the transcript. <strong>A large share of the issues you triage will resolve right here.</strong></p>
               <p><strong>Fix:</strong> Before generating any note, check whether the transcript covers the full visit — does it end with a sign-off or follow-up instruction, and does its length roughly match the appointment? If not, <strong>don't generate</strong>. Route the visit to a human with a note explaining exactly what looks incomplete.</p>
-              <p><strong>In practice:</strong> this is the <strong>fail-closed</strong> principle from safety-critical engineering — when the input can't be trusted, the system stops and a human looks before any note is generated. Some scribe services — <strong>Augmedix</strong> among them — were built entirely on this human-review-first model.</p>
+              <p><strong>In practice:</strong> this is the <strong>fail-closed</strong> principle from safety-critical engineering. When the input can't be trusted, the system stops and a human looks before any note is generated. Some scribe services — <strong>Augmedix</strong> among them — were built entirely on this human-review-first model.</p>
 
               <p class="article-section-label article-subsection-label">Hallucinations and fabrications</p>
               <p>The model produces clinical content that was never in the conversation. In ambient documentation this category is the <strong>highest severity</strong>, because the fabrications look authoritative.</p>
@@ -201,7 +201,7 @@
                 <li>Medications, dosages, or vital signs the transcript does not support</li>
                 <li>Oxygen saturations, lab values, or allergies that were never mentioned</li>
                 <li>Family history invented to complete a section</li>
-                <li>Fabricated content that is plausible — which is what makes it dangerous</li>
+                <li>Fabricated content that is plausible, which is what makes it dangerous</li>
               </ul>
               <p><strong>Common causes:</strong></p>
               <ul>
@@ -209,7 +209,7 @@
                 <li>Default templates that fill empty sections with assumed values</li>
               </ul>
               <p>Medication and diagnosis hallucinations in particular tend to come from <strong>multi-pass extraction</strong>, not single-shot invention. A typical pipeline captures medications as spoken, normalises the drug names, then deduplicates mentions into one final list for the chart. Each of those passes is a legitimate quality step on its own, but none of them carries forward where a mention came from. By the time a medication reaches the final list, the pipeline often cannot distinguish "the patient said this today" from "this was already in the chart and got folded in during deduplication." What looks like fabrication is really a <strong>source-tracking failure</strong>, surfacing several steps downstream of where anyone is looking for it.</p>
-              <p>This is not a fringe risk — see <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the numbers behind the taxonomy</a> above for exactly how often it happens and where it clusters.</p>
+              <p>This is not a fringe risk. See <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the numbers behind the taxonomy</a> above for exactly how often it happens and where it clusters.</p>
               <div class="article-callout">
                 <p class="article-callout-label">Example</p>
                 <p>A patient mentions they previously took metformin, but the current visit makes no reference to it. The model adds metformin to the active medications list because it is in the chart and the prompt does not explicitly prohibit inference from prior context. The provider signs without noticing. The patient has since switched medications.</p>
@@ -232,7 +232,7 @@
                 <li>Eager classification logic that resolves uncertainty too soon</li>
                 <li>Missing fallback when signal is genuinely absent</li>
               </ul>
-              <p>The most reliable fix here has little to do with classifier accuracy — it's giving the system <strong>permission to not answer</strong>. A model under pressure to fill a required field will pick the closest plausible label even when the transcript signal is weak, because an empty Reason for Visit looks like a defect to whoever built the template. Pipelines that allow the visit-type or RFV field to <strong>defer</strong>, staying explicitly unresolved when the signal is ambiguous, produce fewer wrong answers than pipelines that force a resolution every time. The cost is a small number of visits that need a human to confirm the framing. The benefit is that the wrong-framing failures, which are expensive precisely because every other section anchors to them, mostly disappear.</p>
+              <p>The most reliable fix here has little to do with classifier accuracy. It's giving the system <strong>permission to not answer</strong>. A model under pressure to fill a required field will pick the closest plausible label even when the transcript signal is weak, because an empty Reason for Visit looks like a defect to whoever built the template. Pipelines that allow the visit-type or RFV field to <strong>defer</strong>, staying explicitly unresolved when the signal is ambiguous, produce fewer wrong answers than pipelines that force a resolution every time. The cost is a small number of visits that need a human to confirm the framing. The benefit is that the wrong-framing failures, which are expensive precisely because every other section anchors to them, mostly disappear.</p>
               <div class="article-callout">
                 <p class="article-callout-label">Example</p>
                 <p>An annual wellness visit is framed as an atrial fibrillation follow-up because the patient briefly mentioned their AFib history while the provider was reviewing past conditions. The actual reason for the visit, a routine check-up, never makes it into the chief complaint.</p>
@@ -262,7 +262,7 @@
               </div>
               <p>This category carries <strong>coding and billing risk</strong> in addition to clinical accuracy risk.</p>
               <p><strong>Fix:</strong> Keep <strong>extraction</strong> and <strong>normalisation</strong> as separate steps. In extraction, require a transcript quote to support each diagnosis. In normalisation, if the conversion is about to silently drop a clinically important detail — like <strong>diabetes type</strong> or which side of the body — stop and ask a human instead of running automatically.</p>
-              <p><strong>In practice:</strong> this is how <strong>computer-assisted medical coding</strong> tools — like those from <strong>3M (now Solventum)</strong> and <strong>Optum</strong> — already work: software proposes the standard code, but a <strong>human coder</strong> signs off before it is final, precisely so the conversion can't quietly drop a detail that changes the clinical meaning.</p>
+              <p><strong>In practice:</strong> this is how <strong>computer-assisted medical coding</strong> tools like those from <strong>3M (now Solventum)</strong> and <strong>Optum</strong> already work: software proposes the standard code, but a <strong>human coder</strong> signs off before it is final, precisely so the conversion can't quietly drop a detail that changes the clinical meaning.</p>
 
               <p class="article-section-label article-subsection-label">Workflow and integration mismatches</p>
               <p>The model output is technically correct but does not match the state of the chart it is being written into.</p>
@@ -283,7 +283,7 @@
                 <p class="article-callout-label">Example</p>
                 <p>A steroid injection that the provider considered but ultimately did not give is documented as "administered in clinic today." The model captured the discussion. The workflow did not capture the decision not to proceed.</p>
               </div>
-              <p>This is one of the most expensive categories to diagnose, precisely because <strong>the model did its job correctly</strong> — the failure lives entirely in the workflow wrapped around it.</p>
+              <p>This is one of the most expensive categories to diagnose, precisely because <strong>the model did its job correctly</strong>. The failure lives entirely in the workflow wrapped around it.</p>
               <p><strong>Fix:</strong> Before generating any note, feed the system a <strong>snapshot of what is already in the chart</strong> — what has been signed, what has been ordered. After generation, compare the new output against that snapshot. If anything conflicts with a signed entry, <strong>block the note and flag it</strong>. Do not let a regenerated note silently overwrite a decision that has already been made.</p>
               <p><strong>In practice:</strong> hospitals already run a version of this called <strong>medication reconciliation</strong> — a <strong>Joint Commission</strong> patient-safety requirement that compares a new medication list against what the patient is already on before committing it. The same discipline, pointed at AI output, catches the conflict before it overwrites a signed decision.</p>
 
@@ -303,14 +303,14 @@
                 <li>Prompt or extraction logic that assumes a single language stream</li>
               </ul>
               <p>The deeper cause is usually that the pipeline was built and evaluated against a single, clean audio stream, and a multilingual or translator-mediated visit violates that assumption in several places at once: the speech-to-text model's language detection, the speaker-role attribution, and the section prompts that assume one voice equals one role. Each of those components is typically tested independently and passes its own tests. Few pipelines test the combination, which is exactly the condition a translator-mediated visit creates. This is also why the failure is so persistent across vendors: several components <strong>behave correctly in isolation, and only break once combined</strong>.</p>
-              <p>Speaker misattribution shows up in <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the safety-report numbers above</a> too — a meaningful share given how rarely multilingual or multi-speaker visits show up in the evaluation sets vendors test against before launch.</p>
+              <p>Speaker misattribution shows up in <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the safety-report numbers above</a> too, a meaningful share given how rarely multilingual or multi-speaker visits show up in the evaluation sets vendors test against before launch.</p>
               <div class="article-callout">
                 <p class="article-callout-label">Example</p>
                 <p>During a translator-mediated visit, the translator's English paraphrase of the patient's symptoms is captured in the note as the patient's direct statement. Parts of the original non-English speech are dropped entirely. The note reads cleanly but no longer reflects what the patient actually said.</p>
               </div>
               <p>This category is often under-tested because <strong>evaluation sets tend to be monolingual</strong>. The errors emerge only when the product hits real practice variety.</p>
               <p><strong>Fix:</strong> Run a <strong>speaker identification step</strong> before generating any section on a visit with a translator, so the note distinguishes between what the patient said and what the translator paraphrased. And test the <strong>full pipeline</strong> on multilingual visits on every release — not just individual components in isolation, because the failure only shows up when they run together.</p>
-              <p><strong>In practice:</strong> none of this needs new technology — speaker identification is a standard capability, and qualified-interpreter standards (the <strong>Joint Commission's</strong> among them) already treat an interpreter's words as a paraphrase, not the patient's own. The missing piece is <strong>testing them together</strong>, on a real translated visit.</p>
+              <p><strong>In practice:</strong> none of this needs new technology. Speaker identification is a standard capability, and qualified-interpreter standards (the <strong>Joint Commission's</strong> among them) already treat an interpreter's words as a paraphrase, not the patient's own. The missing piece is <strong>testing them together</strong>, on a real translated visit.</p>
 
               <p class="article-section-label article-subsection-label">Sectioning and placement errors</p>
               <p>The content is right but it is in the wrong place. Lab results show up under Assessment and Plan. Vitals land in a section meant for narrative findings. HPI material ends up in Patient Instructions.</p>
@@ -332,7 +332,7 @@
               </div>
               <p>This category is responsible for a disproportionate share of "the note is bad" feedback, because it <strong>makes good content look unreliable</strong>.</p>
               <p><strong>Fix:</strong> Log which generator produced each value and which step placed it in the final note. When a placement complaint comes in, <strong>check the log before touching any code</strong> — a blood pressure value sitting under Assessment and Plan is almost always a routing problem, not a generation problem. Rewriting the wrong prompt wastes time and fixes nothing.</p>
-              <p><strong>In practice:</strong> this is ordinary <strong>observability</strong> — the same lineage logging every production system uses to answer "which component produced this?" Treat a misplaced value as a tracing question, not a prompt-quality one.</p>
+              <p><strong>In practice:</strong> this is ordinary <strong>observability</strong>: the same lineage logging every production system uses to answer "which component produced this?" Treat a misplaced value as a tracing question, not a prompt-quality one.</p>
 
               <p class="article-section-label article-subsection-label">Family and social history distortions</p>
               <p>These two sections are particularly failure-prone because they are sparse, conversational, and easy to invent.</p>
@@ -353,8 +353,8 @@
                 <p>A family history entry states "father with coronary artery disease, deceased at 62." The patient never mentioned their father during the visit. The model produced a plausible-looking line to fill a section that should have been empty.</p>
               </div>
               <p>Family history errors are especially serious because they influence <strong>hereditary screening decisions</strong> downstream.</p>
-              <p><strong>Fix:</strong> Let the section be blank if nothing was said — do not fill it with placeholder text or inferred details. Verify whatever does get extracted using a check that is independent of the model that did the extraction, because a model reviewing its own output will sometimes confirm its own mistake rather than catch it.</p>
-              <p><strong>In practice:</strong> the <strong>self-verification</strong> blind spot is well documented — a model checking its own work is not a real control. Only an outside reviewer, a different model or a human, counts as verification.</p>
+              <p><strong>Fix:</strong> Let the section be blank if nothing was said. Do not fill it with placeholder text or inferred details. Verify whatever does get extracted using a check that is independent of the model that did the extraction, because a model reviewing its own output will sometimes confirm its own mistake rather than catch it.</p>
+              <p><strong>In practice:</strong> the <strong>self-verification</strong> blind spot is well documented. A model checking its own work is not a real control. Only an outside reviewer, a different model or a human, counts as verification.</p>
 
               <p class="article-section-label article-subsection-label">Documentation gaps and omissions</p>
               <p>The opposite of hallucination. Content was clearly said and is clearly missing from the note.</p>
@@ -372,17 +372,17 @@
                 <li>Post-processing that drops items below a confidence threshold</li>
               </ul>
               <p>Most pipelines attach a <strong>confidence score</strong> to the generation, often derived from the model's own token probabilities, and use a near-zero score to catch total failure: an empty or malformed summary. That mechanism is good at catching <strong>catastrophic failure</strong>. It is blind to <strong>partial omission</strong>. A note that captures eight of ten things the provider said still looks confident, because the model was confident about everything it did generate. The two missing things do not lower the score, because the score has no way to know they were ever said. This is why omissions are usually caught by a provider re-reading the note rather than by any automated signal, and why they are the failure mode most likely to go undetected in a vendor's own internal quality metrics. If you are evaluating a vendor, ask specifically how they catch omissions, not just how they catch errors.</p>
-              <p>Omissions are the most common complaint type after hallucinations in the safety-report data — see <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the numbers above</a>. Sleep medicine alone accounts for an outsized share, because counselling-heavy visits create the most opportunities for content to quietly drop below the confidence threshold.</p>
+              <p>Omissions are the most common complaint type after hallucinations in the safety-report data. See <a class="article-jump-link" href="#the-numbers-behind-the-taxonomy">the numbers above</a>. Sleep medicine alone accounts for an outsized share, because counselling-heavy visits create the most opportunities for content to quietly drop below the confidence threshold.</p>
               <div class="article-callout">
                 <p class="article-callout-label">Example</p>
                 <p>A multi-minute weight-loss counselling exchange between provider and patient is absent from the final note entirely. The clinician spent time on it, the patient agreed to changes, none of it appears in the documentation.</p>
               </div>
               <p>Gaps are less dramatic than fabrications but they create equal trust damage over time. Providers stop reviewing carefully, then start retyping, then stop using the system.</p>
               <p><strong>Fix:</strong> Track how often clinicians <strong>manually add content</strong> to the AI-generated note, broken down by section and visit type. <strong>A rising edit rate on a specific section</strong> — say, Plan or Counselling — is your omission signal. It costs nothing to instrument, uses what is already happening, and tells you exactly where the extraction is dropping content. For counselling-heavy visit types, also audit your extraction prompts for conciseness pressure: phrases like "keep it brief" will systematically drop low-confidence mentions before they ever reach the note.</p>
-              <p><strong>In practice:</strong> <strong>edit rate</strong> is already used as a quality signal across the industry — vendors like <strong>Nuance (DAX)</strong> measure how much clinicians change the AI note — which makes it proof-tested, not theoretical. The data is generated every time a clinician corrects a note, at zero added cost.</p>
+              <p><strong>In practice:</strong> <strong>edit rate</strong> is already used as a quality signal across the industry. Vendors like <strong>Nuance (DAX)</strong> measure how much clinicians change the AI note, which makes it proof-tested, not theoretical. The data is generated every time a clinician corrects a note, at zero added cost.</p>
 
               <p class="article-section-label">Bottom line</p>
-              <p>Nine patterns account for nearly everything that goes wrong in ambient clinical documentation AI. Each one has a distinct cause and a concrete fix — both covered above. What this post doesn't cover is what to do when a complaint lands and you don't know which pattern you're looking at yet: how to triage it in 90 seconds, how to find exactly which layer in the pipeline broke, and how to prove your fix actually worked. That's <a class="article-part-link" href="./blog-ambient-clinical-ai-triage-and-fixes.html">Part 2</a>.</p>
+              <p>Nine patterns account for nearly everything that goes wrong in ambient clinical documentation AI. Each one has a distinct cause and a concrete fix, both covered above. What this post doesn't cover is what to do when a complaint lands and you don't know which pattern you're looking at yet: how to triage it in 90 seconds, how to find exactly which layer in the pipeline broke, and how to prove your fix actually worked. That's <a class="article-part-link" href="./blog-ambient-clinical-ai-triage-and-fixes.html">Part 2</a>.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">Part of this series</p>
