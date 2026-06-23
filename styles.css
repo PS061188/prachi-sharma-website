@@ -1531,6 +1531,16 @@ textarea {
   background: #ffffff;
 }
 
+.article-figure--wide {
+  margin-left: -60px;
+  margin-right: -60px;
+}
+
+.article-figure--wide img {
+  width: calc(100% + 120px);
+  max-width: none;
+}
+
 .article-caption {
   margin: 12px 0 0;
   color: var(--muted-soft);
@@ -1553,11 +1563,29 @@ textarea {
   font-size: 0.9em;
 }
 
-.article-prose a.article-reference-inline {
+.article-prose a.article-reference-inline,
+.article-prose a.article-jump-link {
   color: var(--accent);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+.article-part-link,
+.article-prose a.article-part-link,
+.article-dek a.article-part-link {
+  color: #1a73e8;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.article-part-link:hover,
+.article-prose a.article-part-link:hover,
+.article-dek a.article-part-link:hover {
+  color: #1558b0;
 }
 
 .article-prose pre {
@@ -1619,6 +1647,20 @@ textarea {
   color: var(--muted);
   font-size: 0.96rem;
   line-height: 1.75;
+}
+
+.article-data-table--center {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.article-data-table--center th,
+.article-data-table--center td {
+  text-align: center;
+}
+
+.article-caption--center {
+  text-align: center;
 }
 
 .article-score-matrix th,
@@ -2261,6 +2303,15 @@ textarea {
   .article-prose,
   .article-dek {
     max-width: none;
+  }
+
+  .article-figure--wide {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .article-figure--wide img {
+    width: 100%;
   }
 
   .article-stat-grid {

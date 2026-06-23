@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="Part 2 of 2: how to triage any ambient clinical AI failure — the 90-second filter, the root-cause ladder, and the evidence pack that proves a fix actually worked."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked" />
+    <meta
+      property="og:description"
+      content="Part 2 of 2: how to triage any ambient clinical AI failure — the 90-second filter, the root-cause ladder, and the evidence pack that proves a fix actually worked."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-ambient-clinical-ai-triage-and-fixes.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/ambient-clinical-ai-hero.png" />
+    <meta property="og:image:alt" content="Social preview card for the article How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked" />
+    <meta
+      name="twitter:description"
+      content="Part 2 of 2: how to triage any ambient clinical AI failure — the 90-second filter, the root-cause ladder, and the evidence pack that proves a fix actually worked."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/ambient-clinical-ai-hero.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./blog-ambient-clinical-ai-failures.html">Part 1</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Field guide · Jun 16 · Healthcare AI · 8 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              <a class="article-part-link" href="./blog-ambient-clinical-ai-failures.html">Part 1</a> covers what breaks and how to fix it. This is Part 2: the 90-second filter for triaging any reported issue, the root-cause ladder for finding exactly which layer broke, and the evidence pack that proves a fix actually worked instead of just hoping it did.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p><a class="article-part-link" href="./blog-ambient-clinical-ai-failures.html">Part 1 of this field guide</a> mapped the nine recurring ways ambient clinical documentation AI goes wrong — and included a fix for each. Knowing what breaks and what to do about it gets you most of the way there. What it doesn't tell you is how to triage a report you've never seen before, how to find which layer in the pipeline actually broke, or how to prove your fix actually worked instead of just hoping it did.</p>
+
+              <p>That's what this part covers: a <strong>90-second filter</strong> to orient you on any reported issue, a <strong>root-cause ladder</strong> to find the exact layer that broke, and the <strong>evidence pack</strong> that separates a real fix from a lucky one.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a class="article-part-link" href="./blog-ambient-clinical-ai-failures.html">Part 1: What Breaks in Ambient Clinical Documentation AI — The Nine Patterns</a></li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">90-second triage</p>
+              <h3>The 90-second triage</h3>
+              <p>Before you touch code on any reported issue, run a fast filter.</p>
+              <div class="article-checklist">
+                <p class="article-callout-label">Run this before you open the codebase</p>
+                <ul>
+                  <li>Confirm the transcript covers the full visit, start to end.</li>
+                  <li>Confirm speaker roles are correctly attributed: patient, provider, relative, translator.</li>
+                  <li>Identify the language mode: single, mixed, or translated.</li>
+                  <li>Identify the visit type: annual, follow-up, acute, or chronic management.</li>
+                  <li>Check the chart state: were any items already added to the chart, and were any of them signed before the note was regenerated?</li>
+                  <li>Bucket the failure type into one of five labels: hallucination, omission, wrong section, wrong visit framing, or STT-level issue.</li>
+                </ul>
+              </div>
+              <p>This filter exists to orient you, not to resolve anything — six quick checks that tell you what kind of problem you're actually looking at.</p>
+              <p>Most issues that look mysterious at first are routine once you have run this filter. The rest are real engineering problems and worth the deeper investigation that follows.</p>
+
+              <p class="article-section-label">Root-cause ladder</p>
+              <h3>The root-cause ladder</h3>
+              <p>When the fast filter is not enough, walk the ladder. This is ordered by causal layer, not by symptom. You start at the input and move through the pipeline. The reason for this order is that earlier stages contaminate everything downstream, so you cannot reliably debug a later stage until the earlier ones are clean.</p>
+              <div class="article-checklist">
+                <p class="article-callout-label">Walk the layers in order</p>
+                <ul>
+                  <li><strong>Layer 1: Transcript integrity.</strong> If the input is wrong or incomplete, nothing downstream is reliable. This is also where the largest share of issues actually live, even though the reports usually frame them as model issues.</li>
+                  <li><strong>Layer 2: Section ownership.</strong> Identify which section of the note is producing the failure. This narrows the search from "the note is wrong" to "the assessment and plan stage is wrong," which is a different debug.</li>
+                  <li><strong>Layer 3: Prompt constraints.</strong> Once you know the section, check the prompt that drove it. Look for soft inference language, missing non-overlap rules, weak guardrails. These are policy bugs that produce systematic errors and they are common.</li>
+                  <li><strong>Layer 4: Post-processing.</strong> Even with the right prompts, plumbing can break the output. Merge logic, section classifiers, and routing rules can scramble content that was correct when generated.</li>
+                  <li><strong>Layer 5: Domain mapping.</strong> Final-layer transformations on diagnoses, terminology, and standard codes can change clinical meaning. Term normalisation in particular can collapse specificity in ways that look small in code and matter clinically.</li>
+                </ul>
+              </div>
+              <p>A failure that survives the fast filter usually localises to one of these five layers within an hour. A failure that resists this ladder is rare and worth treating as a deeper architectural issue.</p>
+
+              <p class="article-section-label">Evidence pack</p>
+              <h3>The evidence pack</h3>
+              <p>Catching a failure is the easy part. Closing the fix without introducing a new one is harder. This is where teams that ship ambient clinical AI reliably differ from teams that ship it once and then lose trust.</p>
+              <p>Before any fix gets shipped, the evidence pack should include:</p>
+              <div class="article-checklist">
+                <p class="article-callout-label">Required before a fix ships</p>
+                <ul>
+                  <li>The exact transcript snippet that proves what should have been generated.</li>
+                  <li>A before/after comparison of the affected section, on the original sample.</li>
+                  <li>Confirmation that confidence scoring behaviour is unchanged, unless the change is intentional.</li>
+                  <li>A regression check on two or three nearby samples in the same specialty, including a multilingual sample if the change touches language handling.</li>
+                  <li>A traceable record: ticket, code change, and sample identifier captured in the fix notes.</li>
+                </ul>
+              </div>
+              <p>This is overhead. It is also the difference between a team that fixes the same category of issue three times and a team that fixes it once.</p>
+
+              <p class="article-section-label">Bottom line</p>
+              <blockquote class="article-pullquote">
+                The model is rarely the bug. The pipeline around it is.
+              </blockquote>
+              <p>The teams that ship ambient clinical AI reliably aren't the ones who avoid these nine patterns — nobody does. They're the ones who built their <strong>triage around the patterns</strong> and their <strong>fix discipline around the evidence</strong>, so the same failure doesn't cost them a full investigation twice.</p>
+              <p>Use all of this as a lens, not a blueprint: it tells you what to look for in alpha, what to ask vendors during evaluation, and what to assume will go wrong before it does.</p>
+              <p>If you are building in this space, these tools are a checklist for your eval rubric. If you are buying, they are a list of questions for your vendor. If you are leading a team that does either, they are a way to make the failure modes legible to people who are not in the prompts every day.</p>
+              <p><strong>Evaluating and de-risking production AI</strong> in <strong>high-stakes workflows</strong> — where the cost of being wrong is more than user friction — is what I focus on. If that's what you're building, <strong>let's talk</strong>.</p>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

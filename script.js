@@ -1671,6 +1671,24 @@ const content = {
   ],
   writingPosts: [
     {
+      title: "What Breaks in Ambient Clinical Documentation AI — The Nine Patterns",
+      sentence:
+        "Part 1: the nine recurring failure patterns in ambient clinical documentation AI — what they look like, why each one happens, and a fix for each.",
+      href: "./blog-ambient-clinical-ai-failures.html",
+      date: "2026-06-16",
+      category: "Healthcare AI",
+      readingTime: "20 min read",
+    },
+    {
+      title: "How to Triage Ambient Clinical AI Failures — and Prove the Fix Worked",
+      sentence:
+        "Part 2: the 90-second triage filter, the root-cause ladder, and the evidence pack that proves a fix actually worked.",
+      href: "./blog-ambient-clinical-ai-triage-and-fixes.html",
+      date: "2026-06-16",
+      category: "Healthcare AI",
+      readingTime: "8 min read",
+    },
+    {
       title: "How I Evaluate Short Generated Text: A Multi-Metric Framework",
       sentence:
         "A public-safe guide to evaluating short generated text with lexical overlap, semantic similarity, candidate-level comparison, and human-aligned judgment.",
