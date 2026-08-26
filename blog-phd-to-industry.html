@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Seven Ways to Be New: What Transferred From My PhD, and What Didn't | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="My PhD advisor had one rule: at least one of seven things had to be genuinely new. Four years in industry taught me which parts of that training actually mattered, and which did not."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="Seven Ways to Be New: What Transferred From My PhD, and What Didn't" />
+    <meta
+      property="og:description"
+      content="My PhD advisor had one rule: at least one of seven things had to be genuinely new. Four years in industry taught me which parts of that training actually mattered, and which did not."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-phd-to-industry.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/social/og-default.png" />
+    <meta property="og:image:alt" content="Social preview card for the article The Hard Part of Healthcare AI Isn’t Intelligence." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seven Ways to Be New: What Transferred From My PhD, and What Didn't" />
+    <meta
+      name="twitter:description"
+      content="My PhD advisor had one rule: at least one of seven things had to be genuinely new. Four years in industry taught me which parts of that training actually mattered, and which did not."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/social/og-default.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <div class="article-editor" id="article-editor-panel" aria-label="Blog editor toolbar" hidden>
+              <div class="article-editor-bar" role="toolbar" aria-label="Formatting tools">
+                <div class="editor-group" aria-label="Text formatting">
+                  <p class="editor-group-label">Text</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="bold" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="editor-button" data-command="italic" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="editor-button" data-command="underline" aria-label="Underline"><span class="editor-underline">U</span></button>
+                    <button type="button" class="editor-button" data-command="formatBlock" data-value="p" aria-label="Paragraph">P</button>
+                    <button type="button" class="editor-button" data-command="formatBlock" data-value="h3" aria-label="Subheading">H3</button>
+                    <button type="button" class="editor-button" data-command="blockquote" aria-label="Block quote">“ ”</button>
+                    <button type="button" class="editor-button" data-command="removeFormat" aria-label="Clear formatting">Clear</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Lists and structure">
+                  <p class="editor-group-label">Structure</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="insertUnorderedList" aria-label="Bulleted list">• List</button>
+                    <button type="button" class="editor-button" data-command="insertOrderedList" aria-label="Numbered list">1. List</button>
+                    <button type="button" class="editor-button" data-command="indent" aria-label="Indent">→</button>
+                    <button type="button" class="editor-button" data-command="outdent" aria-label="Outdent">←</button>
+                    <button type="button" class="editor-button" data-command="createLink" aria-label="Insert link">Link</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Editorial blocks">
+                  <p class="editor-group-label">Blocks</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="sectionLabel" aria-label="Section label">Label</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="pullquote" aria-label="Pull quote">Pullquote</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="lessonQuote" aria-label="Lesson quote">Lesson quote</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="callout" aria-label="Callout box">Callout</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="checklist" aria-label="Checklist box">Checklist</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="takeaway" aria-label="Takeaway box">Takeaway</button>
+                    <button type="button" class="editor-button" data-command="insertPreset" data-value="figure" aria-label="Figure block">Figure</button>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Colors and emphasis">
+                  <p class="editor-group-label">Color</p>
+                  <div class="editor-group-controls">
+                    <label class="editor-color-chip" aria-label="Text color">
+                      <span>Text</span>
+                      <input type="color" id="editor-text-color" value="#5f7692" />
+                    </label>
+                    <label class="editor-color-chip" aria-label="Highlight color">
+                      <span>Mark</span>
+                      <input type="color" id="editor-highlight-color" value="#fff3a6" />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="editor-group" aria-label="Attachments and embeds">
+                  <p class="editor-group-label">Attach</p>
+                  <div class="editor-group-controls">
+                    <button type="button" class="editor-button" data-command="uploadImage" aria-label="Upload image">Image</button>
+                    <button type="button" class="editor-button" data-command="uploadVideo" aria-label="Upload video">Video</button>
+                    <button type="button" class="editor-button" data-command="uploadFile" aria-label="Attach file">File</button>
+                    <button type="button" class="editor-button" data-command="embedYouTube" aria-label="Embed YouTube video">YouTube</button>
+                  </div>
+                </div>
+              </div>
+              <div class="article-editor-actions">
+                <button type="button" class="editor-action" id="save-article-edits">Save edits</button>
+                <button type="button" class="editor-action editor-action-muted" id="reset-article-edits">Reset</button>
+                <p class="editor-note" id="article-editor-status">Edit mode is on. Saved edits stay only in this browser.</p>
+              </div>
+            </div>
+
+            <input type="file" id="editor-image-input" accept="image/*" hidden />
+            <input type="file" id="editor-video-input" accept="video/*" hidden />
+            <input type="file" id="editor-file-input" hidden />
+
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Essay · Aug 26 · Career Notes · 7 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">Seven Ways to Be New: What Transferred From My PhD, and What Didn't</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              My PhD advisor had one rule: at least one of seven things had to be genuinely new. Four years in industry taught me which parts of that training actually mattered, and which did not.
+            </p>
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <p>My PhD advisor had one rule. To publish, at least one of these had to be genuinely new:</p>
+              <ul>
+              <li>the way the input is represented</li>
+              <li>the model itself</li>
+              <li>performance beating everything in the literature</li>
+              <li>data unlike anything that already existed</li>
+              <li>lower cost than the alternatives</li>
+              <li>faster than the alternatives</li>
+              <li>an application nobody had built</li>
+              </ul>
+              <p>Seven ways to be new. You needed one. I ended up with two: <strong>input representation, and data.</strong></p>
+              <p>My thesis was Indian Sign Language recognition. The models I used were the ordinary ones everybody used. What was mine was what went into them, and what they ran on.</p>
+              <p>The ISL datasets in the literature used clean uniform backgrounds and put limits on what a signer could wear, to make recognition easier. I built one that didn&#x27;t: filmed against a cluttered wall, with no restrictions on clothing or accessories, because the clean versions didn&#x27;t survive contact with real signing.</p>
+              <p>I submitted in October 2021. A few months later I joined athenahealth as a data scientist and began finding out which parts of that training actually mattered here.</p>
+              <p>Four years there, and now working independently, I can sort it fairly cleanly.</p>
+              <h3>What I expected to be different, and wasn&#x27;t</h3>
+              <p>When athenahealth hired me, HR told me plainly that this was not a research job. Product team, ML coming into the picture, strong people, but not research. He asked if I was sure. I said yes, and I arrived expecting no papers and no discussions.</p>
+              <p>That turned out to be wrong.</p>
+              <p>The data science team ran paper discussions. Informal ones. Somebody would find a paper worth reading, take it, and present it to everyone else. I gave one of them. During experimentation people read papers and quoted them at each other as a matter of course.</p>
+              <p>Every project had a leaderboard. People tried models, results went up, and we argued about what was worth comparing next.</p>
+              <p>So most of what I assumed I was importing was already in the room. Reading papers, running comparisons, coming prepared. None of that was mine to bring, and I&#x27;d have been wrong to think otherwise.</p>
+              <h3>What actually differed</h3>
+              <h4>Writing things down when nothing forced me to</h4>
+              <p>Confluence was already in use when I joined, and I read a lot of pages other people had written. Documentation was not missing at athenahealth.</p>
+              <p>But it followed the work. When you are running many experiments against a leaderboard in a short window, you have to write things down, because you will forget what you tried, what the data was, how many rows it had, what the numbers came out as. Other people need it too. Someone running a different experiment comes and asks, or finds that part of yours overlaps with theirs. That documentation existed because the work demanded it.</p>
+              <p>The gap was everywhere else. A support ticket. An ongoing code review. One standalone experiment that wasn&#x27;t part of a series. Designing an inference. Isolated tasks with no leaderboard behind them. Most people didn&#x27;t write much for those, and nothing was lost that anyone noticed at the time.</p>
+              <p>I wrote them up anyway.</p>
+              <p>One example. I ran stress testing on LLM models, which was fairly new on our side then and something I had not done before. A standard process already existed on a Confluence page. What I added was how I had actually understood and run it: which files to use, step one, step two, what each part means. Several people on the team used that afterwards.</p>
+              <p>So the difference was never that I documented and others didn&#x27;t. On the work where documentation was obviously required, everybody wrote, and wrote well. I also wrote on the work where nobody would have missed it.</p>
+              <h4>How deep you go</h4>
+              <p>In my PhD the main work was getting the final numbers out of the sign language system. While training I used Adam, which at the time was considered one of the best optimisers available. I could have used it and left it there.</p>
+              <p>I went further, and compared it against the others, including the parameters inside each one.</p>
+              <p>The motivation was not one thing. Curiosity about what the others would do in my setting, and why. The possibility of a paper. And the knowledge that when I published the main work, a reviewer could ask whether I had tried other optimisers and why not. If I was going to have to answer that eventually, I preferred to answer it then. There was time, so the question off to the side was worth taking.</p>
+              <p>Industry asks the same question and stops sooner. When the first choice is not giving the results we need, we try others. We would still run a comparison. It would not go as deep as the one I ran in my PhD, because it does not need to.</p>
+              <p>The bar in a PhD is novelty, and the evidence for it. In industry the bar is the stakeholder requirement and the timeline.</p>
+              <h3>What didn&#x27;t</h3>
+              <h4>The novelty rule</h4>
+              <p>The seven ways to be new are the right frame for a thesis. Industry work runs on a different one.</p>
+              <p>In a PhD, novelty is what decides. Without it there is no thesis and no paper.</p>
+              <p>In industry novelty is present, and often it is the thing a team is proudest of. What changes is the weight it carries in a decision. Work goes ahead because it meets a stakeholder requirement inside a timeline, and something genuinely new is welcome when it serves that. It is rarely the thing that has to be proved before anything can ship.</p>
+              <p>That is my experience rather than a claim about the field. There are companies whose growth comes directly from doing new things, and novel work happens inside ordinary product teams as well.</p>
+              <p>I still ask what&#x27;s new here, because it&#x27;s a useful question. In research, if the answer was &quot;nothing&quot;, I had no thesis and no paper.</p>
+              <p>In industry the question carries less weight. Nobody was casual about what shipped and the standards were serious, but the bar was the stakeholder requirement rather than novelty. If what we had built met the requirement, the work was finished, whether or not anything about it was new.</p>
+              <h4>The pace</h4>
+              <p>My literature survey ran about a year before I started serious experimentation. Read, analyse, read more, and only then decide which experiment is worth running.</p>
+              <p>That is normal in research and unworkable in industry. I had to learn to act before I fully understood something, and to let the result close the gap. This was the hardest adjustment and the one I&#x27;m most grateful for.</p>
+              <h3>The one that changed shape</h3>
+              <h4>Mastery</h4>
+              <p>A PhD trains you to master one narrow area and become the person who knows it best. It&#x27;s good advice and I believed it completely.</p>
+              <p>In my first goal-setting conversation at athenahealth, my manager asked what I wanted. I said I wanted to become an expert in one thing. He told me that wouldn&#x27;t work there.</p>
+              <p>He was right, and it took me a while to see how. Depth still matters. You need one thing you genuinely own. But you also have to handle everything inside that thing&#x27;s ecosystem well, and stay ready to master whatever comes next. The specialty is the anchor. It isn&#x27;t the whole job.</p>
+              <h3>What the PhD never gave me</h3>
+              <p>Everything in this list I learned cold, on the job:</p>
+              <ul>
+              <li>Deadlines set by someone else, against work I hadn&#x27;t chosen</li>
+              <li>Prioritising my work against other people&#x27;s</li>
+              <li>Working inside a codebase that other people own</li>
+              <li>Code review as a daily norm rather than an occasional favour</li>
+              <li>Cost and latency as things that decide the design, rather than numbers you report afterwards</li>
+              <li>Owning something after it ships</li>
+              <li>Explaining technical work to people who don&#x27;t want the method, only what it means for them</li>
+              <li>Estimating how long something will take</li>
+              </ul>
+              <p>Code review is the one I&#x27;d single out. Nothing in a PhD prepares you to have your work read line by line by people who will be maintaining it. It&#x27;s also the fastest I have ever improved at writing code.</p>
+              <p>Estimation is the one I&#x27;m still working on. A PhD gives you almost no practice at saying how long something will take, because the honest answer is usually &quot;until it works.&quot; I&#x27;m better at it now than I was. Not reliably right, but close enough to plan around, and still improving.</p>
+              <h3>What I&#x27;d tell someone making the same move</h3>
+              <p>Don&#x27;t assume you&#x27;re arriving with something rare. I did, and I was wrong. A good data science team already reads papers, already compares models, already prepares. You are not bringing different habits, only more consistent ones, applied to the small isolated tasks where nothing forces the issue.</p>
+              <p>Expect two things to work differently: how new your work is required to be, and how long you get to spend understanding something before you act. Neither research habit is wrong. Both were built for a different set of rules.</p>
+              <p>And take your manager seriously when they tell you the shape of expertise is different here. Mine was right.</p>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>
