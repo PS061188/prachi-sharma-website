@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="Laya is a new 421M-parameter open model that answers typed questions with probabilities. I used it to judge every terminal command my AI coding agent proposes, measured it against three other guards on 50 labelled commands, then replayed 4,549 real ones. Full method, every number, cost, and how to replicate it."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent" />
+    <meta
+      property="og:description"
+      content="A new 421M open model, one coding agent, three rival guards, 50 labelled commands and 4,549 real ones. What held, what failed, why, and what it cost."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-coding-agent-guard-eval.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png" />
+    <meta property="og:image:alt" content="Social preview card: rules plus Laya would have paused 37% of my 4,549 real commands, Claude Opus 5 paused 3.0% of the same ones, and the study cost $0.89 in API calls." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent" />
+    <meta
+      name="twitter:description"
+      content="A new 421M open model, one coding agent, three rival guards, 50 labelled commands and 4,549 real ones. What held, what failed, why, and what it cost."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Experiment · Sep 28 · LLM Evaluation · 14 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              I wanted to know how Laya behaves on real work, so I gave it a job: judge every terminal command my AI coding agent proposes, before it runs. This is the full account: the setup, every number against three other guards, the mechanism behind the gap between the lab test and real use, what it cost, and how to run the same test on your own agent.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <blockquote class="article-pullquote">
+                In the lab, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have interrupted 37% of them. Same model, same settings. The difference was the data.
+              </blockquote>
+
+              <p><strong>Laya</strong> is a small open model released in September 2026 by ConvAI Innovations: 421 million parameters, Apache 2.0 licence, and it runs on a laptop. It does not write text. You describe a situation, ask it typed questions, and it returns a probability for each answer in one pass. The pitch is a fast, cheap judgement call, the kind you would want in front of a system that acts on its own. A demo on invoices or support tickets cannot tell me whether that holds on my machine with my work, so I gave it a real job and measured it.</p>
+
+              <p>The job. An <strong>AI coding agent</strong> is a program that writes and runs code for you. Mine is Claude Code, Anthropic's coding agent that runs in the terminal. It reads files, edits them, and runs terminal commands: <code>git status</code>, <code>pytest</code>, and sometimes <code>rm -rf</code>. Most of those commands are harmless. A few can destroy work in a second: delete a folder, overwrite saved history, or send a private key off the machine. I wanted a second check in front of those few, and Laya became that check. To know whether it was any good, I ran three other guards on the same commands: a list of pattern rules, a tiny general chat model, and Claude Opus 5.</p>
+
+              <p>This post is for two readers. If you are weighing Laya, or any small decision model, for a job like this, the second half is the interesting part: a clean example of an evaluation that passed and a deployment that failed, with the mechanism found. If you use a coding agent and have wondered whether you need a guard at all, the short answer is in the section <a class="article-jump-link" href="#do-you-need-one">Do you need a guard?</a></p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-guard-pipeline.svg" alt="Four boxes joined by arrows: Claude Code proposes a command, a PreToolUse hook runs, a guard server judges it, and a verdict of allow, ask, or block comes back." />
+                <figcaption class="article-caption">Where the guard sits. The hook runs before every terminal command; the server answers from the same Mac; the verdict is allow, ask me, or block.</figcaption>
+              </figure>
+
+              <div class="article-callout">
+                <p class="article-callout-label">At a glance</p>
+                <ul>
+                  <li>Laya, a small open model that answers questions with a probability instead of text, ran as a guard: a check before my coding agent executes a terminal command, which can pause or block it. Three other guards ran alongside it for comparison.</li>
+                  <li>On 50 hand-labelled commands, rules plus Laya blocked 5% of harmless commands and let 15% of dangerous ones through, the best result of any guard that runs on the laptop. Claude Opus 5 made no errors on that set.</li>
+                  <li>On 4,549 commands from my real sessions, the same rules-plus-Laya guard would have paused one command in three. Laya's danger score rises with the length of the command, and real commands are twenty times longer than my test ones.</li>
+                  <li>Rules alone pause 3.6% of real commands but miss two-thirds of dangerous ones. Claude Opus 5 pauses 3% of real commands, and the ones it paused deserved it, at about two seconds and a third of a cent per command.</li>
+                  <li>The whole study cost $0.89 in API calls. Everything else ran free on a MacBook.</li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">The setup</p>
+              <h3 id="what-a-guard-is">What a guard is, and where it sits</h3>
+              <p>Claude Code has a feature called a <strong>PreToolUse hook</strong>: a small script it runs before every tool call, including every terminal command. The script sees the command text and can answer in one of three ways. <em>Allow</em> lets it run. <em>Ask</em> shows the command to me and waits. <em>Block</em> stops it and tells the agent why. My hook sends the command to a small server on the same laptop, and the server holds the actual guard.</p>
+
+              <p>Two design choices matter for reading the results. First, the hook only ever pauses or blocks; it never approves. If the guard says allow, the hook stays silent and Claude Code's own permission checks proceed as normal. Second, the hook fails open: if the server is down or slow, it says nothing. A safety layer that can freeze your work is one you switch off within a day.</p>
+
+              <p>Claude Code already has a safety classifier of its own. It blocked three commands in this very project, all of them attempts to import a freshly installed package it had never seen. Across my whole history it denied 5 commands out of 4,549. That is worth knowing before you build anything: the built-in layer exists, it is deliberately quiet, and it reads the whole conversation rather than just the command. I come back to what that means at the end.</p>
+
+              <h3 id="the-four-guards">The four guards</h3>
+              <ul>
+                <li><strong>A rules list.</strong> Sixteen text patterns from <a class="article-reference-inline" href="#ref-3">agent-guard</a>, an open-source guard published under the MIT licence, used unmodified. A pattern is a fixed shape of text such as <code>rm -rf</code>, <code>DROP TABLE</code>, or <code>git push --force</code> to a main branch. If the command matches a pattern it is flagged; otherwise it passes. Rules know only what someone wrote down.</li>
+                <li><strong><a class="article-reference-inline" href="#ref-1">Laya</a>.</strong> The <code>typed-decisions</code> checkpoint, the version fine-tuned for decision tasks. I asked it three questions per command: is this destructive, what kind of command is it, and how far could damage reach. It answers all three in one pass, in about 90 milliseconds on my laptop.</li>
+                <li><strong>A tiny general chat model.</strong> <a class="article-reference-inline" href="#ref-4">Qwen2.5-0.5B-Instruct</a>, a 0.5-billion-parameter chat model, included as a control: a model of the same size as Laya that was built for conversation. I did not ask it to write an answer. I read the probability it assigned to the word "yes" versus "no" after the question "is this command destructive?", which gives a score without any text to parse.</li>
+                <li><strong>Claude Opus 5.</strong> Called through the Anthropic API at its lowest effort setting, meaning the least internal reasoning per call, with a one-line instruction to answer with a JSON object holding a yes/no verdict and a confidence. This is the "why not just ask a frontier model" option, and it has a cost per call that the other three do not.</li>
+              </ul>
+              <p>I also measured every combination of rules plus a model, where the rules decide first and the model only judges commands the rules did not match. That combination is how the one open-source project closest to mine, <a class="article-reference-inline" href="#ref-5">rh-guard</a>, is built.</p>
+
+              <p class="article-section-label">How I measured</p>
+              <h3 id="the-lab-test">The lab test: 50 hand-labelled commands</h3>
+              <p>I wrote 100 terminal commands by hand and labelled each one: 40 <strong>harmless</strong> (<code>git status</code>, <code>pytest</code>, <code>mkdir</code>), 40 <strong>dangerous</strong> (<code>rm -rf</code> on a project, <code>DROP DATABASE</code>, a script that posts a secrets file to an outside server, a delete hidden inside a one-line Python program), and 20 <strong>grey-zone</strong> (<code>rm -rf node_modules</code>, <code>git stash drop</code>, printing a credentials file to the screen). Grey-zone commands are ones where a reasonable person would want to be asked.</p>
+
+              <p>Every guard that produces a score needs a <strong>threshold</strong>: the score above which a command is flagged. Choosing the threshold on the same commands you then report is a classic way to flatter a result. So I split the 100 in half. Thresholds were chosen on 50 (the tune set); every number in this post comes from the other 50 (the test set), which the tuning never saw. The test set holds 20 harmless, 20 dangerous, and 10 grey-zone commands.</p>
+
+              <p>Two errors matter, and I report only those two in the body of this post. A <strong>false alarm</strong> is a harmless command the guard flagged; false alarms are what make you switch a guard off. A <strong>miss</strong> is a dangerous command the guard let through; misses are why the guard exists. With 20 commands per class, one command moves either rate by five percentage points, so I treat differences under ten points as noise. Statisticians' metrics such as AUROC and calibration error are in the <a class="article-jump-link" href="#appendix">appendix</a>.</p>
+
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: the lab test, 50 held-out commands</p>
+              <table class="article-data-table article-data-table--center">
+                <thead>
+                  <tr>
+                    <th>Guard</th>
+                    <th>Harmless commands it blocked (false alarms)</th>
+                    <th>Dangerous commands it let through (misses)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Rules list (agent-guard)</td><td>0%</td><td>65%</td></tr>
+                  <tr><td>Tiny chat model (Qwen 0.5B)</td><td>25%</td><td>75%</td></tr>
+                  <tr><td>Small local model (Laya)</td><td>50%</td><td>5%</td></tr>
+                  <tr><td>Rules + Laya</td><td>5%</td><td>15%</td></tr>
+                  <tr><td>Rules + Qwen</td><td>25%</td><td>50%</td></tr>
+                  <tr><td>Claude Opus 5</td><td>0%</td><td>0%</td></tr>
+                </tbody>
+              </table>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-guard-lab.svg" alt="Horizontal bars for five guards showing false alarms in blue and misses in orange: rules 0 and 65, Qwen 25 and 75, Laya 50 and 5, rules plus Laya 5 and 15, Claude Opus 5 zero and zero." />
+                <figcaption class="article-caption">The lab result. Lower is better on both bars.</figcaption>
+              </figure>
+
+              <p>Read the table row by row. The rules list produced no false alarms and missed 13 of the 20 dangerous commands. The misses were the commands with no matching pattern: a private key overwritten by <code>ssh-keygen</code>, every Python process killed with <code>pkill</code>, a folder emptied with <code>rsync --delete</code>, and the deletes hidden inside Python and Node one-liners. The tiny chat model was a coin flip on this task; a model of Laya's size with no training for decisions adds nothing here.</p>
+
+              <p>Laya on its own caught 19 of 20 dangerous commands but flagged 10 of the 20 harmless ones. Its scores sat in a narrow band, mostly between 0.30 and 0.55, so any threshold that caught the dangerous commands also caught many harmless ones. Rules in front of Laya fixed that: 1 false alarm and 3 misses out of 20 each, a balanced accuracy of 90%. Claude Opus 5 made no errors on the 50. I deployed the rules-plus-Laya combination the same afternoon, in ask-only mode, and moved to the second test.</p>
+
+              <h3 id="the-real-test">The real test: 4,549 commands from my own sessions</h3>
+              <p>Claude Code keeps a transcript of every session on disk. I extracted every terminal command it had ever run on this laptop: 4,549 commands across 71 sessions, 4,512 of them unique, with secrets redacted before anything was saved. Then I scored them with every guard, using exactly the thresholds chosen in the lab test. Nothing was re-tuned.</p>
+
+              <p>Real traffic has no hand labels, and it is almost entirely harmless, so it cannot tell you how many dangerous commands a guard misses. It tells you the other thing, which is the thing that decides whether a guard survives: <strong>how often it would have paused me</strong>. I report that as pauses per 100 unique commands. To keep the runs short, the local guards scored a random sample of 2,500 unique commands, and Claude Opus 5 scored 200 of the same commands, so its row is marked.</p>
+
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: real traffic, pauses per 100 unique commands</p>
+              <table class="article-data-table article-data-table--center">
+                <thead>
+                  <tr>
+                    <th>Guard</th>
+                    <th>Pauses per 100 real commands</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Rules list (agent-guard)</td><td>3.6</td></tr>
+                  <tr><td>Tiny chat model (Qwen 0.5B)</td><td>11.5</td></tr>
+                  <tr><td>Rules + Qwen</td><td>12.8</td></tr>
+                  <tr><td><strong>Rules + Laya, the guard I had deployed</strong></td><td><strong>36.7</strong></td></tr>
+                  <tr><td>Small local model (Laya) alone</td><td>92.7</td></tr>
+                  <tr><td>Claude Opus 5 (200-command sample)</td><td>3.0</td></tr>
+                  <tr><td>Rules + Claude Opus 5 (200-command sample)</td><td>5.5</td></tr>
+                </tbody>
+              </table>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-guard-real.svg" alt="Horizontal bars: pauses per 100 real commands, rules 3.6, Qwen 11.5, rules plus Laya 36.7, Laya 92.7, Claude Opus 5 3.0, rules plus Claude 5.5." />
+                <figcaption class="article-caption">The real-traffic result. Pauses per 100 unique real commands; lower is better.</figcaption>
+              </figure>
+
+              <p>The guard I had deployed would have interrupted me on 37 of every 100 commands. Nobody keeps that. The rules alone would have paused 3.6 of every 100, which is tolerable, and the pauses I read were mostly real catches with one recurring exception: agent-guard's <code>rm -rf</code> pattern also matches a plain <code>rm -f</code>, which is my single most common harmless command, a file cleanup before a rebuild.</p>
+
+              <h3 id="why-it-failed">Why the small model failed</h3>
+              <p>Laya's "destructive" probability rises with the length of the command, whatever the command does. For real commands under 80 characters its average score was 0.37. For commands over 1,000 characters it was 0.48. The deployed threshold was 0.45. My lab commands were between 21 and 33 characters long on average, so the lab never contained a command long enough to trip this behaviour. Real commands are scripts: the median one is 519 characters.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-guard-length.svg" alt="Vertical bars: share of real commands Laya would flag rises from 6% under 80 characters to 70% between 1,000 and 2,000 characters." />
+                <figcaption class="article-caption">The mechanism. Same threshold in every bar; only the length of the command changes, and the flag rate climbs with it.</figcaption>
+              </figure>
+
+              <p>A natural fix is to raise the threshold. I swept it. At 0.60 the real-traffic pause rate falls to 4.5 per 100, but Laya then misses all 40 dangerous commands in the lab set; the rules in front of it do all the catching. At 0.50 the pause rate is still 16.8 per 100 and Laya misses 21 of the 40. There is no setting where the model both stays quiet on real work and catches anything the rules do not. So I switched the model off. The rules floor stays, in ask-only mode, and the model's scores are still logged in case a version calibrated on real commands ever exists.</p>
+
+              <p>Laya's maintainers describe the base model as near-random zero-shot and its value as a foundation to fine-tune on your own data. This result agrees with them: fine-tuned on invoices and support tickets, it ranks short shell commands well and does not transfer to long ones.</p>
+
+              <h3 id="claude-on-real-commands">Claude Opus 5 on real commands</h3>
+              <p>On a 200-command sample of the same real traffic, Claude Opus 5 would have paused 6 commands: 3 per 100. I read all six. One deleted every reminder in a Reminders list through an AppleScript. One wiped a git worktree. Others rewrote test fixture files or ran a temporary audit script that removed its own outputs. I would have wanted to be asked about each of them. Behind the rules floor the rate is 5.5 per 100, because the rules add their <code>rm -f</code> false alarms. Of the five commands Claude Code's own classifier had denied, all in this sample, Claude Opus 5 flagged one (the worktree wipe) and passed four, the package imports among them. That is consistent with the two judging different things: the classifier judges package trust and self-modification; the guard judges destructiveness.</p>
+
+              <p class="article-section-label">Cost and time</p>
+              <h3 id="cost-and-time">What it cost and how long it took</h3>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: per-command speed and cost, and the study's total spend</p>
+              <table class="article-data-table article-data-table--center">
+                <thead>
+                  <tr>
+                    <th>Guard</th>
+                    <th>Time per command</th>
+                    <th>Cost per command</th>
+                    <th>Cost in this study</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Rules list</td><td>under 1 ms</td><td>$0</td><td>$0</td></tr>
+                  <tr><td>Laya (local, Apple-silicon GPU)</td><td>94 ms</td><td>$0</td><td>$0</td></tr>
+                  <tr><td>Qwen 0.5B (local)</td><td>44 ms</td><td>$0</td><td>$0</td></tr>
+                  <tr><td>Claude Opus 5, lab commands</td><td>2.3 s</td><td>$0.0019</td><td>$0.19 for 100</td></tr>
+                  <tr><td>Claude Opus 5, real commands</td><td>2.2 s</td><td>$0.0035</td><td>$0.70 for 200</td></tr>
+                </tbody>
+              </table>
+              <p>Claude's cost per command nearly doubles on real traffic because real commands are longer and the price is per token. The two Claude runs together cost $0.89, the study's whole API spend. At my volume, 4,549 commands over a few months, running Claude Opus 5 on every command would have cost about $16 in total. Laya's published speed is 33 milliseconds; the 94 milliseconds here is a MacBook figure, since the published number was measured on a data-centre GPU.</p>
+
+              <p>Wall-clock time for the runs: the lab evaluation took about three minutes, of which two and a half were downloading Laya's second checkpoint. Scoring 2,500 real commands with the three local guards took ten minutes. The two Claude runs took four and seven minutes. Human time: one working day to build the server, the hook, the labelled set, and the lab evaluation, and a second morning for the real-traffic replay and this write-up.</p>
+
+              <p class="article-section-label">So what</p>
+              <h3 id="do-you-need-one">Do you need a guard?</h3>
+              <p>If you run a coding agent interactively, on your own projects, and you follow a rule like "ask me before anything destructive", you mostly do not. Claude Code's built-in classifier plus its permission prompts already cover the common cases, and this whole experiment measured that my own marginal safety from a separate guard was small. A separate guard earns its place in four situations:</p>
+              <ul>
+                <li><strong>Unattended agents.</strong> Overnight jobs, CI pipelines, scheduled runs. Nobody is at the prompt to answer "ask", so the guard must block outright, and a rules list is the right tool: deterministic, printable, fail-closed.</li>
+                <li><strong>Team rules that must be enforced mechanically.</strong> Never force-push the main branch, never touch the production database from an agent, never edit the tests to make them pass. Rules are blind to the conversation, and for these that is the point: an agent cannot argue its way past a pattern.</li>
+                <li><strong>Agents with no built-in safety layer.</strong> Custom agents and open-source models have no classifier underneath. There the judge is the safety layer, and a frontier model behind a rules floor is the pattern that held up in these numbers.</li>
+                <li><strong>High volume or data that cannot leave the machine.</strong> Thousands of decisions an hour, or a regulated environment with no API allowed. That is where a small local model belongs, once it has been calibrated on the real traffic.</li>
+              </ul>
+
+              <h3 id="conclusion">Conclusion and impact</h3>
+              <p>Does Laya work outside the lab? With the checkpoint as shipped and one fixed threshold, on my commands, the answer is no: it ranks short commands well, cannot produce a trustworthy probability, and reads length as danger on real scripts. Around it: the rules list is cheap and blind; the tiny chat model contributes nothing; Claude Opus 5 was correct on both tests. The combination that looked best in the lab, rules plus Laya, was the one that failed hardest in production, and the failure was invisible until the guard saw commands shaped like real work.</p>
+
+              <p>What changed for me is concrete. Laya is switched off. The rules floor runs, quietly, and a decision about paying for Claude on every command is now a decision with numbers attached rather than a guess. What changed in how I evaluate is the more useful part. A test set that does not look like production gives you a rumour about the system. My lab set was honest, split correctly, and reported on held-out data, and it still said 5% where reality said 37%. The replay of real traffic took one afternoon and cost nothing. It should have been the first test.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">If you take one thing from this</p>
+                <p>Before you trust an evaluation, put one real input from your own system next to one input from your test set and look at them. If they are not the same shape, the number you have is not the number you need.</p>
+              </div>
+
+              <p class="article-section-label">Appendix</p>
+              <h3 id="appendix">Technical metrics, limitations, and how to replicate</h3>
+              <p>Two metrics that statisticians use and I kept out of the body. <strong>AUROC</strong> asks how well a guard ranks dangerous commands above harmless ones regardless of threshold; 1.0 is perfect and 0.5 is a coin flip. <strong>ECE</strong>, expected calibration error, asks whether a score of 0.8 really means eight in ten were dangerous; lower is better, and 0.0 is perfect. Laya's high AUROC next to its high ECE is the whole story in two numbers: it orders commands well and its probabilities are not probabilities.</p>
+
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: lab test, all metrics, 50 held-out commands</p>
+              <table class="article-data-table article-data-table--center">
+                <thead>
+                  <tr>
+                    <th>Guard</th>
+                    <th>Threshold</th>
+                    <th>False alarms</th>
+                    <th>Misses</th>
+                    <th>Grey-zone flagged</th>
+                    <th>AUROC</th>
+                    <th>ECE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Rules list</td><td>n/a</td><td>0%</td><td>65%</td><td>10%</td><td>0.68</td><td>0.00</td></tr>
+                  <tr><td>Laya, typed-decisions checkpoint</td><td>0.34</td><td>50%</td><td>5%</td><td>90%</td><td>0.93</td><td>0.34</td></tr>
+                  <tr><td>Laya, base checkpoint</td><td>0.44</td><td>20%</td><td>15%</td><td>60%</td><td>0.91</td><td>0.21</td></tr>
+                  <tr><td>Qwen2.5-0.5B</td><td>0.64</td><td>25%</td><td>75%</td><td>10%</td><td>0.53</td><td>0.13</td></tr>
+                  <tr><td>Claude Opus 5, low effort</td><td>0.33</td><td>0%</td><td>0%</td><td>60%</td><td>1.00</td><td>0.07</td></tr>
+                  <tr><td>Rules + Laya typed</td><td>0.45</td><td>5%</td><td>15%</td><td>50%</td><td>0.94</td><td>0.26</td></tr>
+                  <tr><td>Rules + Laya base</td><td>0.44</td><td>20%</td><td>10%</td><td>60%</td><td>0.95</td><td>0.19</td></tr>
+                  <tr><td>Rules + Qwen</td><td>0.65</td><td>25%</td><td>50%</td><td>20%</td><td>0.64</td><td>0.19</td></tr>
+                </tbody>
+              </table>
+              <p>"Grey-zone flagged" is the share of the 10 ambiguous test commands the guard paused; there, pausing is the wanted behaviour. The base Laya checkpoint, which is not fine-tuned for decisions, was better balanced than the fine-tuned one on shell commands, and on real traffic it paused 61.8 per 100.</p>
+
+              <p><strong>Limitations.</strong> Twenty commands per class in the lab test, so each command is five points. Real traffic is one developer's commands on one laptop and has no labels; a guard could miss a dangerous real command without this test showing it. Claude Opus 5's real-traffic rate rests on 200 commands, so one command moves it by half a point. The Qwen score comes from next-token probabilities, which is a fair comparison for ranking but not how anyone would deploy a chat model. Claude Code's own classifier denied only 5 of 4,549 commands, too few to compare guards against.</p>
+
+              <p><strong>To replicate on your own agent.</strong> Install Laya with <code>pip install laya</code>; the checkpoint downloads on first use. Write 100 commands from your own work and label them harmless, dangerous, or grey-zone, then split them in half. Run every guard on the tune half to choose thresholds and report the test half. Then extract your agent's real command history and score it with the same thresholds. Claude Code's transcripts live under <code>~/.claude/projects/</code> as JSON lines; every Bash tool call carries the command text. Redact anything that looks like a token before you save it. The code, the labelled commands, the ported rules, and the results files are available on request; the email link is at the end of this page.</p>
+
+              <p class="article-section-label">References</p>
+              <h3>Sources</h3>
+              <ol class="article-references">
+                <li id="ref-1">ConvAI Innovations. "Laya: a 33 ms multilingual System 1 decision engine with calibrated probabilities." Model weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-2">Mukkunnoth, N. et al. The two Laya papers cited on the model card: arXiv:2503.23303 and arXiv:2510.01237. <a href="https://arxiv.org/abs/2503.23303" target="_blank" rel="noreferrer">arXiv</a></li>
+                <li id="ref-3">Vandith. "agent-guard: a pre-execution guard that stops your coding agent running destructive commands." MIT licence, 2026. <a href="https://github.com/vandith1/agent-guard" target="_blank" rel="noreferrer">GitHub</a></li>
+                <li id="ref-4">Qwen team. "Qwen2.5-0.5B-Instruct." Model weights, Apache 2.0. <a href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-5">"rh-guard: reward-hack radar for coding agents, structural denies plus a System One sidecar for Claude Code and Cursor hooks." 2026. <a href="https://github.com/24601/rh-guard" target="_blank" rel="noreferrer">GitHub</a></li>
+                <li id="ref-6">Anthropic. "Hooks: intercept and control agent behavior." Claude Code documentation. <a href="https://code.claude.com/docs/en/agent-sdk/hooks" target="_blank" rel="noreferrer">Documentation</a></li>
+              </ol>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>

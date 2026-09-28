@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" width="880" height="400" role="img" aria-label="Real traffic: pauses per 100 of my own commands (2,500 scored)"><rect width="880" height="400" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">Real traffic: pauses per 100 of my own commands (2,500 scored)</text>
+<line x1="270.0" y1="50" x2="270.0" y2="342" stroke="#dddbd5" stroke-width="1"/>
+<text x="270.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">0%</text>
+<line x1="395.0" y1="50" x2="395.0" y2="342" stroke="#dddbd5" stroke-width="1"/>
+<text x="395.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">25%</text>
+<line x1="520.0" y1="50" x2="520.0" y2="342" stroke="#dddbd5" stroke-width="1"/>
+<text x="520.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">50%</text>
+<line x1="645.0" y1="50" x2="645.0" y2="342" stroke="#dddbd5" stroke-width="1"/>
+<text x="645.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">75%</text>
+<line x1="770.0" y1="50" x2="770.0" y2="342" stroke="#dddbd5" stroke-width="1"/>
+<text x="770.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">100%</text>
+<text x="256" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules list (agent-guard)</text>
+<rect x="270" y="64" width="17.8" height="20" fill="#c2410c"/>
+<text x="293.8" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">3.6%</text>
+<text x="256" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Tiny chat model (Qwen 0.5B)</text>
+<rect x="270" y="108" width="57.4" height="20" fill="#c2410c"/>
+<text x="333.4" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">11.5%</text>
+<text x="256" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules + Laya</text>
+<rect x="270" y="152" width="183.6" height="20" fill="#c2410c"/>
+<text x="459.6" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">36.7%</text>
+<text x="256" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Small local model (Laya)</text>
+<rect x="270" y="196" width="463.4" height="20" fill="#c2410c"/>
+<text x="739.4" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">92.7%</text>
+<text x="256" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Claude Opus 5 *</text>
+<rect x="270" y="240" width="15.0" height="20" fill="#2a78d6"/>
+<text x="291.0" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">3.0%</text>
+<text x="256" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules + Claude Opus 5 *</text>
+<rect x="270" y="284" width="27.5" height="20" fill="#2a78d6"/>
+<text x="303.5" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">5.5%</text>
+<line x1="270" y1="50" x2="270" y2="342" stroke="#bbb" stroke-width="1"/>
+<text x="24" y="386" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">* Claude rows: a 200-command sample of the same traffic. No labels here - this counts pauses, not errors.</text></svg>

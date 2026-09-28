@@ -1671,6 +1671,16 @@ const content = {
   ],
   writingPosts: [
     {
+      title: "Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent",
+      sentence:
+        "Laya, a new 421M open model, put in front of a coding agent and measured against three other guards on 50 labelled commands, then on 4,549 real ones. What held, what failed, the mechanism, and what it cost.",
+      href: "./blog-coding-agent-guard-eval.html",
+      date: "2026-09-28",
+      category: "LLM Evaluation",
+      readingTime: "14 min read",
+      featured: true,
+    },
+    {
       title: "What Breaks in Ambient Clinical Documentation AI — The Nine Patterns",
       sentence:
         "Part 1: the nine recurring failure patterns in ambient clinical documentation AI — what they look like, why each one happens, and a fix for each.",

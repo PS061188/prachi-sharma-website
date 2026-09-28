@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 770 450" width="770" height="450" role="img" aria-label="Share of my real commands Laya would flag, by command length (characters)"><rect width="770" height="450" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">Share of my real commands Laya would flag, by command length (characters)</text>
+<line x1="70" y1="360.0" x2="740" y2="360.0" stroke="#dddbd5" stroke-width="1"/>
+<text x="62" y="364.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="end">0%</text>
+<line x1="70" y1="285.0" x2="740" y2="285.0" stroke="#dddbd5" stroke-width="1"/>
+<text x="62" y="289.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="end">25%</text>
+<line x1="70" y1="210.0" x2="740" y2="210.0" stroke="#dddbd5" stroke-width="1"/>
+<text x="62" y="214.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="end">50%</text>
+<line x1="70" y1="135.0" x2="740" y2="135.0" stroke="#dddbd5" stroke-width="1"/>
+<text x="62" y="139.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="end">75%</text>
+<line x1="70" y1="60.0" x2="740" y2="60.0" stroke="#dddbd5" stroke-width="1"/>
+<text x="62" y="64.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="end">100%</text>
+<rect x="91.0" y="342.6" width="68" height="17.4" fill="#c2410c"/>
+<text x="125.0" y="334.6" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">6%</text>
+<text x="125.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">under 80</text>
+<text x="125.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">69 commands</text>
+<rect x="201.0" y="311.2" width="68" height="48.8" fill="#c2410c"/>
+<text x="235.0" y="303.2" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">16%</text>
+<text x="235.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">80-200</text>
+<text x="235.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">504 commands</text>
+<rect x="311.0" y="302.3" width="68" height="57.7" fill="#c2410c"/>
+<text x="345.0" y="294.3" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">19%</text>
+<text x="345.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">200-500</text>
+<text x="345.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">650 commands</text>
+<rect x="421.0" y="237.2" width="68" height="122.8" fill="#c2410c"/>
+<text x="455.0" y="229.2" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">41%</text>
+<text x="455.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">500-1,000</text>
+<text x="455.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">530 commands</text>
+<rect x="531.0" y="150.1" width="68" height="209.9" fill="#c2410c"/>
+<text x="565.0" y="142.1" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">70%</text>
+<text x="565.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">1,000-2,000</text>
+<text x="565.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">343 commands</text>
+<rect x="641.0" y="160.2" width="68" height="199.8" fill="#c2410c"/>
+<text x="675.0" y="152.2" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" font-weight="700" fill="#1b1b1b" text-anchor="middle">67%</text>
+<text x="675.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">over 2,000</text>
+<text x="675.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">404 commands</text>
+<line x1="70" y1="360" x2="740" y2="360" stroke="#bbb" stroke-width="1"/>
+<text x="24" y="436" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">Same threshold (0.45) everywhere. My lab commands were 21-33 characters long; my real ones have a median of 519.</text></svg>

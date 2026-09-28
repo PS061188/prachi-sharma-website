@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250" role="img" aria-label="How the guard sits in front of the coding agent"><rect width="900" height="250" fill="#ffffff"/>
+<rect x="30" y="70" width="170" height="96" rx="6" fill="#f4f5f2" stroke="#cfd2c9"/>
+<text x="115" y="106" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="16" font-weight="700" fill="#1b1b1b" text-anchor="middle">Claude Code</text>
+<text x="115" y="128" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">the coding agent</text>
+<text x="115" y="144" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">proposes a terminal</text>
+<text x="115" y="160" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">command</text>
+<rect x="255" y="70" width="170" height="96" rx="6" fill="#f4f5f2" stroke="#cfd2c9"/>
+<text x="340" y="106" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="16" font-weight="700" fill="#1b1b1b" text-anchor="middle">PreToolUse hook</text>
+<text x="340" y="128" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">a small script Claude</text>
+<text x="340" y="144" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">Code runs first</text>
+<rect x="480" y="70" width="170" height="96" rx="6" fill="#f4f5f2" stroke="#cfd2c9"/>
+<text x="565" y="106" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="16" font-weight="700" fill="#1b1b1b" text-anchor="middle">Guard server</text>
+<text x="565" y="128" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">rules floor + a model,</text>
+<text x="565" y="144" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">on the same Mac</text>
+<rect x="705" y="70" width="170" height="96" rx="6" fill="#f4f5f2" stroke="#cfd2c9"/>
+<text x="790" y="106" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="16" font-weight="700" fill="#1b1b1b" text-anchor="middle">Verdict</text>
+<text x="790" y="128" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">allow · ask me · block</text>
+<line x1="200" y1="118" x2="250" y2="118" stroke="#1b1b1b" stroke-width="2"/>
+<polygon points="250,118 242,113 242,123" fill="#1b1b1b"/>
+<line x1="425" y1="118" x2="475" y2="118" stroke="#1b1b1b" stroke-width="2"/>
+<polygon points="475,118 467,113 467,123" fill="#1b1b1b"/>
+<line x1="650" y1="118" x2="700" y2="118" stroke="#1b1b1b" stroke-width="2"/>
+<polygon points="700,118 692,113 692,123" fill="#1b1b1b"/>
+<text x="450" y="205" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#6b6b6b" text-anchor="middle">If the server is down or slow, the hook says nothing and Claude Code's own checks proceed. The hook only ever pauses or blocks; it never approves on its own.</text>
+<text x="450" y="228" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#6b6b6b" text-anchor="middle">Only Bash (terminal) commands are checked. Everything runs locally except the Claude Opus 5 variant, which calls the API.</text></svg>
