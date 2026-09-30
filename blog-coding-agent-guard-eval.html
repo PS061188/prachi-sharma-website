@@ -17,7 +17,7 @@
     />
     <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-coding-agent-guard-eval.html" />
     <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png" />
-    <meta property="og:image:alt" content="Social preview card: rules plus Laya would have paused 37% of my 4,549 real commands, Claude Opus 5 paused 3.0% of the same ones, and the study cost $0.89 in API calls." />
+    <meta property="og:image:alt" content="Social preview card: rules plus Laya would have stopped me on 37% of my 4,549 real commands, nearly all of them harmless; Claude Opus 5 stopped 3.0%, every stop deserved, and the study cost $0.89 in API calls." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent" />
     <meta
@@ -88,7 +88,7 @@
               </div>
 
               <blockquote class="article-pullquote">
-                In the lab, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have interrupted 37% of them. Same model, same settings. The difference was the data.
+                In the lab, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have stopped me on 37% of them, almost all harmless work. Same model, same settings. The difference was the data.
               </blockquote>
 
               <p><strong>Laya</strong> is a small open model released in September 2026 by ConvAI Innovations: 421 million parameters, Apache 2.0 licence, and it runs on a laptop. It does not write text. You describe a situation, ask it typed questions, and it returns a probability for each answer in one pass. The pitch is a fast, cheap judgement call, the kind you would want in front of a system that acts on its own. A demo on invoices or support tickets cannot tell me whether that holds on my machine with my work, so I gave it a real job and measured it.</p>
@@ -105,10 +105,10 @@
               <div class="article-callout">
                 <p class="article-callout-label">At a glance</p>
                 <ul>
-                  <li>Laya, a small open model that answers questions with a probability instead of text, ran as a guard: a check before my coding agent executes a terminal command, which can pause or block it. Three other guards ran alongside it for comparison.</li>
+                  <li>Laya, a small open model that answers questions with a probability instead of text, ran as a guard: a check before my coding agent executes a terminal command, which can stop it or ask me first. Three other guards ran alongside it for comparison.</li>
                   <li>On 50 hand-labelled commands, rules plus Laya blocked 5% of harmless commands and let 15% of dangerous ones through, the best result of any guard that runs on the laptop. Claude Opus 5 made no errors on that set.</li>
-                  <li>On 4,549 commands from my real sessions, the same rules-plus-Laya guard would have paused one command in three. Laya's danger score rises with the length of the command, and real commands are twenty times longer than my test ones.</li>
-                  <li>Rules alone pause 3.6% of real commands but miss two-thirds of dangerous ones. Claude Opus 5 pauses 3% of real commands, and the ones it paused deserved it, at about two seconds and a third of a cent per command.</li>
+                  <li>On 4,549 commands from my real sessions, the same rules-plus-Laya guard would have stopped me on one command in three, almost all of them harmless. Laya's danger score rises with the length of the command, and real commands are twenty times longer than my test ones.</li>
+                  <li>Rules alone stop 3.6% of real commands but miss two-thirds of the dangerous lab commands. Claude Opus 5 stops 3% of real commands, and every one of those stops was deserved, at about two seconds and a third of a cent per command.</li>
                   <li>The whole study cost $0.89 in API calls. Everything else ran free on a MacBook.</li>
                 </ul>
               </div>
@@ -117,7 +117,7 @@
               <h3 id="what-a-guard-is">What a guard is, and where it sits</h3>
               <p>Claude Code has a feature called a <strong>PreToolUse hook</strong>: a small script it runs before every tool call, including every terminal command. The script sees the command text and can answer in one of three ways. <em>Allow</em> lets it run. <em>Ask</em> shows the command to me and waits. <em>Block</em> stops it and tells the agent why. My hook sends the command to a small server on the same laptop, and the server holds the actual guard.</p>
 
-              <p>Two design choices matter for reading the results. First, the hook only ever pauses or blocks; it never approves. If the guard says allow, the hook stays silent and Claude Code's own permission checks proceed as normal. Second, the hook fails open: if the server is down or slow, it says nothing. A safety layer that can freeze your work is one you switch off within a day.</p>
+              <p>Two design choices matter for reading the results. First, the hook only ever asks or blocks; it never approves. If the guard says allow, the hook stays silent and Claude Code's own permission checks proceed as normal. Second, the hook fails open: if the server is down or slow, it says nothing. A safety layer that can freeze your work is one you switch off within a day.</p>
 
               <p>Claude Code already has a safety classifier of its own. It blocked three commands in this very project, all of them attempts to import a freshly installed package it had never seen. Across my whole history it denied 5 commands out of 4,549. That is worth knowing before you build anything: the built-in layer exists, it is deliberately quiet, and it reads the whole conversation rather than just the command. I come back to what that means at the end.</p>
 
@@ -169,14 +169,14 @@
               <h3 id="the-real-test">The real test: 4,549 commands from my own sessions</h3>
               <p>Claude Code keeps a transcript of every session on disk. I extracted every terminal command it had ever run on this laptop: 4,549 commands across 71 sessions, 4,512 of them unique, with secrets redacted before anything was saved. Then I scored them with every guard, using exactly the thresholds chosen in the lab test. Nothing was re-tuned.</p>
 
-              <p>Real traffic has no hand labels, and it is almost entirely harmless, so it cannot tell you how many dangerous commands a guard misses. It tells you the other thing, which is the thing that decides whether a guard survives: <strong>how often it would have paused me</strong>. I report that as pauses per 100 unique commands. To keep the runs short, the local guards scored a random sample of 2,500 unique commands, and Claude Opus 5 scored 200 of the same commands, so its row is marked.</p>
+              <p>Real traffic has no hand labels, and it is almost entirely harmless, so it cannot tell you how many dangerous commands a guard misses. It tells you the other thing, which is the thing that decides whether a guard survives: <strong>how often it would have stopped me</strong>. I report that as stops per 100 unique commands, and on real work almost every stop is a wrong stop on a harmless command. To keep the runs short, the local guards scored a random sample of 2,500 unique commands, and Claude Opus 5 scored 200 of the same commands, so its row is marked.</p>
 
-              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: real traffic, pauses per 100 unique commands</p>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: real traffic, stops per 100 unique commands (almost all of them wrong stops)</p>
               <table class="article-data-table article-data-table--center">
                 <thead>
                   <tr>
                     <th>Guard</th>
-                    <th>Pauses per 100 real commands</th>
+                    <th>Stops per 100 real commands (lower is better)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -191,11 +191,11 @@
               </table>
 
               <figure class="article-figure">
-                <img src="./assets/article/laya-guard-real.svg" alt="Horizontal bars: pauses per 100 real commands, rules 3.6, Qwen 11.5, rules plus Laya 36.7, Laya 92.7, Claude Opus 5 3.0, rules plus Claude 5.5." />
-                <figcaption class="article-caption">The real-traffic result. Pauses per 100 unique real commands; lower is better.</figcaption>
+                <img src="./assets/article/laya-guard-real.svg" alt="Horizontal bars: stops per 100 real commands, almost all of them wrong stops on harmless work: rules 3.6, Qwen 11.5, rules plus Laya 36.7, Laya 92.7, Claude Opus 5 3.0, rules plus Claude 5.5." />
+                <figcaption class="article-caption">The real-traffic result. Stops per 100 unique real commands, almost all of them wrong stops on harmless work; lower is better.</figcaption>
               </figure>
 
-              <p>The guard I had deployed would have interrupted me on 37 of every 100 commands. Nobody keeps that. The rules alone would have paused 3.6 of every 100, which is tolerable, and the pauses I read were mostly real catches with one recurring exception: agent-guard's <code>rm -rf</code> pattern also matches a plain <code>rm -f</code>, which is my single most common harmless command, a file cleanup before a rebuild.</p>
+              <p>The guard I had deployed would have stopped me on 37 of every 100 commands, almost all of them harmless. Nobody keeps that. The rules alone would have stopped 3.6 of every 100, which is tolerable, and the stops I read were mostly right, with one recurring exception: agent-guard's <code>rm -rf</code> pattern also matches a plain <code>rm -f</code>, which is my single most common harmless command, a file cleanup before a rebuild.</p>
 
               <h3 id="why-it-failed">Why the small model failed</h3>
               <p>Laya's "destructive" probability rises with the length of the command, whatever the command does. For real commands under 80 characters its average score was 0.37. For commands over 1,000 characters it was 0.48. The deployed threshold was 0.45. My lab commands were between 21 and 33 characters long on average, so the lab never contained a command long enough to trip this behaviour. Real commands are scripts: the median one is 519 characters.</p>
@@ -205,12 +205,12 @@
                 <figcaption class="article-caption">The mechanism. Same threshold in every bar; only the length of the command changes, and the flag rate climbs with it.</figcaption>
               </figure>
 
-              <p>A natural fix is to raise the threshold. I swept it. At 0.60 the real-traffic pause rate falls to 4.5 per 100, but Laya then misses all 40 dangerous commands in the lab set; the rules in front of it do all the catching. At 0.50 the pause rate is still 16.8 per 100 and Laya misses 21 of the 40. There is no setting where the model both stays quiet on real work and catches anything the rules do not. So I switched the model off. The rules floor stays, in ask-only mode, and the model's scores are still logged in case a version calibrated on real commands ever exists.</p>
+              <p>A natural fix is to raise the threshold. I swept it. At 0.60 the real-traffic stop rate falls to 4.5 per 100, but Laya then misses all 40 dangerous commands in the lab set; the rules in front of it do all the catching. At 0.50 the stop rate is still 16.8 per 100 and Laya misses 21 of the 40. There is no setting where the model both stays quiet on real work and catches anything the rules do not. So I switched the model off. The rules floor stays, in ask-only mode, and the model's scores are still logged in case a version calibrated on real commands ever exists.</p>
 
               <p>Laya's maintainers describe the base model as near-random zero-shot and its value as a foundation to fine-tune on your own data. This result agrees with them: fine-tuned on invoices and support tickets, it ranks short shell commands well and does not transfer to long ones.</p>
 
               <h3 id="claude-on-real-commands">Claude Opus 5 on real commands</h3>
-              <p>On a 200-command sample of the same real traffic, Claude Opus 5 would have paused 6 commands: 3 per 100. I read all six. One deleted every reminder in a Reminders list through an AppleScript. One wiped a git worktree. Others rewrote test fixture files or ran a temporary audit script that removed its own outputs. I would have wanted to be asked about each of them. Behind the rules floor the rate is 5.5 per 100, because the rules add their <code>rm -f</code> false alarms. Of the five commands Claude Code's own classifier had denied, all in this sample, Claude Opus 5 flagged one (the worktree wipe) and passed four, the package imports among them. That is consistent with the two judging different things: the classifier judges package trust and self-modification; the guard judges destructiveness.</p>
+              <p>On a 200-command sample of the same real traffic, Claude Opus 5 would have stopped 6 commands: 3 per 100, and I read all six to check they were right. One deleted every reminder in a Reminders list through an AppleScript. One wiped a git worktree. Others rewrote test fixture files or ran a temporary audit script that removed its own outputs. I would have wanted to be asked about each of them. Behind the rules floor the rate is 5.5 per 100, because the rules add their <code>rm -f</code> false alarms. Of the five commands Claude Code's own classifier had denied, all in this sample, Claude Opus 5 flagged one (the worktree wipe) and passed four, the package imports among them. That is consistent with the two judging different things: the classifier judges package trust and self-modification; the guard judges destructiveness.</p>
 
               <p class="article-section-label">Cost and time</p>
               <h3 id="cost-and-time">What it cost and how long it took</h3>
@@ -284,7 +284,7 @@
                   <tr><td>Rules + Qwen</td><td>0.65</td><td>25%</td><td>50%</td><td>20%</td><td>0.64</td><td>0.19</td></tr>
                 </tbody>
               </table>
-              <p>"Grey-zone flagged" is the share of the 10 ambiguous test commands the guard paused; there, pausing is the wanted behaviour. The base Laya checkpoint, which is not fine-tuned for decisions, was better balanced than the fine-tuned one on shell commands, and on real traffic it paused 61.8 per 100.</p>
+              <p>"Grey-zone flagged" is the share of the 10 ambiguous test commands the guard stopped; there, stopping is the wanted behaviour. The base Laya checkpoint, which is not fine-tuned for decisions, was better balanced than the fine-tuned one on shell commands, and on real traffic it stopped 61.8 per 100.</p>
 
               <p><strong>Limitations.</strong> Twenty commands per class in the lab test, so each command is five points. Real traffic is one developer's commands on one laptop and has no labels; a guard could miss a dangerous real command without this test showing it. Claude Opus 5's real-traffic rate rests on 200 commands, so one command moves it by half a point. The Qwen score comes from next-token probabilities, which is a fair comparison for ranking but not how anyone would deploy a chat model. Claude Code's own classifier denied only 5 of 4,549 commands, too few to compare guards against.</p>
 

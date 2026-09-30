@@ -104,7 +104,7 @@
                 <p class="article-callout-label">Part of this series</p>
                 <ul>
                   <li><strong>Part 1 (this post): Laya, explained.</strong> How the model reads a question and answers it.</li>
-                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work outside the lab?</a> Laya as a safety check on my AI coding agent's commands: few errors on 50 short test commands, but it would have paused 37% of my real ones.</li>
+                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work outside the lab?</a> Laya as a safety check on my AI coding agent's commands: few errors on 50 short test commands, but it would have wrongly stopped about a third of my real, harmless ones.</li>
                   <li><a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3: Teaching Laya my real commands.</a> What changed after training it on 800 of my own commands labelled by Claude.</li>
                 </ul>
               </div>
@@ -243,7 +243,7 @@
               <h3 id="speed">Fast, and honest about its limits</h3>
               <p>Its model card (the makers' own description, published with the model) reports 39.5 milliseconds per question for the English checkpoint on an NVIDIA T4, a common cloud graphics card. A millisecond is a thousandth of a second, so that is about 25 questions per second. On my MacBook, three questions about one command took 94 milliseconds. For comparison, asking Claude Opus 5 the same yes/no question through its API took 2.3 seconds in Part 2.</p>
 
-              <p>The model card is also frank about limits. On decision tasks it was not trained for, the base version scores 0.362 where random guessing would score 0.318. With more than about 20 options it gets weak. Its makers present it as a fast base to fine-tune on your own data, fine-tuning being further training on your own examples. My two experiments test exactly that. <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> found that, used as shipped, its danger score rose with the length of a command, so it would have paused 37% of my real commands. <a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3</a> trains it on my real commands and measures what changes.</p>
+              <p>The model card is also frank about limits. On decision tasks it was not trained for, the base version scores 0.362 where random guessing would score 0.318. With more than about 20 options it gets weak. Its makers present it as a fast base to fine-tune on your own data, fine-tuning being further training on your own examples. My two experiments test exactly that. <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> found that, used as shipped, its danger score rose with the length of a command, so it would have stopped me on 37% of my real commands, almost all of them harmless. <a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3</a> trains it on my real commands and measures what changes.</p>
 
               <p class="article-section-label">Laya and Jev</p>
               <h3 id="jev">Is Laya the same as Jev?</h3>

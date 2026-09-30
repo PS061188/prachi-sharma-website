@@ -1671,13 +1671,13 @@ const content = {
   ],
   writingPosts: [
     {
-      title: "I Trained Laya on My Real Commands. A Two-Second Word Counter Still Beat It",
+      title: "Training Laya on My Real Commands Cut Its False Alarms from 38 to 6 in 100",
       sentence:
-        "Laya series, Part 3: the Laya decision model trained three ways on 800 of my real commands labelled by Claude, next to a two-second word-counting classifier. What moved, what did not, and what it cost.",
+        "Laya series, Part 3: the Laya decision model trained three ways on 800 of my real commands labelled by Claude, with a graph of every pass and a two-second word-counting classifier for comparison. What moved, what did not, and what it cost.",
       href: "./blog-laya-fine-tuning.html",
       date: "2026-09-29",
       category: "LLM Evaluation",
-      readingTime: "11 min read",
+      readingTime: "14 min read",
       featured: true,
     },
     {
