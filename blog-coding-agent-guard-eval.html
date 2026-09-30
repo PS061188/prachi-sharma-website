@@ -78,6 +78,15 @@
             </p>
 
             <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
+                  <li><strong>Part 2 (this post): Does Laya work outside the lab?</strong> Laya as a safety check on my coding agent's commands, tested on 50 lab commands and 4,549 real ones.</li>
+                  <li><a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3: Teaching Laya my real commands.</a> What changed after training it on my own commands labelled by Claude.</li>
+                </ul>
+              </div>
+
               <blockquote class="article-pullquote">
                 In the lab, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have interrupted 37% of them. Same model, same settings. The difference was the data.
               </blockquote>
@@ -279,17 +288,18 @@
 
               <p><strong>Limitations.</strong> Twenty commands per class in the lab test, so each command is five points. Real traffic is one developer's commands on one laptop and has no labels; a guard could miss a dangerous real command without this test showing it. Claude Opus 5's real-traffic rate rests on 200 commands, so one command moves it by half a point. The Qwen score comes from next-token probabilities, which is a fair comparison for ranking but not how anyone would deploy a chat model. Claude Code's own classifier denied only 5 of 4,549 commands, too few to compare guards against.</p>
 
-              <p><strong>To replicate on your own agent.</strong> Install Laya with <code>pip install laya</code>; the checkpoint downloads on first use. Write 100 commands from your own work and label them harmless, dangerous, or grey-zone, then split them in half. Run every guard on the tune half to choose thresholds and report the test half. Then extract your agent's real command history and score it with the same thresholds. Redact anything that looks like a token before you save it. The code, the labelled commands, the ported rules, and the results files are available on request; the email link is at the end of this page.</p>
+              <p><strong>To replicate on your own agent.</strong> Install Laya with <code>pip install laya</code>; the checkpoint downloads on first use. Write 100 commands from your own work and label them harmless, dangerous, or grey-zone, then split them in half. Run every guard on the tune half to choose thresholds and report the test half. Then extract your agent's real command history and score it with the same thresholds. Redact anything that looks like a token before you save it. The code for this post and the rest of the series, the 100 labelled lab commands, the ported rules, and the lab results are on <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a>. My real command history stays private.</p>
 
               <p class="article-section-label">References</p>
               <h3>Sources</h3>
               <ol class="article-references">
                 <li id="ref-1">ConvAI Innovations. "Laya: a 33 ms multilingual System 1 decision engine with calibrated probabilities." Model weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
-                <li id="ref-2">Mukkunnoth, N. et al. The two Laya papers cited on the model card: arXiv:2503.23303 and arXiv:2510.01237. <a href="https://arxiv.org/abs/2503.23303" target="_blank" rel="noreferrer">arXiv</a></li>
+                <li id="ref-2">Nandakishor M. (Laya's author). "I built non-autoregressive decision models a year ago. Then a frontier lab called it a…" Dev.to, 18 September 2026. <a href="https://dev.to/nandakishor_m_6cc0adfde9f/i-built-non-autoregressive-decision-models-a-year-ago-then-a-frontier-lab-called-it-a-18me" target="_blank" rel="noreferrer">Dev.to</a></li>
                 <li id="ref-3">Vandith. "agent-guard: a pre-execution guard that stops your coding agent running destructive commands." MIT licence, 2026. <a href="https://github.com/vandith1/agent-guard" target="_blank" rel="noreferrer">GitHub</a></li>
                 <li id="ref-4">Qwen team. "Qwen2.5-0.5B-Instruct." Model weights, Apache 2.0. <a href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct" target="_blank" rel="noreferrer">Hugging Face</a></li>
                 <li id="ref-5">"rh-guard: reward-hack radar for coding agents, structural denies plus a System One sidecar for Claude Code and Cursor hooks." 2026. <a href="https://github.com/24601/rh-guard" target="_blank" rel="noreferrer">GitHub</a></li>
                 <li id="ref-6">Anthropic. "Hooks: intercept and control agent behavior." Claude Code documentation. <a href="https://code.claude.com/docs/en/agent-sdk/hooks" target="_blank" rel="noreferrer">Documentation</a></li>
+                <li id="ref-7">Prachi Sharma. "laya-guard": the code for this series. <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a></li>
               </ol>
 
               <section class="article-endcap" aria-label="Reader response and author links">

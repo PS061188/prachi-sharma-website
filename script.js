@@ -1671,9 +1671,29 @@ const content = {
   ],
   writingPosts: [
     {
+      title: "I Trained Laya on My Real Commands. A Two-Second Word Counter Still Beat It",
+      sentence:
+        "Laya series, Part 3: the Laya decision model trained three ways on 800 of my real commands labelled by Claude, next to a two-second word-counting classifier. What moved, what did not, and what it cost.",
+      href: "./blog-laya-fine-tuning.html",
+      date: "2026-09-29",
+      category: "LLM Evaluation",
+      readingTime: "11 min read",
+      featured: true,
+    },
+    {
+      title: "Laya, Explained: The AI That Answers by Ticking Boxes",
+      sentence:
+        "Laya series, Part 1: how the Laya decision model turns a question into an answer sheet, reads it in one pass, and shares 100 coins among the answers. Animated, in plain language, and how it differs from Jev.",
+      href: "./blog-how-laya-works.html",
+      date: "2026-09-30",
+      category: "LLM Evaluation",
+      readingTime: "15 min read",
+      featured: true,
+    },
+    {
       title: "Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent",
       sentence:
-        "Laya, a new 421M open model, put in front of a coding agent and measured against three other guards on 50 labelled commands, then on 4,549 real ones. What held, what failed, the mechanism, and what it cost.",
+        "Laya series, Part 2: Laya, a new 421M open model, put in front of a coding agent and measured against three other guards on 50 labelled commands, then on 4,549 real ones. What held, what failed, the mechanism, and what it cost.",
       href: "./blog-coding-agent-guard-eval.html",
       date: "2026-09-28",
       category: "LLM Evaluation",

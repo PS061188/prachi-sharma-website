@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="880" height="484" role="img" aria-label="Real commands: how often each guard paused me, and what it missed"><rect width="880" height="484" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1d232b">Real commands: how often each guard paused me, and what it missed</text>
+<rect x="24" y="47" width="12" height="12" fill="#2a78d6"/><text x="42" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#66707d">real commands it would have paused</text>
+<rect x="300" y="47" width="12" height="12" fill="#eb6834"/><text x="318" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#66707d">destructive commands it let through (of 19)</text>
+<line x1="300.0" y1="68" x2="300.0" y2="426" stroke="#e6e3dc"/><text x="300.0" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">0%</text>
+<line x1="417.5" y1="68" x2="417.5" y2="426" stroke="#e6e3dc"/><text x="417.5" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">25%</text>
+<line x1="535.0" y1="68" x2="535.0" y2="426" stroke="#e6e3dc"/><text x="535.0" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">50%</text>
+<line x1="652.5" y1="68" x2="652.5" y2="426" stroke="#e6e3dc"/><text x="652.5" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">75%</text>
+<line x1="770.0" y1="68" x2="770.0" y2="426" stroke="#e6e3dc"/><text x="770.0" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">100%</text>
+<text x="286" y="98" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1d232b" text-anchor="end">Laya as shipped + rules (Part 2)</text>
+<rect x="300" y="74" width="182.1" height="18" fill="#2a78d6"/><text x="488.1" y="88" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">38.8%</text>
+<rect x="300" y="95" width="173.2" height="18" fill="#eb6834"/><text x="479.2" y="109" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">7 of 19</text>
+<text x="286" y="164" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1d232b" text-anchor="end">Trained: decision head only + rules</text>
+<rect x="300" y="140" width="145.7" height="18" fill="#2a78d6"/><text x="451.7" y="154" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">31.0%</text>
+<rect x="300" y="161" width="197.9" height="18" fill="#eb6834"/><text x="503.9" y="175" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">8 of 19</text>
+<text x="286" y="230" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1d232b" text-anchor="end">Trained: head + top 8 layers + rules</text>
+<rect x="300" y="206" width="123.4" height="18" fill="#2a78d6"/><text x="429.4" y="220" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">26.2%</text>
+<rect x="300" y="227" width="173.2" height="18" fill="#eb6834"/><text x="479.2" y="241" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">7 of 19</text>
+<text x="286" y="296" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1d232b" text-anchor="end">Trained: all 28 layers + rules</text>
+<rect x="300" y="272" width="43.5" height="18" fill="#2a78d6"/><text x="349.5" y="286" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">9.2%</text>
+<rect x="300" y="293" width="98.9" height="18" fill="#eb6834"/><text x="404.9" y="307" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">4 of 19</text>
+<text x="286" y="362" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1d232b" text-anchor="end">Word-counting classifier + rules</text>
+<rect x="300" y="338" width="124.6" height="18" fill="#2a78d6"/><text x="430.6" y="352" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">26.5%</text>
+<rect x="300" y="359" width="49.5" height="18" fill="#eb6834"/><text x="355.5" y="373" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1d232b">2 of 19</text>
+<line x1="300" y1="68" x2="300" y2="426" stroke="#bbb"/>
+<text x="24" y="470" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d">400 real commands none of the models trained on; Claude Opus labelled 19 of them destructive.</text></svg>

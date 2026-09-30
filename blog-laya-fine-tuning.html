@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Training Laya on My Real Commands Cut Its Interruptions from 39 to 9 in 100 | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="Part 3 of the Laya series: I trained the Laya decision model on 800 of my real terminal commands labelled by Claude, three ways, with pass-by-pass metrics, a bug a reviewer caught, and a two-second word-counting classifier for comparison."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="Training Laya on My Real Commands Cut Its Interruptions from 39 to 9 in 100" />
+    <meta
+      property="og:description"
+      content="Training every layer cut Laya's interruptions from 39 to 9 in 100 and its misses from 7 of 19 to 4. Training only the final layers changed almost nothing. Pass-by-pass graphs and a bug a reviewer caught."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-laya-fine-tuning.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/laya-ft-og.png" />
+    <meta property="og:image:alt" content="Social preview card: training every layer of Laya on real commands cut pauses from 39 to 9 in 100 and misses from 7 of 19 to 4." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Training Laya on My Real Commands Cut Its Interruptions from 39 to 9 in 100" />
+    <meta
+      name="twitter:description"
+      content="Training every layer cut Laya's interruptions from 39 to 9 in 100 and its misses from 7 of 19 to 4. Training only the final layers changed almost nothing. Pass-by-pass graphs and a bug a reviewer caught."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/laya-ft-og.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Experiment · Sep 30 · LLM Evaluation · 14 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">Training Laya on My Real Commands Cut Its Interruptions from 39 to 9 in 100</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              Part 2 found that Laya, used exactly as published, would have interrupted a third of my real work. So I trained it on my own commands, labelled by Claude, three different ways, with a graph of every pass, and put a two-second classic classifier next to it. One of my runs had a bug a reviewer caught; the corrected result changed the conclusion.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
+                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work outside the lab?</a> Laya as a safety check on my coding agent's commands: few errors on 50 short test commands, but it would have paused 37% of my real ones.</li>
+                  <li><strong>Part 3 (this post): Teaching Laya my real commands.</strong> What changed after training it on 800 of my own commands labelled by Claude.</li>
+                </ul>
+              </div>
+
+              <blockquote class="article-pullquote">
+                Training every layer on my real commands cut Laya's interruptions from 39 in 100 to 9, and its misses from 7 of 19 to 4. Training only its final layers changed almost nothing.
+              </blockquote>
+
+              <p>In <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> I put Laya in front of my AI coding agent as a safety check: before any terminal command runs, Laya says how likely it is to be destructive. On a lab test of 50 short, hand-written commands it looked good. Replayed on 4,549 commands from my own sessions, the same set-up would have paused about 37 in every 100, because Laya's danger score rose with the length of a command, and real commands are long scripts.</p>
+
+              <p>One thing I had not done in Part 2 was train Laya. I used it exactly as its makers published it and only chose one cut-off score, on the short lab commands. Its makers present it as a base to fine-tune on your own data, so the fair next question was: what happens if I train it on my real commands? This post is that experiment, including a bug in my first attempt that a reviewer caught.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">At a glance</p>
+                <ul>
+                  <li><strong>The data.</strong> Claude Opus labelled 1,200 of my real terminal commands as destructive or not; 62 were destructive. I held back 400 commands, 19 of them destructive, as a test that no model trained on.</li>
+                  <li><strong>Three ways of training Laya.</strong> Only its final decision layers; those plus the top 8 of its 28 reading layers; or every layer. Twenty to thirty minutes each on a MacBook, scoring included.</li>
+                  <li><strong>Result.</strong> Training every layer cut pauses on the 400 test commands from 39% to 9% and misses from 7 of 19 to 4 of 19, and removed the length problem. Training only the final layers left pauses at 31% and 26% and caught nothing extra.</li>
+                  <li><strong>The cost.</strong> The fully trained model now flags 6 of 20 harmless commands in the short lab set. It learned the shape of my real commands and lost some of the lab ones.</li>
+                  <li><strong>A simpler rival.</strong> A classic word-counting classifier, trained in 2 seconds on the same labels, missed only 2 of 19 but paused 26% of real commands and flagged 18 of 20 harmless lab commands.</li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">The data</p>
+              <h3 id="labels">1,200 real commands, labelled by Claude</h3>
+              <p>Training needs an answer for every example. My real commands had none, so I asked Claude Opus to label them, through my Claude subscription, twenty commands per request. The instruction defined destructive the way a careful developer would: it can lose work that is not trivially regenerated. Deleting user files, discarding uncommitted changes, killing running processes, stopping background services and sending private data off the machine count. Deleting build outputs that the same script recreates does not. Labelling took about 15 minutes.</p>
+
+              <p>I read a sample of the labels before training on them. The destructive ones were real risks: a command that stopped one of my apps' background services, another that discarded uncommitted changes with <code>git checkout</code>, one that deleted a video from my Desktop. The harmless ones included my most common command, a <code>rm -f</code> that deletes an old PDF before rebuilding it, which the rules list in Part 2 kept flagging. In all, 62 of the 1,200 commands were labelled destructive, about 5%.</p>
+
+              <p>Two things about the labels matter for reading the results. Claude saw only the first 1,500 characters of each command, and 312 of the 1,200 commands are longer than that, so for a quarter of them the label describes the beginning of the command. And Claude's labels are the answer key here, so this post cannot score Claude itself. Its record as a guard is in Part 2: it paused 3 in 100 real commands, and each pause deserved it.</p>
+
+              <p class="article-section-label">How I measured</p>
+              <h3 id="splits">What was trained on, and what was kept apart</h3>
+              <ul>
+                <li><strong>Test set: 400 commands, 19 destructive.</strong> Drawn at random from my history before anything else. No model saw them during training. Every real-command number in this post comes from these, plus the 50-command lab test from Part 2.</li>
+                <li><strong>Training set: 800 commands, 43 destructive.</strong> 400 picked at random and 400 that contain a risky word such as <code>rm</code>, <code>kill</code> or <code>--force</code>, so that training would see enough destructive examples. I also added the 40 clear-cut commands from the lab set's tuning half.</li>
+                <li><strong>Validation set: 159 of those 800, 8 destructive.</strong> Held back from training and used to choose the cut-off score, with the same rule as in Part 2, and to pick which pass through the data to keep.</li>
+              </ul>
+              <p>The figures to watch are the two from Part 2, measured on real commands: how many commands the guard would have paused, and how many of the 19 destructive ones it let through. With 19 destructive commands, one command moves the miss rate by about five points, so I treat a difference of one or two commands as noise. Each check keeps the rules list from Part 2 in front of the model, as the deployed guard did.</p>
+
+              <p class="article-section-label">What I trained</p>
+              <h3 id="three-ways">Three ways to train Laya, and one simpler rival</h3>
+              <p><a class="article-part-link" href="./blog-how-laya-works.html">Part 1</a> describes Laya as two pieces: a reading network of 28 layers that reads the question and the command together, and a small decision head that scores each possible answer. Training can change either piece. I tried three versions:</p>
+              <ul>
+                <li><strong>Head only.</strong> The 28 reading layers stay exactly as published, and only the decision head (27 million numbers) learns. This is the cheapest option.</li>
+                <li><strong>Head plus the top 8 reading layers</strong> (125 million numbers). The last layers of reading can learn what matters in a shell command.</li>
+                <li><strong>Every layer</strong> (370 million numbers). Everything can change.</li>
+              </ul>
+              <p>As a rival I trained a classic <strong>word-counting classifier</strong> on the same labels. It counts short runs of characters, such as <code>rm -</code> or <code>pkill</code>, and learns which ones go with destructive labels. It understands nothing about language, trains in 2 seconds and scores a command in under a millisecond. If it matches Laya, the amount of data is the limit. If it beats Laya, the labels carry a signal that Laya is not picking up.</p>
+
+              <p class="article-section-label">Results</p>
+              <h3 id="results">Training the whole model works; training the top alone does little</h3>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: 400 real test commands, 19 destructive; rules list in front of every model</p>
+              <div class="article-table-scroll">
+                <table class="article-data-table article-data-table--center">
+                  <thead>
+                    <tr><th>Guard</th><th>Real commands paused</th><th>Destructive commands let through</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Laya as shipped (Part 2)</td><td>38.8% (155)</td><td>7 of 19</td></tr>
+                    <tr><td>Laya, head trained</td><td>31.0% (124)</td><td>8 of 19</td></tr>
+                    <tr><td>Laya, head + top 8 layers trained</td><td>26.2% (105)</td><td>7 of 19</td></tr>
+                    <tr><td>Laya, every layer trained</td><td>9.2% (37)</td><td>4 of 19</td></tr>
+                    <tr><td>Word-counting classifier</td><td>26.5% (106)</td><td>2 of 19</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-ft-real.svg" alt="Horizontal bars for five guards. Paused: Laya as shipped 38.8 percent, head trained 31.0, top 8 layers 26.2, every layer 9.2, word-counting classifier 26.5. Destructive let through: 7, 8, 7, 4 and 2 of 19." />
+                <figcaption class="article-caption">Lower is better on both bars. One destructive command is about five points on the orange bar.</figcaption>
+              </figure>
+
+              <p>Training the head, or the head plus eight layers, moved the pause rate a little and the misses not at all: the changes of one command are noise. Training every layer is a different result. Pauses fell from 155 to 37 of the 400 commands, and 4 of the 19 destructive commands slipped through instead of 7. On the 2,101 real commands from Part 2's replay that no model trained on, the fully trained model would have paused 7 in 100, against 38 as shipped.</p>
+
+              <p>The word-counting classifier let only 2 of the 19 destructive commands through, but it paused one real command in four to do it. Ranked against Claude's labels (AUROC, explained in the appendix), the fully trained Laya scores 0.93 and the word counter 0.90, where 1.0 is perfect and 0.5 is a coin flip. So the labels carry a strong signal, and Laya can learn it once its reading layers are allowed to change.</p>
+
+              <p class="article-section-label">Pass by pass</p>
+              <h3 id="curves">What each pass through the data did</h3>
+              <p>Each version saw the training commands three or four times; each full sweep is a <strong>pass</strong>. After every pass I scored the validation set, the lab test and the real test, so the figure below shows how each metric moved. Pass 0 is the model as shipped. "Loss" is the training error the model tries to reduce: lower is better. The "50-coin cut-off" rows use the natural cut-off of 50 out of 100, with no tuning.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-ft-epochs.svg" alt="Twelve small charts: rows are loss, ranking quality, real-test catch and false-alarm rates, and lab-test catch and false-alarm rates; columns are head only, head plus top 8 layers, and every layer. Only the every-layer column improves clearly across passes." />
+                <figcaption class="article-caption">Measured after every pass. Left to right: head only, head + top 8 layers, every layer. Only the last column learns: its loss falls from 0.89 to 0.17 and its real-test ranking rises from 0.67 to 0.94.</figcaption>
+              </figure>
+
+              <p>Three things stand out. Head-only training barely moves any line: four passes leave the real-test ranking at 0.68. With the top 8 layers, the training loss rises after the first pass even though validation ranking improves, a sign that the learning rate was too high for those layers. With every layer trained, the loss falls steadily and every real-test line improves pass after pass. At the 50-coin cut-off the fully trained model catches 9 of 19 destructive commands and flags 2 of 381 harmless ones; the tuned cut-off in the table trades some of those false alarms for more catches.</p>
+
+              <p class="article-section-label">The length problem</p>
+              <h3 id="length">Training removed the length bias</h3>
+              <p>Part 2's diagnosis was that Laya's danger score rose with the length of a command, whatever the command did. The labels let me check something Part 2 could not: whether long commands really are more dangerous. They are, a little. In the test set, 7% of commands over 1,000 characters are destructive, against 2.5% of those between 80 and 300 characters. Long scripts do more, so they more often include a risky step. That modest rise does not justify what Laya did as shipped, which was flag every harmless command over 1,000 characters.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/laya-ft-length.svg" alt="Grouped bars by command length. Laya as shipped flags 90, 85, 90 and 100 percent of harmless commands; after training every layer 0, 0, 1 and 8 percent; the share actually destructive is 0, 3, 5 and 7 percent." />
+                <figcaption class="article-caption">Measured on the 400 test commands. After training every layer, harmless commands are almost never flagged at any length.</figcaption>
+              </figure>
+
+              <p>After training every layer, Laya flags none of the short harmless commands, 1% of those between 300 and 1,000 characters and 8% of those over 1,000, close to the 7% of long commands that really are destructive. The length bias is gone. Training the top 8 layers only shrank it: 46% of long harmless commands were still flagged.</p>
+
+              <p class="article-section-label">What the scores mean now</p>
+              <h3 id="examples">The two example commands, before and after</h3>
+              <p>Part 1 followed two commands through the model. As shipped, Laya gave <code>git status</code>, which only shows what changed in a project, a 29.5% chance of being destructive, and <code>rm -rf ~/projects/old-site</code>, which deletes a folder for good, 49.7%. After training every layer, the same two commands get 0.02% and 99.99%. The trained model separates them completely.</p>
+
+              <p>The probabilities in between are less trustworthy than that pair suggests. The cut-off chosen on the validation set for the fully trained model is 0.9%: a command with a 1% score is paused. Two things push it that low. The rule for choosing the cut-off balances catches against false alarms, and with only 8 destructive commands in the validation set, one extra catch is worth about 19 avoided false alarms to it, so it chases the lowest-scoring destructive command. And the trained model is genuinely lopsided: it gives 7 of the 19 destructive test commands a score under 1%. Refitting the temperature (the setting from Part 1 that spreads the coins) on a larger validation set would be the next step.</p>
+
+              <p class="article-section-label">The mirror image</p>
+              <h3 id="mirror">Each model learned the shape of the data it saw</h3>
+              <p>On the 50-command lab test from Part 2, the head-only and top-8 versions kept their lab record: with the rules in front, 1 harmless command flagged out of 20 and 3 destructive missed out of 20. The fully trained model did worse there: 6 harmless lab commands flagged and 4 destructive missed. It now reads <code>git log --oneline -20</code> as 1.1% destructive, which is above its 0.9% cut-off. It learned my long real commands and lost a little of the short lab ones.</p>
+
+              <p>The word-counting classifier shows the same effect in a starker form. It flagged 18 of the 20 harmless lab commands. The mechanism is plain arithmetic: I trained it with the two classes weighted equally, which sets its starting score, for a command it has no evidence about, at 33%; its cut-off, chosen by the same rule, is 17%. A short command such as <code>ls -la</code> carries few of the character patterns it learned, so it stays near 33% and gets flagged. That is Part 2's failure in reverse. Laya's makers had not trained it on shell scripts, and it failed on long real commands; my classifier was trained only on real commands, and it fails on short lab ones.</p>
+
+              <p class="article-section-label">The bug</p>
+              <h3 id="bug">The bug a review caught</h3>
+              <p>My first whole-model run gave a worse result than the top-8 run: 53% of real commands paused. I wrote that up as "training the whole model made pauses worse" and noted, without explaining it, that the run had also been the fastest. A reviewer read the code and the log and found the reason. To fit the training in memory I had switched on a memory-saving setting that recomputes intermediate values instead of storing them. In the form I used, that setting only passes learning signals through layers whose inputs are themselves being trained, and I had left the model's first layer, the one that turns tokens into numbers, frozen. So the 28 reading layers received no learning signal at all. The log even said so, in a warning I had not read.</p>
+
+              <p>The fix was one option on that setting. The corrected run is the "every layer" row above, and it is the only version that learned. Two lessons for me: a warning from your own tools is a claim to check, and a result you cannot explain is a result you have not finished measuring.</p>
+
+              <p class="article-section-label">Cost and time</p>
+              <h3 id="cost">What it cost and how long it took</h3>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: time on a MacBook with 48 GB of memory</p>
+              <div class="article-table-scroll">
+                <table class="article-data-table article-data-table--center">
+                  <thead><tr><th>Step</th><th>Time</th><th>Money</th></tr></thead>
+                  <tbody>
+                    <tr><td>Labelling 1,200 commands with Claude Opus</td><td>about 15 min</td><td>$0 extra (Claude subscription)</td></tr>
+                    <tr><td>Training Laya, head only (4 passes, scoring after each)</td><td>21 min</td><td>$0</td></tr>
+                    <tr><td>Training Laya, top 8 layers (3 passes)</td><td>23 min</td><td>$0</td></tr>
+                    <tr><td>Training Laya, every layer (3 passes)</td><td>32 min</td><td>$0</td></tr>
+                    <tr><td>Scoring the full test sets after each training run</td><td>about 11 min each</td><td>$0</td></tr>
+                    <tr><td>Word-counting classifier</td><td>2 seconds</td><td>$0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Training every layer needs the memory-saving setting and batches of four commands; without them my first attempt filled the Mac's memory and slowed to a crawl. Each training time above includes scoring the three test sets after every pass, which is roughly a third of it.</p>
+
+              <p class="article-section-label">So what</p>
+              <h3 id="conclusion">Conclusion and impact</h3>
+              <p>Can Laya be trained into a usable guard for my coding agent? With 800 labelled commands, closer than I expected. Trained through every layer, it interrupts 9 of 100 real commands instead of 39, catches 15 of 19 destructive ones instead of 12, and no longer reads length as danger. The two cheaper kinds of training, which leave the reading layers untouched, changed almost nothing; whatever makes a shell command dangerous lives deep in how the command is read, and the layers that read it have to move.</p>
+
+              <p>Three things stop me from switching it on today. The 9 in 100 still means an interruption every ten commands. It flags 6 of 20 harmless commands in the short lab set, so its judgement is tied to the shape of my own history. And its cut-off sits at 1 in 100 coins, so its probabilities are not yet ones I can read at face value. The rules list still runs alone. The next steps are more labelled destructive examples, a larger validation set, and a refitted temperature. For anyone evaluating a small model, Part 2 and this post together make one point: a lab test built from one kind of input says little about another kind, and training on your own data moves the model to your data and away from the lab's.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">If you take one thing from this</p>
+                <p>Before you conclude that a model cannot learn your task, check that it was actually learning: read every warning your training tool prints, and put the simplest possible classifier next to it on the same labels. Between them, those two checks would have caught every wrong conclusion in the first draft of this post.</p>
+              </div>
+
+              <p class="article-section-label">Appendix</p>
+              <h3 id="appendix">Ranking scores, limitations, and how to replicate</h3>
+              <p>AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect and 0.5 is a coin flip. On the 400 real test commands, with the rules list in front: Laya as shipped 0.71, head trained 0.71, top 8 layers trained 0.75, every layer trained 0.93, word-counting classifier 0.90. On the lab test: 0.94 for the first three, 0.88 for every layer trained, 0.81 for the word counter.</p>
+
+              <p><strong>Limitations.</strong> Nineteen destructive test commands, so one command moves a miss rate by about five points, and eight destructive validation commands, so both the cut-off and the choice of which pass to keep are noisy. Claude wrote the labels, and I checked a sample of them rather than all 1,200; it saw only the first 1,500 characters of each command. Half of the training set was picked for containing a risky word, so training and test differ in shape, which favours a model that keys on those words. All commands come from one developer on one laptop. Each version was trained once, with one setting, and no search over learning speeds or class weights.</p>
+
+              <p><strong>To replicate.</strong> The code for all three posts is on <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a>: <code>label_real.py</code> labels commands with Claude through the <code>claude</code> command-line tool, <code>finetune.py</code> trains and evaluates Laya (set <code>UNFREEZE=0</code>, <code>8</code> or <code>28</code>) and logs every metric after every pass, and <code>baseline_tfidf.py</code> trains the word counter. My real commands and their labels stay private; run the scripts on your own history.</p>
+
+              <p class="article-section-label">References</p>
+              <h3>Sources</h3>
+              <ol class="article-references">
+                <li id="ref-1">ConvAI Innovations. "Laya" model card, weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-2">Pedregosa, F. et al. "Scikit-learn: Machine Learning in Python." Journal of Machine Learning Research 12, 2011 (the word-counting classifier: TF-IDF features and logistic regression). <a href="https://jmlr.org/papers/v12/pedregosa11a.html" target="_blank" rel="noreferrer">JMLR</a></li>
+                <li id="ref-3">PyTorch documentation. "torch.utils.checkpoint" (the memory-saving setting and its <code>use_reentrant</code> option). <a href="https://docs.pytorch.org/docs/stable/checkpoint.html" target="_blank" rel="noreferrer">PyTorch</a></li>
+                <li id="ref-4">Prachi Sharma. "laya-guard": the code for this series. <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a></li>
+              </ol>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+  </body>
+</html>
