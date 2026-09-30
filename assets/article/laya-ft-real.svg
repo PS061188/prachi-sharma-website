@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="880" height="484" role="img" aria-label="Real commands: wrong stops on harmless ones, and destructive ones caught"><rect width="880" height="484" fill="#ffffff"/>
 <text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1d232b">Real commands: wrong stops on harmless ones, and destructive ones caught</text>
 <rect x="24" y="47" width="12" height="12" fill="#2a78d6"/><text x="42" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#66707d">harmless commands wrongly stopped (of 381)</text>
-<rect x="300" y="47" width="12" height="12" fill="#eb6834"/><text x="318" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#66707d">destructive commands caught (of 19)</text>
+<rect x="380" y="47" width="12" height="12" fill="#eb6834"/><text x="398" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#66707d">destructive commands caught (of 19)</text>
 <line x1="300.0" y1="68" x2="300.0" y2="426" stroke="#e6e3dc"/><text x="300.0" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">0%</text>
 <line x1="417.5" y1="68" x2="417.5" y2="426" stroke="#e6e3dc"/><text x="417.5" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">25%</text>
 <line x1="535.0" y1="68" x2="535.0" y2="426" stroke="#e6e3dc"/><text x="535.0" y="444" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#66707d" text-anchor="middle">50%</text>
