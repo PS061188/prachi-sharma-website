@@ -134,7 +134,7 @@
                   <li><strong>One read.</strong> A reading network with 28 layers reads the whole sheet in a single pass. By the end, each empty box holds a summary of how well its answer fits.</li>
                   <li><strong>100 coins.</strong> A small scorer gives each box a number, and the numbers are turned into shares of 100 coins. The share on an answer is its probability.</li>
                   <li><strong>Paid for honesty.</strong> Laya was trained with a scoring rule that punishes confident wrong answers hard, so its best strategy is to bet exactly what it believes.</li>
-                  <li><strong>Laya and Jev.</strong> Same idea and the same interface. Laya is open and runs on your machine; Jev is a closed paid service. Neither is based on LeCun's JEPA.</li>
+                  <li><strong>Laya and Jev.</strong> Same idea and the same interface. Laya is open and runs on your machine; Jev is a closed paid service.</li>
                 </ul>
               </div>
 
@@ -254,11 +254,6 @@
               <p>In short: pick Jev if you want a hosted service that handles long inputs and many options; pick Laya if you want to see inside the model, run it on your own machine, and train it on your own data.</p>
 
               <div class="article-callout">
-                <p class="article-callout-label">Is either of them JEPA?</p>
-                <p>No. JEPA (Joint Embedding Predictive Architecture) is Yann LeCun's approach to teaching a model about the world: it hides part of an image or video and learns to predict the <em>meaning</em> of the hidden part rather than the pixels. It is mainly aimed at models that understand the physical world. Laya is a text reader with a decision head trained by reinforcement learning. TypeSafe never mentions JEPA for Jev, and the name Jev comes from Jevons. The two meet only in hobby projects that use Jev to judge plans produced by a separate JEPA model.</p>
-              </div>
-
-              <div class="article-callout">
                 <p class="article-callout-label">What to remember</p>
                 <ul>
                   <li>A chat model answers by writing; Laya answers by sharing 100 coins among answers you wrote down. So it cannot invent an answer, though it can back the wrong one.</li>
@@ -278,7 +273,6 @@
                 <li id="ref-4">TypeSafe AI. "Introducing System One models and Jev." 15 September 2026. <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noreferrer">TypeSafe blog</a></li>
                 <li id="ref-5">MarkTechPost. "TypeSafe AI releases Jev." 19 September 2026. <a href="https://www.marktechpost.com/2026/09/19/typesafe-ai-releases-jev/" target="_blank" rel="noreferrer">MarkTechPost</a></li>
                 <li id="ref-6">Cloudflare. "typesafe/jev" model page, Workers AI documentation. <a href="https://developers.cloudflare.com/ai/models/typesafe/jev/" target="_blank" rel="noreferrer">Cloudflare</a></li>
-                <li id="ref-7">LeCun, Y. "A Path Towards Autonomous Machine Intelligence." 2022. <a href="https://openreview.net/pdf?id=BZ5a1r-kVsf" target="_blank" rel="noreferrer">OpenReview</a>; Assran, M. et al. "Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture." arXiv:2301.08243, 2023. <a href="https://arxiv.org/abs/2301.08243" target="_blank" rel="noreferrer">arXiv</a></li>
                 <li id="ref-8">Prachi Sharma. "laya-guard": the code for all three posts in this series. <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a></li>
               </ol>
 
