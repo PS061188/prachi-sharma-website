@@ -176,8 +176,8 @@
               <p>Part 2's diagnosis was that Laya's danger score rose with the length of a command, whatever the command did. The labels let me check something Part 2 could not: whether long commands really are more dangerous. They are, a little. In the test set, 7% of commands over 1,000 characters are destructive, against 2.5% of those between 80 and 300 characters. Long scripts do more, so they more often include a risky step. That modest rise does not justify what Laya did as shipped, which was flag every harmless command over 1,000 characters.</p>
 
               <figure class="article-figure">
-                <img src="./assets/article/laya-ft-length.svg" alt="Grouped bars by command length. Laya as shipped flags 90, 85, 90 and 100 percent of harmless commands; after training every layer 0, 0, 1 and 8 percent; the share actually destructive is 0, 3, 5 and 7 percent." />
-                <figcaption class="article-caption">Measured on the 400 test commands. After training every layer, harmless commands are almost never flagged at any length.</figcaption>
+                <img src="./assets/article/laya-ft-length.svg" alt="Grouped bars by command length. Laya as shipped flags 90, 85, 90 and 100 percent of harmless commands; after training the top 8 layers 0, 9, 18 and 46 percent; after training every layer 0, 0, 1 and 8 percent; the share actually destructive is 0, 3, 5 and 7 percent." />
+                <figcaption class="article-caption">Measured on the 400 test commands. Training the top 8 layers shrank the length bias; training every layer removed it.</figcaption>
               </figure>
 
               <p>After training every layer, Laya flags none of the short harmless commands, 1% of those between 300 and 1,000 characters and 8% of those over 1,000, close to the 7% of long commands that really are destructive. The length bias is gone. Training the top 8 layers only shrank it: 46% of long harmless commands were still flagged.</p>
