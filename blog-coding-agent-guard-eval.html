@@ -81,7 +81,7 @@
               <div class="article-callout">
                 <p class="article-callout-label">Part of this series</p>
                 <ul>
-                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
+                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and gives each answer a probability, in pictures.</li>
                   <li><strong>Part 2 (this post): Does Laya work on real commands?</strong> Laya as a safety check on my coding agent's commands, tested on 50 short commands I built and 4,549 real ones.</li>
                   <li><a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3: Teaching Laya my real commands.</a> What changed after training it on my own commands labelled by Claude.</li>
                 </ul>
@@ -162,7 +162,7 @@
                 <figcaption class="article-caption">Results on the short terminal command set. Lower is better on both bars.</figcaption>
               </figure>
 
-              <p>Read the table row by row. The rules list produced no false alarms and missed 13 of the 20 dangerous commands. The misses were the commands with no matching pattern: a private key overwritten by <code>ssh-keygen</code>, every Python process killed with <code>pkill</code>, a folder emptied with <code>rsync --delete</code>, and the deletes hidden inside Python and Node one-liners. The tiny chat model was a coin flip on this task; a model of Laya's size with no training for decisions adds nothing here.</p>
+              <p>Read the table row by row. The rules list produced no false alarms and missed 13 of the 20 dangerous commands. The misses were the commands with no matching pattern: a private key overwritten by <code>ssh-keygen</code>, every Python process killed with <code>pkill</code>, a folder emptied with <code>rsync --delete</code>, and the deletes hidden inside Python and Node one-liners. The tiny chat model did no better than random guessing on this task; a model of Laya's size with no training for decisions adds nothing here.</p>
 
               <p>Laya on its own caught 19 of 20 dangerous commands but flagged 10 of the 20 harmless ones. Its scores sat in a narrow band, mostly between 0.30 and 0.55, so any threshold that caught the dangerous commands also caught many harmless ones. Rules in front of Laya fixed that: 1 false alarm and 3 misses out of 20 each, a balanced accuracy of 90%. Claude Opus 5 made no errors on the 50. I deployed the rules-plus-Laya combination the same afternoon, in ask-only mode, and moved to the second test.</p>
 
@@ -258,7 +258,7 @@
 
               <p class="article-section-label">Appendix</p>
               <h3 id="appendix">Technical metrics, limitations, and how to replicate</h3>
-              <p>Two metrics that statisticians use and I kept out of the body. <strong>AUROC</strong> asks how well a guard ranks dangerous commands above harmless ones regardless of threshold; 1.0 is perfect and 0.5 is a coin flip. <strong>ECE</strong>, expected calibration error, asks whether a score of 0.8 really means eight in ten were dangerous; lower is better, and 0.0 is perfect. Laya's high AUROC next to its high ECE is the whole story in two numbers: it orders commands well and its probabilities are not probabilities.</p>
+              <p>Two metrics that statisticians use and I kept out of the body. <strong>AUROC</strong> asks how well a guard ranks dangerous commands above harmless ones regardless of threshold; 1.0 is perfect and 0.5 is no better than random guessing. <strong>ECE</strong>, expected calibration error, asks whether a score of 0.8 really means eight in ten were dangerous; lower is better, and 0.0 is perfect. Laya's high AUROC next to its high ECE is the whole story in two numbers: it orders commands well and its probabilities are not probabilities.</p>
 
               <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: short terminal command set, all metrics, 50 held-out commands</p>
               <table class="article-data-table article-data-table--center">

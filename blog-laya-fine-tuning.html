@@ -81,7 +81,7 @@
               <div class="article-callout">
                 <p class="article-callout-label">Part of this series</p>
                 <ul>
-                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
+                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and gives each answer a probability, in pictures.</li>
                   <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work on real commands?</a> Laya as a safety check on my coding agent's commands: few errors on 50 short test commands, but it would have wrongly stopped about a third of my real, harmless ones.</li>
                   <li><strong>Part 3 (this post): Teaching Laya my real commands.</strong> What changed after training it on 800 of my own commands labelled by Claude.</li>
                 </ul>
@@ -158,7 +158,7 @@
 
               <p>Training the head, or the head plus eight layers, reduced false alarms a little and caught nothing extra: the changes of one command are noise. Training every layer is a different result. False alarms fell from 143 to 22 of the 381 harmless commands, and it caught 15 of the 19 destructive commands instead of 12. On the 2,101 real commands from Part 2's replay that no model trained on, which carry no labels, the fully trained model would have stopped me on 7 in 100, against 38 as shipped.</p>
 
-              <p>The word-counting classifier caught 17 of the 19 destructive commands, but it wrongly stopped nearly one harmless command in four to do it. Ranked against Claude's labels (AUROC, explained in the appendix), the fully trained Laya scores 0.93 and the word counter 0.90, where 1.0 is perfect and 0.5 is a coin flip. So the labels carry a strong signal, and Laya can learn it once its reading layers are allowed to change.</p>
+              <p>The word-counting classifier caught 17 of the 19 destructive commands, but it wrongly stopped nearly one harmless command in four to do it. Ranked against Claude's labels (AUROC, explained in the appendix), the fully trained Laya scores 0.93 and the word counter 0.90, where 1.0 is perfect and 0.5 is no better than random guessing. So the labels carry a strong signal, and Laya can learn it once its reading layers are allowed to change.</p>
 
               <p class="article-section-label">Pass by pass</p>
               <h3 id="curves">What each pass through the data did</h3>
@@ -192,7 +192,7 @@
 
               <p><strong>The rule that picks the cut-off was working with too few examples.</strong> The cut-off is chosen automatically: the rule tries every possible value on the validation set and keeps the one that best balances two goals, catching destructive commands and leaving harmless ones alone, with equal weight on each goal. The validation set has 151 harmless commands but only 8 destructive ones. So catching one more destructive command improves the first goal by one eighth, while one extra false alarm hurts the second goal by only one 151st. To the rule, one extra catch is worth about 19 extra false alarms, and it keeps lowering the cut-off until even the lowest-scoring destructive command is caught, which happens at 0.9%.</p>
 
-              <p>The practical effect is that the trained model still puts commands in a useful order, with the dangerous ones on top, but a score of "40%" no longer means "right 40 times in 100". Refitting the temperature, the setting from Part 1 that spreads the coins, on a larger validation set is the way to make the numbers honest again.</p>
+              <p>The practical effect is that the trained model still puts commands in a useful order, with the dangerous ones on top, but a score of "40%" no longer means "right 40 times in 100". Refitting the temperature, the setting from Part 1 that corrects over-confidence, on a larger validation set is the way to make the numbers honest again.</p>
 
               <p class="article-section-label">The flip</p>
               <h3 id="mirror">Training on long real commands made the models worse on short ones</h3>
@@ -239,7 +239,7 @@
               <h3 id="conclusion">Conclusion and impact</h3>
               <p>Can Laya be trained into a usable guard for my coding agent? With 800 labelled commands, closer than I expected. Trained through every layer, it wrongly stops 6 of 100 harmless real commands instead of 38, catches 15 of 19 destructive ones instead of 12, and no longer reads length as danger. The two cheaper kinds of training, which leave the reading layers untouched, changed almost nothing; whatever makes a shell command dangerous lives deep in how the command is read, and the layers that read it have to move.</p>
 
-              <p>Three things stop me from switching it on today. Six false alarms in 100 harmless commands still means a wrong stop every fifteen commands or so; it flags 6 of 20 harmless commands in the short terminal command set, so its judgement is tied to the shape of my own history; and its cut-off sits at 1 in 100 coins, so its probabilities are not yet ones I can read at face value. Until those are fixed, the rules list runs alone, and the next steps are more labelled destructive examples, a larger validation set, and a refitted temperature. For anyone evaluating a small model, Part 2 and this post together make one point: a test set built from one kind of input says little about another kind, and training on your own data moves the model to your data and away from the short terminal command set.</p>
+              <p>Three things stop me from switching it on today. Six false alarms in 100 harmless commands still means a wrong stop every fifteen commands or so; it flags 6 of 20 harmless commands in the short terminal command set, so its judgement is tied to the shape of my own history; and its cut-off sits below 1%, so its probabilities are not yet ones I can read at face value. Until those are fixed, the rules list runs alone, and the next steps are more labelled destructive examples, a larger validation set, and a refitted temperature. For anyone evaluating a small model, Part 2 and this post together make one point: a test set built from one kind of input says little about another kind, and training on your own data moves the model to your data and away from the short terminal command set.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">If you take one thing from this</p>
@@ -248,7 +248,7 @@
 
               <p class="article-section-label">Appendix</p>
               <h3 id="appendix">Ranking scores, limitations, and how to replicate</h3>
-              <p>AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect and 0.5 is a coin flip. On the 400 real test commands, with the rules list in front: Laya as shipped 0.71, head trained 0.71, top 8 layers trained 0.75, every layer trained 0.93, word-counting classifier 0.90. On the short terminal command set: 0.94 for the first three, 0.88 for every layer trained, 0.81 for the word counter.</p>
+              <p>AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect and 0.5 is no better than random guessing. On the 400 real test commands, with the rules list in front: Laya as shipped 0.71, head trained 0.71, top 8 layers trained 0.75, every layer trained 0.93, word-counting classifier 0.90. On the short terminal command set: 0.94 for the first three, 0.88 for every layer trained, 0.81 for the word counter.</p>
 
               <p><strong>Limitations.</strong></p>
               <ul>
