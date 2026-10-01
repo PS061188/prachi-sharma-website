@@ -1683,11 +1683,11 @@ const content = {
     {
       title: "Laya, Explained: The AI That Answers by Ticking Boxes",
       sentence:
-        "Laya series, Part 1: how the Laya decision model turns a question into an answer sheet, reads it in one pass, and shares 100 coins among the answers. Animated, in plain language, and how it differs from Jev.",
+        "Laya series, Part 1: how the Laya decision model turns a question into an answer sheet, reads it in one pass, and gives each answer a probability; how it was trained to state honest probabilities, with a demo you can step through; and where it came from. In plain language.",
       href: "./blog-how-laya-works.html",
       date: "2026-09-30",
       category: "LLM Evaluation",
-      readingTime: "15 min read",
+      readingTime: "18 min read",
       featured: true,
     },
     {

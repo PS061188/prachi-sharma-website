@@ -28,6 +28,92 @@
     <link rel="stylesheet" href="./styles.css" />
     <style>
       .lx-svg { width: 100%; height: auto; display: block; }
+      /* RLCD interactive demo (Figure 6) */
+      .rlcd{--r-yes:#e5634a;--r-no:#5f7692;--r-good:#2e7d57;--r-good-bg:#e5f1eb;--r-worse:#6f7883;--r-track:#ecebe6;--r-surface:#fbfaf7;--r-line:#ddd9cf;--r-text:#1d232b;--r-muted:#66707d;--r-soft:#8a93a0;border:1px solid var(--r-line);border-radius:14px;background:#fff;overflow:hidden;font-family:Karla,sans-serif;color:var(--r-text);text-align:left;line-height:1.5;}
+      .rlcd *{box-sizing:border-box;}
+      .rlcd-dots{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--r-line);background:var(--r-surface);align-items:center;flex-wrap:wrap;}
+      .rlcd-dot{width:32px;height:32px;border-radius:50%;border:1px solid var(--r-line);background:#fff;font:500 13px 'IBM Plex Mono',monospace;color:var(--r-muted);cursor:pointer;padding:0;}
+      .rlcd-dot.done{color:var(--r-text);border-color:var(--r-soft);}
+      .rlcd-dot[aria-current="step"]{background:var(--r-text);color:#fff;border-color:var(--r-text);}
+      .rlcd-count{margin-left:auto;font:12px 'IBM Plex Mono',monospace;color:var(--r-muted);}
+      .rlcd-stage{padding:18px 16px 8px;min-height:330px;display:flex;flex-direction:column;gap:14px;}
+      .rlcd-cap{padding:4px 16px 2px;border-top:1px dashed var(--r-line);}
+      .rlcd-title{font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1;margin:10px 0 4px;}
+      .rlcd-text{margin:0 0 8px;font-size:15.5px;}
+      .rlcd-controls{display:flex;gap:8px;padding:8px 16px 16px;flex-wrap:wrap;}
+      .rlcd-btn{font:600 14.5px Karla,sans-serif;border-radius:999px;padding:9px 17px;border:1px solid var(--r-line);background:#fff;color:var(--r-text);cursor:pointer;}
+      .rlcd-btn:disabled{opacity:.4;cursor:default;}
+      .rlcd-btn.rlcd-primary{background:var(--r-text);color:#fff;border-color:var(--r-text);margin-left:auto;}
+      .rlcd button:focus-visible,.rlcd input:focus-visible{outline:2px solid #1f6feb;outline-offset:2px;}
+      .rlcd-mono{font-family:'IBM Plex Mono',monospace;}
+      .rlcd-q{display:flex;flex-direction:column;gap:8px;}
+      .rlcd-msg{background:var(--r-surface);border:1px solid var(--r-line);border-radius:14px 14px 14px 4px;padding:9px 14px;max-width:430px;}
+      .rlcd-who{font:11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--r-muted);}
+      .rlcd-msg p{margin:2px 0 0;font-size:16.5px;}
+      .rlcd-ask{margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px;}
+      .rlcd-chip{display:inline-flex;align-items:center;gap:6px;font:12.5px 'IBM Plex Mono',monospace;padding:3px 10px;border-radius:999px;border:1px solid var(--r-line);background:#fff;}
+      .rlcd-sw{width:10px;height:10px;border-radius:50%;display:inline-block;}
+      .rlcd-sw.y{background:var(--r-yes);} .rlcd-sw.n{background:var(--r-no);}
+      .rlcd-truth{background:var(--r-good-bg);color:var(--r-good);border-color:transparent;opacity:0;transform:translateY(4px);transition:opacity .45s,transform .45s;}
+      .rlcd-truth.show{opacity:1;transform:none;}
+      .rlcd-row{display:flex;gap:22px;align-items:center;flex-wrap:wrap;}
+      .rlcd-row.top{align-items:flex-start;}
+      .rlcd-coins{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;width:min(100%,230px);}
+      .rlcd-coins.small{width:110px;gap:3px;}
+      .rlcd-coin{aspect-ratio:1;border-radius:50%;background:var(--r-no);transition:background-color .4s,transform .35s;}
+      .rlcd-coin.y{background:var(--r-yes);}
+      .rlcd-coins.drop .rlcd-coin{transform:scale(0);}
+      .rlcd-coins.drop.in .rlcd-coin{transform:scale(1);}
+      .rlcd-coin.flip{animation:rlcd-pop .55s ease-out;}
+      @keyframes rlcd-pop{45%{transform:scale(1.45);}}
+      .rlcd-legend{display:flex;flex-direction:column;gap:4px;}
+      .rlcd-big{font:24px 'IBM Plex Mono',monospace;line-height:1.2;}
+      .rlcd-yt{color:var(--r-yes);} .rlcd-nt{color:var(--r-no);}
+      .rlcd-note{font-size:13px;color:var(--r-muted);}
+      .rlcd-mini{display:flex;flex-direction:column;gap:6px;width:120px;}
+      .rlcd-col{flex:1;min-width:240px;display:flex;flex-direction:column;gap:10px;}
+      .rlcd-tries{display:flex;flex-direction:column;gap:12px;}
+      .rlcd-try{display:grid;grid-template-columns:44px 1fr 92px;gap:5px 10px;align-items:center;}
+      .rlcd-tl{font:12px 'IBM Plex Mono',monospace;color:var(--r-muted);}
+      .rlcd-bar{height:18px;border-radius:4px;background:var(--r-no);overflow:hidden;}
+      .rlcd-bary{height:100%;width:60%;background:var(--r-yes);}
+      .rlcd-tv{font:13px 'IBM Plex Mono',monospace;text-align:right;}
+      .rlcd-pen{grid-column:2 / 4;display:grid;grid-template-columns:1fr 92px;gap:10px;align-items:center;}
+      .rlcd-pt{position:relative;height:8px;background:var(--r-track);border-radius:4px;}
+      .rlcd-pf{height:100%;width:0;border-radius:4px;background:var(--r-soft);transition:background-color .4s;}
+      .rlcd-avg{position:absolute;top:-6px;bottom:-6px;border-left:2px dashed var(--r-text);opacity:0;transition:opacity .5s;}
+      .rlcd-pv{font:13px 'IBM Plex Mono',monospace;text-align:right;}
+      .rlcd-vd{grid-column:2 / 4;font-size:13.5px;font-weight:700;}
+      .rlcd-try.better .rlcd-pf{background:var(--r-good);} .rlcd-try.better .rlcd-vd{color:var(--r-good);}
+      .rlcd-try.worse .rlcd-vd{color:var(--r-worse);}
+      .rlcd-avgread{margin:0;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+      .rlcd-dash{display:inline-block;width:0;height:16px;border-left:2px dashed var(--r-text);}
+      .rlcd-loop{display:flex;gap:6px;flex-wrap:wrap;font:12px 'IBM Plex Mono',monospace;}
+      .rlcd-loop span{padding:5px 9px;border-radius:6px;background:var(--r-surface);border:1px solid var(--r-line);color:var(--r-muted);transition:border-color .3s,color .3s;}
+      .rlcd-loop span.now{border-color:var(--r-text);color:var(--r-text);}
+      .rlcd-lead{margin:0;font-size:15px;}
+      .rlcd-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+      .rlcd-tile{border-radius:8px;padding:7px 4px;text-align:center;border:1px solid var(--r-line);background:var(--r-surface);display:flex;flex-direction:column;gap:2px;}
+      .rlcd-tile .t{font-size:13px;font-weight:700;}
+      .rlcd-tile.y .t{color:var(--r-yes);} .rlcd-tile.n .t{color:var(--r-no);}
+      .rlcd-tile .p{font:12.5px 'IBM Plex Mono',monospace;}
+      .rlcd-tile.hurt{border-color:var(--r-yes);}
+      .rlcd-slider{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+      .rlcd-slider label{font-weight:700;font-size:15px;}
+      .rlcd-slider input[type=range]{flex:1;min-width:160px;accent-color:var(--r-yes);}
+      .rlcd-presets{display:flex;gap:6px;flex-wrap:wrap;}
+      .rlcd-preset{font:600 13px Karla,sans-serif;padding:7px 13px;border-radius:999px;border:1px solid var(--r-line);background:#fff;color:var(--r-text);cursor:pointer;}
+      .rlcd-readout{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:baseline;font-size:15px;}
+      .rlcd-v6{font-weight:700;} .rlcd-v6.ok{color:var(--r-good);}
+      .rlcd-curve svg{width:100%;max-width:460px;height:auto;display:block;}
+      .rlcd-ax{fill:var(--r-muted);font-family:'IBM Plex Mono',monospace;font-size:10.5px;}
+      .rlcd-gl{stroke:var(--r-line);stroke-width:1;}
+      .rlcd-cp{stroke:var(--r-text);stroke-width:2;fill:none;}
+      .rlcd-ml{stroke:var(--r-good);stroke-width:1.5;stroke-dasharray:3 3;}
+      .rlcd-mt{fill:var(--r-good);font-family:'IBM Plex Mono',monospace;font-size:10.5px;}
+      .rlcd-cur{fill:var(--r-yes);stroke:#fff;stroke-width:2;}
+      @media (max-width:520px){.rlcd-try{grid-template-columns:40px 1fr 84px;}.rlcd-pen{grid-template-columns:1fr 84px;}.rlcd-title{font-size:24px;}}
+      @media (prefers-reduced-motion: reduce){.rlcd *{transition:none !important;animation:none !important;}.rlcd-coins.drop .rlcd-coin{transform:none;}}
       .lx-rise { animation: lx-rise 9s ease-out infinite backwards; }
       @keyframes lx-rise { 0% { opacity: 0; transform: translateY(10px); } 8%, 88% { opacity: 1; transform: none; } 100% { opacity: 0; } }
       .lx-link { stroke-dasharray: 100; animation: lx-draw 6s ease-in-out infinite backwards; }
@@ -72,7 +158,7 @@
       <main class="article-page">
         <article class="article-layout">
           <div class="article-main">
-            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Explainer · Sep 30 · LLM Evaluation · 15 min read</p>
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Explainer · Sep 30 · LLM Evaluation · 18 min read</p>
             <div class="article-title-row">
               <h2 class="editable-field" id="article-title" contenteditable="false">Laya, Explained: The AI That Answers by Ticking Boxes</h2>
               <div class="article-title-actions" aria-label="Article actions">
@@ -96,7 +182,7 @@
               </div>
             </div>
             <p class="article-dek editable-field" id="article-dek" contenteditable="false">
-              Most AI models answer by writing, while Laya answers by filling in an answer sheet. This post walks through how it does that, one picture per step, using the real numbers it produced on two shell commands, and ends with how it compares with Jev, the closed model whose interface it copies.
+              Most AI models answer by writing, while Laya answers by filling in an answer sheet. This post walks through how it does that, one picture per step, using the real numbers it produced on two shell commands. It then shows how Laya was trained to state honest probabilities, with a demo you can step through, and ends with where Laya came from and how it compares with Jev, the closed model whose interface it copies.
             </p>
 
             <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
@@ -111,7 +197,7 @@
 
               <p class="article-section-label">Before we start</p>
               <h3 id="what-laya-is">What Laya is, in one paragraph</h3>
-              <p><strong>Laya</strong> is a small AI model released in September 2026 by a company called ConvAI Innovations. It is <em>open</em>: anyone can download it and run it on their own computer, free of charge, under a licence (Apache 2.0) that also allows changing it and using it in products. Its job is narrow: you give it a situation and a question with a fixed set of possible answers, and it tells you how likely each answer is, without ever writing a sentence.</p>
+              <p><strong>Laya</strong> is a small AI model released in September 2026 by a company called Convai Innovations. It is <em>open</em>: anyone can download it and run it on their own computer, free of charge, under a licence (Apache 2.0) that also allows changing it and using it in products. Its job is narrow: you give it a situation and a question with a fixed set of possible answers, and it tells you how likely each answer is, without ever writing a sentence.</p>
 
               <p>Its makers call it a "System 1" model. The phrase comes from the psychologist Daniel Kahneman, whose book <em>Thinking, Fast and Slow</em> (2011) describes two ways the mind works. <strong>System 1</strong> is fast and automatic: you see a face and know it is angry without working it out. <strong>System 2</strong> is slow and deliberate: you multiply 17 by 24 step by step. Chat models, which reason in words, are the slow kind. Laya is meant to be the fast kind: an instant judgement call, in a few hundredths of a second.</p>
 
@@ -125,7 +211,7 @@
               <h3 id="the-example">The example used throughout</h3>
               <p>An <strong>AI coding agent</strong> is a program that writes and runs code for you, and mine (Claude Code) runs terminal commands on my laptop. Some commands delete things. Throughout this post the situation is one such command and the question is whether it is destructive. Every number in the figures is Laya's real output, produced on my MacBook.</p>
 
-              <p>Laya comes in three saved versions. A saved version of a trained model is called a <strong>checkpoint</strong>, and the three differ in what extra training they received. I use the one named <code>typed-decisions</code>: the version its makers trained further on decision questions of the kind I am asking. The other two are the base English version and a multilingual version.</p>
+              <p>Laya comes in three saved versions. A saved version of a trained model is called a <strong>checkpoint</strong>, and the three differ in what extra training they received. I use the one named <code>typed-decisions</code>, which its makers trained further on four kinds of business decision: customer-service messages, invoices, security incidents and logs of what AI agents did. The last two are the closest to my question. The other two are the base English version and a multilingual version.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">At a glance</p>
@@ -223,24 +309,46 @@
               <h3 id="honesty">A forecaster paid for honesty</h3>
               <p>A model's numbers come from <strong>training</strong>: showing it many examples and nudging its internal numbers (Laya has 421 million of them, called parameters) so that its answers improve. Laya's makers used <strong>reinforcement learning</strong>, which means learning by trial and reward: the model answers a practice question, gets a reward that depends on how good the answer was, and adjusts to earn more reward next time.</p>
 
-              <p>The interesting part is how the reward was calculated, because it uses what statisticians call a <strong>proper scoring rule</strong>. The easiest one to picture is the log score, which Figure 5 shows in four cases: say "90% true" and be right and you lose only 0.11 points, but say "90% true" and be wrong and you lose 2.30 points, twenty times more, while a modest "60% true" loses 0.51 or 0.92 either way.</p>
+              <p>Laya's makers call their method <strong>RLCD</strong>, short for Reinforcement Learning for Calibrated Decisions; TypeSafe AI uses the same name for how it trained Jev, the rival model described at the end of this post. <strong>Calibrated</strong> means that the stated confidence matches reality: of all the times Laya says "70% likely", the answer should be right about 70 times in 100. One practice round has four parts:</p>
+              <ul>
+                <li><strong>Try.</strong> Laya answers a practice question whose right answer is already known. During practice it adds a little random noise to its scores, so it answers the same question several times, sharing the probability slightly differently each time.</li>
+                <li><strong>Score.</strong> Each try is marked with a proper scoring rule, explained below. The less probability a try gave the right answer, the more points it loses.</li>
+                <li><strong>Compare.</strong> The tries are compared with their own average. A try that lost fewer points than the average is encouraged, and one that lost more is discouraged. Learning from "better than my usual", rather than from the raw score, keeps training steady; it is the idea behind GRPO, a method also used to train reasoning models.</li>
+                <li><strong>Adjust.</strong> Laya's parameters move a little toward the tries that did better, and the next practice question begins. The round repeats over thousands of questions.</li>
+              </ul>
+
+              <p>A <strong>proper scoring rule</strong> marks a forecast so that bluffing never pays. The easiest one to picture is the log score, which Figure 5 shows in four cases: say "90% true" and be right and you lose only 0.11 points, but say "90% true" and be wrong and you lose 2.30 points, twenty times more, while a modest "60% true" loses 0.51 or 0.92 either way.</p>
 
               <figure class="article-figure">
                 <!--FIG:honesty--><svg class="lx-svg" viewBox="0 0 680 262" role="img" aria-label="Log score penalties: 0.11 when the model said 90% and was right, 2.30 when it said 90% and was wrong; 0.51 and 0.92 when it said 60%." xmlns="http://www.w3.org/2000/svg"><text x="30" y="24" font-size="12" fill="#66707d" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" >PENALTY UNDER THE LOG SCORE (bigger bar = bigger loss)</text><text x="30" y="67" font-size="14" fill="#1d232b" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >said 90% true, answer was true</text><rect class="lx-bar" style="animation-delay:0.30s" x="310" y="53" width="14.5" height="20" rx="3" fill="#5f7692"/><text x="332.48707090295113" y="68" font-size="14" fill="#1d232b" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" >-0.11</text><text x="30" y="119" font-size="14" fill="#1d232b" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >said 90% true, answer was false</text><rect class="lx-bar" style="animation-delay:0.65s" x="310" y="105" width="316.6" height="20" rx="3" fill="#e5634a"/><text x="634.6054502866813" y="120" font-size="14" fill="#1d232b" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" >-2.30</text><text x="30" y="171" font-size="14" fill="#1d232b" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >said 60% true, answer was true</text><rect class="lx-bar" style="animation-delay:1.00s" x="310" y="157" width="70.2" height="20" rx="3" fill="#5f7692"/><text x="388.2385232678237" y="172" font-size="14" fill="#1d232b" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" >-0.51</text><text x="30" y="223" font-size="14" fill="#1d232b" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >said 60% true, answer was false</text><rect class="lx-bar" style="animation-delay:1.35s" x="310" y="209" width="126.0" height="20" rx="3" fill="#e5634a"/><text x="443.9899756326963" y="224" font-size="14" fill="#1d232b" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" >-0.92</text></svg><!--/FIG:honesty-->
                 <figcaption class="article-caption">Figure 5. The log score in four cases. Confidence pays when it is right and costs heavily when it is wrong.</figcaption>
               </figure>
 
-              <p>Under a rule like this, the best long-run strategy is to state exactly the probability you believe. A weather forecaster paid this way would say "70% rain" only on days when rain really is that likely, because bluffing loses points over a season. That is why Laya's probabilities are meant to be honest. Its code combines the log score with a second rule of the same family (the spherical score) and adds a third for scale questions.</p>
+              <p>Under a rule like this, the best long-run strategy is to state exactly the probability you believe. On a single question with a clear answer, giving more probability to the right answer always scores better, so honesty comes from the many practice questions that look alike but turn out differently. Suppose ten customer messages all read "Can I switch to the yearly plan?" and seven of them turn out to be billing questions. If Laya says 70% billing for each one, it loses 0.61 points per message on average. Saying 99% loses 1.39 on average, because each of the three non-billing messages costs 4.61. Saying 50% loses 0.69. No other probability loses fewer points than 70%, which is exactly how often the answer is billing.</p>
 
-              <p>Two details of the practice matter. Laya adds a little random noise to its scores during practice, so it tries slightly different probabilities and learns which ones earn more. And it compares each attempt with the average of a group of attempts on the same question, so that it learns from "better than my usual" rather than from the raw reward. That second trick is the idea behind GRPO, a method also used to train reasoning models.</p>
+              <p>A weather forecaster paid this way would say "70% rain" only on days when rain really is that likely, because bluffing loses points over a season. That is why Laya's probabilities are meant to be honest. Its code combines the log score with a second rule of the same family (the spherical score) and adds a third for scale questions.</p>
+
+              <p>Figure 6 lets you step through one practice round. It uses a customer-service message rather than my shell command, because messages like it are among the questions Laya practised on. The four tries and the size of the final adjustment are made up for illustration; the points lost are calculated with the real log score.</p>
+
+              <figure class="article-figure">
+                <div class="rlcd" id="rlcd" role="group" aria-label="Interactive demo: one practice round of RLCD">
+                  <div class="rlcd-dots"></div>
+                  <div class="rlcd-stage" aria-live="polite"></div>
+                  <div class="rlcd-cap"><p class="rlcd-title"></p><p class="rlcd-text"></p></div>
+                  <div class="rlcd-controls"><button type="button" class="rlcd-btn" data-act="back">Back</button><button type="button" class="rlcd-btn" data-act="replay">Replay</button><button type="button" class="rlcd-btn rlcd-primary" data-act="next">Next step</button></div>
+                </div>
+                <figcaption class="article-caption">Figure 6. Interactive: one practice round of RLCD. Use Next to move through the six steps; in the last one, drag the slider.</figcaption>
+              </figure>
+
+              <p>The training makes Laya's probabilities honest on questions like its practice questions, and nothing guarantees the same on a different kind of question. Laya's makers report that, on their own benchmarks, the gap between how sure it says it is and how often it is right averages 8 points, after re-fitting the temperature for each kind of question. On the 50 test commands of my short terminal command set in <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a>, Laya as shipped had an average gap of 34 points.</p>
 
               <p class="article-section-label">What you can ask</p>
               <h3 id="three-kinds">Three kinds of questions</h3>
-              <p>Every question has one of three types, and you write the options yourself, in plain words, when you ask. A <strong>yes/no</strong> question returns the probability of "true". A <strong>pick-one</strong> question returns a probability for each option in a list you supply. A <strong>rate-on-a-scale</strong> question returns a probability for each level you define, plus the average level. Because the options are written into the sheet, a new question needs no retraining. Figure 6 shows Laya's real answers to all three kinds for my <code>rm -rf</code> example, asked in one call: it recognised that the command deletes data, and was unsure how far the damage could reach.</p>
+              <p>Every question has one of three types, and you write the options yourself, in plain words, when you ask. A <strong>yes/no</strong> question returns the probability of "true". A <strong>pick-one</strong> question returns a probability for each option in a list you supply. A <strong>rate-on-a-scale</strong> question returns a probability for each level you define, plus the average level. Because the options are written into the sheet, a new question needs no retraining. Figure 7 shows Laya's real answers to all three kinds for my <code>rm -rf</code> example, asked in one call: it recognised that the command deletes data, and was unsure how far the damage could reach.</p>
 
               <figure class="article-figure">
                 <!--FIG:kinds--><svg class="lx-svg" viewBox="0 0 680 270" role="img" aria-label="Laya's three question types with its measured answers for rm -rf ~/projects/old-site." xmlns="http://www.w3.org/2000/svg"><rect x="20" y="10" width="205" height="250" rx="10" fill="#fbfaf7" stroke="#ddd9cf" stroke-width="1.5"/><text x="34" y="36" font-size="12" fill="#5f7692" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" letter-spacing="1.5">YES / NO</text><text x="34" y="58" font-size="13" fill="#1d232b" font-weight="700" text-anchor="start" font-family="Karla, sans-serif" >Is it destructive?</text><text x="34" y="88" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >true</text><rect class="lx-bar" style="animation-delay:0.30s" x="34" y="92" width="84.5" height="9" rx="2" fill="#e5634a"/><text x="124.49000000000001" y="101" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >49.7</text><text x="34" y="248" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >one number: the probability of 'true'</text><rect x="240" y="10" width="205" height="250" rx="10" fill="#fbfaf7" stroke="#ddd9cf" stroke-width="1.5"/><text x="254" y="36" font-size="12" fill="#5f7692" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" letter-spacing="1.5">PICK ONE</text><text x="254" y="58" font-size="13" fill="#1d232b" font-weight="700" text-anchor="start" font-family="Karla, sans-serif" >What does it mainly do?</text><text x="254" y="88" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >deletes_data</text><rect class="lx-bar" style="animation-delay:0.90s" x="254" y="92" width="104.7" height="9" rx="2" fill="#e5634a"/><text x="364.72" y="101" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >61.6</text><text x="254" y="118" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >writes_files</text><rect class="lx-bar" style="animation-delay:1.05s" x="254" y="122" width="23.1" height="9" rx="2" fill="#5f7692"/><text x="283.12" y="131" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >13.6</text><text x="254" y="148" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >sends_data_out</text><rect class="lx-bar" style="animation-delay:1.20s" x="254" y="152" width="17.5" height="9" rx="2" fill="#5f7692"/><text x="277.51" y="161" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >10.3</text><text x="254" y="178" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >read_only</text><rect class="lx-bar" style="animation-delay:1.35s" x="254" y="182" width="12.4" height="9" rx="2" fill="#5f7692"/><text x="272.41" y="191" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >7.3</text><text x="254" y="208" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >touches_credentials</text><rect class="lx-bar" style="animation-delay:1.50s" x="254" y="212" width="12.2" height="9" rx="2" fill="#5f7692"/><text x="272.24" y="221" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >7.2</text><text x="254" y="248" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >a probability for each option</text><rect x="460" y="10" width="205" height="250" rx="10" fill="#fbfaf7" stroke="#ddd9cf" stroke-width="1.5"/><text x="474" y="36" font-size="12" fill="#5f7692" font-weight="700" text-anchor="start" font-family="'IBM Plex Mono', monospace" letter-spacing="1.5">RATE ON A SCALE</text><text x="474" y="58" font-size="13" fill="#1d232b" font-weight="700" text-anchor="start" font-family="Karla, sans-serif" >How far could damage reach?</text><text x="474" y="88" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >0 this folder</text><rect class="lx-bar" style="animation-delay:1.50s" x="474" y="92" width="65.3" height="9" rx="2" fill="#e5634a"/><text x="545.28" y="101" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >38.4</text><text x="474" y="118" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >1 project or machine</text><rect class="lx-bar" style="animation-delay:1.65s" x="474" y="122" width="63.4" height="9" rx="2" fill="#5f7692"/><text x="543.41" y="131" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >37.3</text><text x="474" y="148" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >2 beyond</text><rect class="lx-bar" style="animation-delay:1.80s" x="474" y="152" width="41.3" height="9" rx="2" fill="#5f7692"/><text x="521.31" y="161" font-size="10" fill="#1d232b" font-weight="400" text-anchor="start" font-family="'IBM Plex Mono', monospace" >24.3</text><text x="474" y="248" font-size="11" fill="#66707d" font-weight="400" text-anchor="start" font-family="Karla, sans-serif" >average level: 0.86</text></svg><!--/FIG:kinds-->
-                <figcaption class="article-caption">Figure 6. Measured: Laya's answers to three questions about <code>rm -rf ~/projects/old-site</code>, asked in one call.</figcaption>
+                <figcaption class="article-caption">Figure 7. Measured: Laya's answers to three questions about <code>rm -rf ~/projects/old-site</code>, asked in one call.</figcaption>
               </figure>
 
               <p class="article-section-label">Speed and limits</p>
@@ -251,7 +359,11 @@
 
               <p class="article-section-label">Laya and Jev</p>
               <h3 id="jev">Is Laya the same as Jev?</h3>
-              <p><strong>Jev</strong> is a decision model from a company called TypeSafe AI, announced on 15 September 2026 and named after the economist William Stanley Jevons. It takes the same kind of input and returns the same kind of output as Laya: a situation and typed questions in, probabilities out, no text. TypeSafe calls its models "System One" models, and Laya's author describes Laya as the same idea. Laya's server even accepts requests in Jev's format, so code written for one can call the other. The deal around each model is very different, and the table shows how.</p>
+              <p><strong>Jev</strong> is a decision model from a company called TypeSafe AI, announced on 15 September 2026 and named after the economist William Stanley Jevons. It takes the same kind of input and returns the same kind of output as Laya: a situation and typed questions in, probabilities out, no text. TypeSafe calls its models "System One" models, and Laya's author describes Laya as the same idea. Laya's server even accepts requests in Jev's format, so code written for one can call the other.</p>
+
+              <p>Laya's author is <strong>Nandakishor M</strong>, founder and CEO of Convai Innovations, a company in Kasaragod, Kerala, India. He traces Laya back to two papers he published before Jev existed. The first, in March 2025, described SalesRLAgent, a model trained by reinforcement learning to predict how likely a sales conversation is to end in a sale. The second, in September 2025, was about judging how reliable a language model's answer is likely to be before the model writes it.</p>
+
+              <p>Laya itself appeared on 18 September 2026, three days after Jev, when its code and model files were published. In a post the same day, written in reply to Jev's launch, he said he had decided to "take everything I learned from my March 2025 and September 2025 papers" and build a completely open decision model. So the idea grew out of his own earlier work, while the release date and the Jev-compatible request format followed Jev's launch. The deal around each model is very different, and the table shows how.</p>
 
               <div class="article-table-scroll">
                 <table class="article-data-table">
@@ -259,7 +371,7 @@
                     <tr><th></th><th>Laya</th><th>Jev</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>Who makes it</td><td>ConvAI Innovations, September 2026</td><td>TypeSafe AI, September 2026</td></tr>
+                    <tr><td>Who makes it</td><td>Convai Innovations, released 18 September 2026</td><td>TypeSafe AI, announced 15 September 2026</td></tr>
                     <tr><td>Question types</td><td>Yes/no, pick one, rate on a scale</td><td>The same three; pick-one takes up to 255 options</td></tr>
                     <tr><td>Can you download it?</td><td>Yes, open weights under Apache 2.0</td><td>No, paid API only (TypeSafe or Cloudflare Workers AI)</td></tr>
                     <tr><td>What is inside</td><td>Published: ModernBERT-large reader plus a trained head, 421 million parameters</td><td>Not published; described as transformer-based and not a large language model</td></tr>
@@ -288,8 +400,12 @@
               <p class="article-section-label">References</p>
               <h3>Sources</h3>
               <ol class="article-references">
-                <li id="ref-1">ConvAI Innovations. "Laya" model card, weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-1">Convai Innovations. "Laya" model card, weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
                 <li id="ref-2">Nandakishor M. "I built non-autoregressive decision models a year ago. Then a frontier lab called it a…" Dev.to, 18 September 2026. <a href="https://dev.to/nandakishor_m_6cc0adfde9f/i-built-non-autoregressive-decision-models-a-year-ago-then-a-frontier-lab-called-it-a-18me" target="_blank" rel="noreferrer">Dev.to</a></li>
+                <li id="ref-10">Convai Innovations. "About": founder and team. <a href="https://convaiinnovations.com/about" target="_blank" rel="noreferrer">convaiinnovations.com</a></li>
+                <li id="ref-11">Nandakishor M. "SalesRLAgent: A Reinforcement Learning Approach for Real-Time Sales Conversion Prediction and Optimization." arXiv:2503.23303, March 2025. <a href="https://arxiv.org/abs/2503.23303" target="_blank" rel="noreferrer">arXiv</a></li>
+                <li id="ref-12">Nandakishor M. "Confidence-Aware Routing for Large Language Model Reliability Enhancement: A Multi-Signal Approach to Pre-Generation Hallucination Mitigation." arXiv:2510.01237, September 2025. <a href="https://arxiv.org/abs/2510.01237" target="_blank" rel="noreferrer">arXiv</a></li>
+                <li id="ref-13">Shao, Z. et al. "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models" (introduces GRPO). arXiv:2402.03300, February 2024. <a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noreferrer">arXiv</a></li>
                 <li id="ref-9">Kahneman, D. <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux, 2011.</li>
                 <li id="ref-3">Warner, B. et al. "Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference" (ModernBERT). arXiv:2412.13663, December 2024. <a href="https://arxiv.org/abs/2412.13663" target="_blank" rel="noreferrer">arXiv</a></li>
                 <li id="ref-4">TypeSafe AI. "Introducing System One models and Jev." 15 September 2026. <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noreferrer">TypeSafe blog</a></li>
@@ -355,6 +471,168 @@
         </article>
       </main>
     </div>
+    <script>
+    (function(){
+      var root = document.getElementById('rlcd');
+      if (!root) return;
+      var q = function(s){ return root.querySelector(s); };
+      var stage = q('.rlcd-stage');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var cur = 0, gen = 0;
+      var TRIES = [52, 60, 68, 75];
+      var pen = function(v){ return -Math.log(v / 100); };
+      var AVG = TRIES.reduce(function(a, v){ return a + pen(v); }, 0) / TRIES.length;
+      var PMAX = 0.8;
+      var f2 = function(x){ return x.toFixed(2); };
+      function later(ms, fn){ var g = gen; setTimeout(function(){ if (g === gen) fn(); }, reduce ? 0 : ms); }
+      function tween(ms, fn, done){
+        var g = gen;
+        if (reduce){ fn(1, 1); if (done) done(); return; }
+        var t0 = performance.now();
+        function frame(now){
+          if (g !== gen) return;
+          var t = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - t, 3);
+          fn(e, t);
+          if (t < 1) requestAnimationFrame(frame); else if (done) done();
+        }
+        requestAnimationFrame(frame);
+      }
+      function coins(n, stagger){
+        var s = '';
+        for (var i = 0; i < 100; i++) s += '<span class="rlcd-coin' + (i < n ? ' y' : '') + '"' + (stagger ? ' style="transition-delay:' + (i * 9) + 'ms"' : '') + '></span>';
+        return s;
+      }
+      function qCard(show){
+        return '<div class="rlcd-q"><div class="rlcd-msg"><span class="rlcd-who">Customer message</span><p>"I was charged twice for my order."</p></div>' +
+          '<p class="rlcd-ask">Question: <strong>Is this a billing problem?</strong> <span class="rlcd-chip"><span class="rlcd-sw y"></span>Yes</span><span class="rlcd-chip"><span class="rlcd-sw n"></span>No</span>' +
+          '<span class="rlcd-chip rlcd-truth' + (show ? ' show' : '') + '">Right answer: Yes · Laya can\'t see this</span></p></div>';
+      }
+      function mini(){ return '<div class="rlcd-mini"><div class="rlcd-coins small">' + coins(60) + '</div><span class="rlcd-note">Laya\'s answer: Yes 60%</span></div>'; }
+      function tries(){
+        return '<div class="rlcd-tries">' + TRIES.map(function(v, i){
+          return '<div class="rlcd-try" data-i="' + i + '"><span class="rlcd-tl">Try ' + (i + 1) + '</span><div class="rlcd-bar"><div class="rlcd-bary"></div></div><span class="rlcd-tv">Yes <b>60</b>%</span>' +
+            '<div class="rlcd-pen" hidden><div class="rlcd-pt"><div class="rlcd-pf"></div><div class="rlcd-avg"></div></div><span class="rlcd-pv">lose 0.00</span></div><div class="rlcd-vd" hidden></div></div>';
+        }).join('') + '</div>';
+      }
+      function row(i){ return stage.querySelectorAll('.rlcd-try')[i]; }
+      function setTries(){ TRIES.forEach(function(v, i){ row(i).querySelector('.rlcd-bary').style.width = v + '%'; row(i).querySelector('.rlcd-tv b').textContent = v; }); }
+      function setPens(){ TRIES.forEach(function(v, i){ var r = row(i); r.querySelector('.rlcd-pen').hidden = false; r.querySelector('.rlcd-pf').style.width = (pen(v) / PMAX * 100) + '%'; r.querySelector('.rlcd-pv').textContent = 'lose ' + f2(pen(v)); }); }
+
+      function s1(){
+        stage.innerHTML = qCard(false) + '<div class="rlcd-row"><div class="rlcd-coins drop">' + coins(60, true) + '</div><div class="rlcd-legend"><span class="rlcd-big">Yes <span class="rlcd-yt">60%</span></span><span class="rlcd-big">No <span class="rlcd-nt">40%</span></span><span class="rlcd-note">Laya\'s current answer. Each dot is one percentage point.</span></div></div>';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ var m = stage.querySelector('.rlcd-coins.drop'); if (m) m.classList.add('in'); }); });
+        later(1400, function(){ stage.querySelector('.rlcd-truth').classList.add('show'); });
+      }
+      function s2(){
+        stage.innerHTML = qCard(true) + '<div class="rlcd-row top">' + mini() + '<div class="rlcd-col">' + tries() + '</div></div>';
+        TRIES.forEach(function(v, i){
+          var fill = row(i).querySelector('.rlcd-bary'), lab = row(i).querySelector('.rlcd-tv b');
+          later(150 + i * 200, function(){ tween(1200, function(e, t){ var x = 60 + (v - 60) * e + Math.sin(t * Math.PI * 6) * 7 * (1 - t); fill.style.width = x + '%'; lab.textContent = Math.round(x); }, function(){ fill.style.width = v + '%'; lab.textContent = v; }); });
+        });
+      }
+      function s3(){
+        stage.innerHTML = qCard(true) + '<div class="rlcd-row top">' + mini() + '<div class="rlcd-col">' + tries() + '</div></div>';
+        setTries();
+        TRIES.forEach(function(v, i){
+          var r = row(i), fill = r.querySelector('.rlcd-pf'), val = r.querySelector('.rlcd-pv');
+          r.querySelector('.rlcd-pen').hidden = false;
+          later(250 + i * 300, function(){ tween(800, function(e){ fill.style.width = (pen(v) * e / PMAX * 100) + '%'; val.textContent = 'lose ' + f2(pen(v) * e); }); });
+        });
+      }
+      function s4(){
+        stage.innerHTML = qCard(true) + '<div class="rlcd-row top">' + mini() + '<div class="rlcd-col"><p class="rlcd-avgread"><span class="rlcd-dash"></span>Average points lost by the four tries: <b class="rlcd-mono">' + f2(AVG) + '</b></p>' + tries() + '</div></div>';
+        setTries(); setPens();
+        TRIES.forEach(function(v, i){
+          var r = row(i), a = r.querySelector('.rlcd-avg');
+          a.style.left = (AVG / PMAX * 100) + '%';
+          later(300, function(){ a.style.opacity = 1; });
+          var better = pen(v) < AVG, d = Math.abs(pen(v) - AVG);
+          later(1000 + i * 260, function(){
+            r.classList.add(better ? 'better' : 'worse');
+            var vd = r.querySelector('.rlcd-vd'); vd.hidden = false;
+            vd.textContent = better ? 'Lost ' + f2(d) + ' less than average → do more of this' : 'Lost ' + f2(d) + ' more than average → do less of this';
+          });
+        });
+      }
+      function s5(){
+        stage.innerHTML = qCard(true) + '<div class="rlcd-row"><div class="rlcd-coins">' + coins(60) + '</div><div class="rlcd-legend"><span class="rlcd-big">Yes <span class="rlcd-yt" data-ny>60</span>%</span><span class="rlcd-note">Before this round: 60%</span></div></div>' +
+          '<div class="rlcd-loop"><span class="now">This question</span><span>Next question</span><span>The one after</span><span>… thousands of rounds</span></div>';
+        var cs = stage.querySelector('.rlcd-coins').children, ny = stage.querySelector('[data-ny]');
+        [60, 61, 62].forEach(function(k, j){ later(600 + j * 420, function(){ cs[k].classList.add('y', 'flip'); ny.textContent = 61 + j; }); });
+        var steps = stage.querySelector('.rlcd-loop').children;
+        [1, 2, 3].forEach(function(k, j){ later(2300 + j * 700, function(){ for (var m = 0; m < steps.length; m++) steps[m].classList.remove('now'); steps[k].classList.add('now'); }); });
+      }
+      var OUT = [1, 0, 1, 1, 1, 0, 1, 1, 0, 1];
+      var avgPen = function(c){ var p = c / 100; return -(0.7 * Math.log(p) + 0.3 * Math.log(1 - p)); };
+      var CV = { x0: 42, x1: 348, y0: 14, y1: 112, cmin: 10, cmax: 99, pmin: 0.5, pmax: 1.75 };
+      var xs = function(c){ return CV.x0 + (c - CV.cmin) / (CV.cmax - CV.cmin) * (CV.x1 - CV.x0); };
+      var ys = function(v){ return CV.y1 - (v - CV.pmin) / (CV.pmax - CV.pmin) * (CV.y1 - CV.y0); };
+      function curve(){
+        var d = '';
+        for (var c = CV.cmin; c <= CV.cmax; c++) d += (c === CV.cmin ? 'M' : 'L') + xs(c).toFixed(1) + ' ' + ys(avgPen(c)).toFixed(1);
+        var yt = [0.6, 1.0, 1.4].map(function(v){ return '<line class="rlcd-gl" x1="' + CV.x0 + '" x2="' + CV.x1 + '" y1="' + ys(v) + '" y2="' + ys(v) + '"/><text class="rlcd-ax" x="' + (CV.x0 - 6) + '" y="' + (ys(v) + 3.5) + '" text-anchor="end">' + v.toFixed(1) + '</text>'; }).join('');
+        var xt = [10, 50, 70, 99].map(function(c){ return '<text class="rlcd-ax" x="' + xs(c) + '" y="' + (CV.y1 + 15) + '" text-anchor="middle">' + c + '</text>'; }).join('');
+        return '<svg viewBox="0 0 360 150" role="img" aria-label="Average points lost for each probability of Yes. The curve is lowest at 70%.">' + yt + xt +
+          '<line class="rlcd-ml" x1="' + xs(70) + '" x2="' + xs(70) + '" y1="' + ys(avgPen(70)) + '" y2="' + CV.y1 + '"/><text class="rlcd-mt" x="' + (xs(70) + 9) + '" y="' + (ys(avgPen(70)) - 10) + '" text-anchor="start">lowest at 70%</text>' +
+          '<path class="rlcd-cp" d="' + d + '"/><circle class="rlcd-cur" r="6" cx="' + xs(90) + '" cy="' + ys(avgPen(90)) + '"/>' +
+          '<text class="rlcd-ax" x="' + CV.x1 + '" y="146" text-anchor="end">probability of Yes (%) →</text><text class="rlcd-ax" x="4" y="9">avg points lost</text></svg>';
+      }
+      function s6(){
+        stage.innerHTML = '<p class="rlcd-lead">Ten practice messages all read <q>Can I switch to the yearly plan?</q> Was each one a billing problem?</p>' +
+          '<div class="rlcd-tiles">' + OUT.map(function(o){ return '<div class="rlcd-tile ' + (o ? 'y' : 'n') + '"><span class="t">' + (o ? 'Yes' : 'No') + '</span><span class="p">lose 0.00</span></div>'; }).join('') + '</div>' +
+          '<div class="rlcd-slider"><label for="rlcd-c6">Probability of Yes, for all ten</label><input type="range" id="rlcd-c6" min="10" max="99" step="1" value="90"><output class="rlcd-big" for="rlcd-c6">90%</output></div>' +
+          '<div class="rlcd-presets"><button class="rlcd-preset" type="button" data-v="99">All-in: 99%</button><button class="rlcd-preset" type="button" data-v="50">Unsure: 50%</button><button class="rlcd-preset" type="button" data-v="70">Honest: 70%</button></div>' +
+          '<div class="rlcd-readout"><span>Average points lost per message</span><b class="rlcd-big" data-avg>0.76</b><span class="rlcd-v6"></span></div>' +
+          '<div class="rlcd-curve">' + curve() + '</div>';
+        var inp = stage.querySelector('#rlcd-c6'), tiles = stage.querySelector('.rlcd-tiles').children;
+        function upd(){
+          var c = +inp.value, p = c / 100;
+          stage.querySelector('output').textContent = c + '%';
+          OUT.forEach(function(o, i){ var l = o ? -Math.log(p) : -Math.log(1 - p); tiles[i].querySelector('.p').textContent = 'lose ' + f2(l); tiles[i].classList.toggle('hurt', l > 1); });
+          stage.querySelector('[data-avg]').textContent = f2(avgPen(c));
+          var dot = stage.querySelector('.rlcd-cur'); dot.setAttribute('cx', xs(c)); dot.setAttribute('cy', ys(avgPen(c)));
+          var v = stage.querySelector('.rlcd-v6');
+          v.classList.toggle('ok', c === 70);
+          v.textContent = c === 70 ? 'The lowest possible. 70% matches 7 in 10.' : c > 70 ? 'Too sure: the three No messages cost a lot.' : 'Too timid: the seven Yes messages cost more than they need to.';
+        }
+        inp.addEventListener('input', upd);
+        stage.querySelectorAll('.rlcd-preset').forEach(function(b){ b.addEventListener('click', function(){ var from = +inp.value, to = +b.getAttribute('data-v'); tween(500, function(e){ inp.value = Math.round(from + (to - from) * e); upd(); }); }); });
+        upd();
+      }
+      var STEPS = [
+        { title: 'A practice question', render: s1, text: 'Laya gives each answer a probability: 60% for Yes and 40% for No. Its trainers know the right answer is Yes.' },
+        { title: 'Try a few nearby answers', render: s2, text: 'A little random noise gives four slightly different probabilities for the same question.' },
+        { title: 'Score each try', render: s3, text: 'The lower the probability a try gave Yes, the more points it loses under the log score. Being sure and wrong would cost far more: saying 90% No would lose 2.30.' },
+        { title: 'Compare with the average', render: s4, text: 'The four tries lost 0.46 points on average. The two that beat the average are encouraged; the two that fell short are discouraged.' },
+        { title: 'Lean toward the better tries', render: s5, text: 'Laya shifts a little toward the better tries, so this message now gets a slightly higher probability of Yes. Then the next practice question begins.' },
+        { title: 'Why this makes it honest', render: s6, text: 'Seven of these ten look-alike messages were billing questions. Drag the slider, or press a button, to set Laya\'s probability of Yes for all ten and watch the average points lost.' }
+      ];
+      var dots = q('.rlcd-dots');
+      dots.innerHTML = STEPS.map(function(s, i){ return '<button class="rlcd-dot" type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ': ' + s.title + '">' + (i + 1) + '</button>'; }).join('') + '<span class="rlcd-count"></span>';
+      dots.querySelectorAll('.rlcd-dot').forEach(function(b){ b.addEventListener('click', function(){ go(+b.getAttribute('data-i')); }); });
+      function go(i){
+        cur = Math.max(0, Math.min(STEPS.length - 1, i));
+        gen++;
+        var s = STEPS[cur];
+        q('.rlcd-title').textContent = s.title;
+        q('.rlcd-text').textContent = s.text;
+        q('.rlcd-count').textContent = 'Step ' + (cur + 1) + ' of ' + STEPS.length;
+        dots.querySelectorAll('.rlcd-dot').forEach(function(b, k){ b.classList.toggle('done', k < cur); if (k === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+        q('[data-act="back"]').disabled = cur === 0;
+        q('[data-act="next"]').textContent = cur === STEPS.length - 1 ? 'Start over' : 'Next step';
+        s.render();
+      }
+      q('[data-act="back"]').addEventListener('click', function(){ go(cur - 1); });
+      q('[data-act="next"]').addEventListener('click', function(){ go(cur === STEPS.length - 1 ? 0 : cur + 1); });
+      q('[data-act="replay"]').addEventListener('click', function(){ go(cur); });
+      root.addEventListener('keydown', function(e){
+        if (e.target && e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowRight') go(cur + 1);
+        if (e.key === 'ArrowLeft') go(cur - 1);
+      });
+      go(0);
+    })();
+    </script>
     <script src="./analytics-config.js"></script>
     <script src="./analytics.js"></script>
     <script src="./blog-editor.js"></script>
