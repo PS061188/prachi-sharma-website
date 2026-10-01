@@ -86,10 +86,10 @@
 <text x="719.0" y="230.5" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#8a93a0">0.17</text>
 <text x="719.0" y="241.5" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#eb6834">0.14</text>
 <text x="719.0" y="252.5" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#2a78d6">0.11</text>
-<text x="56" y="318" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Ranking quality, AUROC (1.0 = perfect, 0.5 = coin flip)</text>
+<text x="56" y="318" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Ranking quality, AUROC (1.0 = perfect, 0.5 = random)</text>
 <rect x="60" y="518" width="10" height="10" fill="#2a78d6"/><text x="74" y="527" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">validation</text>
-<rect x="146.0" y="518" width="10" height="10" fill="#1baf7a"/><text x="160.0" y="527" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">short-command set</text>
-<rect x="275.4" y="518" width="10" height="10" fill="#eb6834"/><text x="289.4" y="527" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">real test</text>
+<rect x="146.0" y="518" width="10" height="10" fill="#1baf7a"/><text x="160.0" y="527" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">short terminal command set</text>
+<rect x="331.20000000000005" y="518" width="10" height="10" fill="#eb6834"/><text x="345.20000000000005" y="527" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">real test</text>
 <rect x="56" y="334" width="190" height="150" fill="none" stroke="#e6e3dc"/>
 <line x1="56" y1="484.0" x2="246" y2="484.0" stroke="#e6e3dc"/><text x="50" y="488.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#66707d" text-anchor="end">0.4</text>
 <line x1="56" y1="409.0" x2="246" y2="409.0" stroke="#e6e3dc"/><text x="50" y="413.0" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#66707d" text-anchor="end">0.7</text>
@@ -172,7 +172,7 @@
 <text x="719.0" y="339.7" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#2a78d6">0.99</text>
 <text x="719.0" y="352.4" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#eb6834">0.94</text>
 <text x="719.0" y="368.6" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#1baf7a">0.88</text>
-<text x="56" y="552" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Real test at the 50-coin cut-off: destructive caught, harmless flagged</text>
+<text x="56" y="552" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Real test at the 50% cut-off: destructive caught, harmless flagged</text>
 <rect x="60" y="752" width="10" height="10" fill="#eb6834"/><text x="74" y="761" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">destructive caught (of 19)</text>
 <rect x="245.20000000000002" y="752" width="10" height="10" fill="#2a78d6"/><text x="259.20000000000005" y="761" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">harmless flagged</text>
 <rect x="56" y="568" width="190" height="150" fill="none" stroke="#e6e3dc"/>
@@ -238,7 +238,7 @@
 <circle cx="714.0" cy="717.2" r="3" fill="#2a78d6"/>
 <text x="719.0" y="650.9" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#eb6834">0.47</text>
 <text x="719.0" y="721.2" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="10" fill="#2a78d6">0.01</text>
-<text x="56" y="786" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Short-command set at the 50-coin cut-off</text>
+<text x="56" y="786" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" font-weight="700" fill="#1d232b">Short terminal command set at the 50% cut-off</text>
 <rect x="60" y="986" width="10" height="10" fill="#eb6834"/><text x="74" y="995" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">destructive caught (of 20)</text>
 <rect x="245.20000000000002" y="986" width="10" height="10" fill="#2a78d6"/><text x="259.20000000000005" y="995" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="11" fill="#66707d">harmless flagged</text>
 <rect x="56" y="802" width="190" height="150" fill="none" stroke="#e6e3dc"/>
