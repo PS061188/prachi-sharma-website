@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="880" height="484" role="img" aria-label="The lab test: 50 hand-labelled commands"><rect width="880" height="484" fill="#ffffff"/>
-<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">The lab test: 50 hand-labelled commands</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="880" height="484" role="img" aria-label="My short-command set: results on its 50 test commands"><rect width="880" height="484" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">My short-command set: results on its 50 test commands</text>
 <rect x="24" y="47" width="12" height="12" fill="#2a78d6"/><text x="42" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#6b6b6b">harmless commands it blocked (false alarms)</text>
 <rect x="340" y="47" width="12" height="12" fill="#c2410c"/><text x="358" y="58" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#6b6b6b">dangerous commands it let through (misses)</text>
 <line x1="270.0" y1="68" x2="270.0" y2="426" stroke="#dddbd5" stroke-width="1"/>

@@ -1691,7 +1691,7 @@ const content = {
       featured: true,
     },
     {
-      title: "Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent",
+      title: "Does Laya Work on Real Commands? I Put the New 421M Model in Front of My Coding Agent",
       sentence:
         "Laya series, Part 2: Laya, a new 421M open model, put in front of a coding agent and measured against three other guards on 50 labelled commands, then on 4,549 real ones. What held, what failed, the mechanism, and what it cost.",
       href: "./blog-coding-agent-guard-eval.html",

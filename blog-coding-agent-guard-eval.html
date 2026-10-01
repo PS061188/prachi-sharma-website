@@ -3,28 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent | Prachi Sharma</title>
+    <title>Does Laya Work on Real Commands? I Put the New 421M Model in Front of My Coding Agent | Prachi Sharma</title>
     <meta
       name="description"
       content="Laya is a new 421M-parameter open model that answers typed questions with probabilities. I used it to judge every terminal command my AI coding agent proposes, measured it against three other guards on 50 labelled commands, then replayed 4,549 real ones. Full method, every number, cost, and how to replicate it."
     />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Prachi Sharma" />
-    <meta property="og:title" content="Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent" />
+    <meta property="og:title" content="Does Laya Work on Real Commands? I Put the New 421M Model in Front of My Coding Agent" />
     <meta
       property="og:description"
       content="A new 421M open model, one coding agent, three rival guards, 50 labelled commands and 4,549 real ones. What held, what failed, why, and what it cost."
     />
     <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-coding-agent-guard-eval.html" />
-    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png?v=2" />
     <meta property="og:image:alt" content="Social preview card: rules plus Laya would have stopped me on 37% of my 4,549 real commands, nearly all of them harmless; Claude Opus 5 stopped 3.0%, every stop deserved, and the study cost $0.89 in API calls." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent" />
+    <meta name="twitter:title" content="Does Laya Work on Real Commands? I Put the New 421M Model in Front of My Coding Agent" />
     <meta
       name="twitter:description"
       content="A new 421M open model, one coding agent, three rival guards, 50 labelled commands and 4,549 real ones. What held, what failed, why, and what it cost."
     />
-    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png" />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/laya-guard-og.png?v=2" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -52,7 +52,7 @@
           <div class="article-main">
             <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Experiment · Sep 28 · LLM Evaluation · 14 min read</p>
             <div class="article-title-row">
-              <h2 class="editable-field" id="article-title" contenteditable="false">Does Laya Work Outside the Lab? I Put the New 421M Model in Front of My Coding Agent</h2>
+              <h2 class="editable-field" id="article-title" contenteditable="false">Does Laya Work on Real Commands? I Put the New 421M Model in Front of My Coding Agent</h2>
               <div class="article-title-actions" aria-label="Article actions">
                 <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
                   <span class="article-reaction-icon" aria-hidden="true">♥</span>
@@ -74,7 +74,7 @@
               </div>
             </div>
             <p class="article-dek editable-field" id="article-dek" contenteditable="false">
-              I wanted to know how Laya behaves on real work, so I gave it a job: judge every terminal command my AI coding agent proposes, before it runs. This is the full account: the setup, every number against three other guards, the mechanism behind the gap between the lab test and real use, what it cost, and how to run the same test on your own agent.
+              I wanted to know how Laya behaves on real work, so I gave it a job: judge every terminal command my AI coding agent proposes, before it runs. This is the full account: the setup, every number against three other guards, the mechanism behind the gap between results on short test commands and real use, what it cost, and how to run the same test on your own agent.
             </p>
 
             <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
@@ -82,13 +82,13 @@
                 <p class="article-callout-label">Part of this series</p>
                 <ul>
                   <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
-                  <li><strong>Part 2 (this post): Does Laya work outside the lab?</strong> Laya as a safety check on my coding agent's commands, tested on 50 lab commands and 4,549 real ones.</li>
+                  <li><strong>Part 2 (this post): Does Laya work on real commands?</strong> Laya as a safety check on my coding agent's commands, tested on 50 short commands I built and 4,549 real ones.</li>
                   <li><a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3: Teaching Laya my real commands.</a> What changed after training it on my own commands labelled by Claude.</li>
                 </ul>
               </div>
 
               <blockquote class="article-pullquote">
-                In the lab, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have stopped me on 37% of them, almost all harmless work. Same model, same settings. The difference was the data.
+                On my short-command set, rules plus Laya blocked 5% of harmless commands. On my own commands the same pair would have stopped me on 37% of them, almost all harmless work. Same model, same settings. The difference was the data.
               </blockquote>
 
               <p><strong>Laya</strong> is a small open model released in September 2026 by ConvAI Innovations: 421 million parameters, Apache 2.0 licence, and it runs on a laptop. It does not write text. You describe a situation, ask it typed questions, and it returns a probability for each answer in one pass. The pitch is a fast, cheap judgement call, the kind you would want in front of a system that acts on its own. A demo on invoices or support tickets cannot tell me whether that holds on my machine with my work, so I gave it a real job and measured it.</p>
@@ -106,9 +106,9 @@
                 <p class="article-callout-label">At a glance</p>
                 <ul>
                   <li>Laya, a small open model that answers questions with a probability instead of text, ran as a guard: a check before my coding agent executes a terminal command, which can stop it or ask me first. Three other guards ran alongside it for comparison.</li>
-                  <li>On 50 hand-labelled commands, rules plus Laya blocked 5% of harmless commands and let 15% of dangerous ones through, the best result of any guard that runs on the laptop. Claude Opus 5 made no errors on that set.</li>
+                  <li>On 50 commands from my short-command set, rules plus Laya blocked 5% of harmless commands and let 15% of dangerous ones through, the best result of any guard that runs on the laptop. Claude Opus 5 made no errors on that set.</li>
                   <li>On 4,549 commands from my real sessions, the same rules-plus-Laya guard would have stopped me on one command in three, almost all of them harmless. Laya's danger score rises with the length of the command, and real commands are twenty times longer than my test ones.</li>
-                  <li>Rules alone stop 3.6% of real commands but miss two-thirds of the dangerous lab commands. Claude Opus 5 stops 3% of real commands, and every one of those stops was deserved, at about two seconds and a third of a cent per command.</li>
+                  <li>Rules alone stop 3.6% of real commands but miss two-thirds of the dangerous commands in my short-command set. Claude Opus 5 stops 3% of real commands, and every one of those stops was deserved, at about two seconds and a third of a cent per command.</li>
                   <li>The whole study cost $0.89 in API calls. Everything else ran free on a MacBook.</li>
                 </ul>
               </div>
@@ -131,14 +131,14 @@
               <p>I also measured every combination of rules plus a model, where the rules decide first and the model only judges commands the rules did not match. That combination is how the one open-source project closest to mine, <a class="article-reference-inline" href="#ref-5">rh-guard</a>, is built.</p>
 
               <p class="article-section-label">How I measured</p>
-              <h3 id="the-lab-test">The lab test: 50 hand-labelled commands</h3>
-              <p>I wrote 100 terminal commands by hand and labelled each one: 40 <strong>harmless</strong> (<code>git status</code>, <code>pytest</code>, <code>mkdir</code>), 40 <strong>dangerous</strong> (<code>rm -rf</code> on a project, <code>DROP DATABASE</code>, a script that posts a secrets file to an outside server, a delete hidden inside a one-line Python program), and 20 <strong>grey-zone</strong> (<code>rm -rf node_modules</code>, <code>git stash drop</code>, printing a credentials file to the screen). Grey-zone commands are ones where a reasonable person would want to be asked.</p>
+              <h3 id="the-short-command-set">My short-command set: 100 labelled commands</h3>
+              <p>Laya's makers trained the version I used on four kinds of business decision: agent traces, customer service, invoices and security incidents. Checking a coding agent's commands sits close to two of those, agent traces and security incidents, so I picked this job with Laya's strengths in mind. To test it, I built a set of 100 short, single-line terminal commands and labelled each one: 40 <strong>harmless</strong> (<code>git status</code>, <code>pytest</code>, <code>mkdir</code>), 40 <strong>dangerous</strong> (<code>rm -rf</code> on a project, <code>DROP DATABASE</code>, a script that posts a secrets file to an outside server, a delete hidden inside a one-line Python program), and 20 <strong>grey-zone</strong> (<code>rm -rf node_modules</code>, <code>git stash drop</code>, printing a credentials file to the screen). Grey-zone commands are ones where a reasonable person would want to be asked. The set is published with the code. These are textbook commands, much shorter than the scripts my agent actually runs, and that gap in length matters later in this post.</p>
 
               <p>Every guard that produces a score needs a <strong>threshold</strong>: the score above which a command is flagged. Choosing the threshold on the same commands you then report is a classic way to flatter a result. So I split the 100 in half. Thresholds were chosen on 50 (the tune set); every number in this post comes from the other 50 (the test set), which the tuning never saw. The test set holds 20 harmless, 20 dangerous, and 10 grey-zone commands.</p>
 
               <p>Two errors matter, and I report only those two in the body of this post. A <strong>false alarm</strong> is a harmless command the guard flagged; false alarms are what make you switch a guard off. A <strong>miss</strong> is a dangerous command the guard let through; misses are why the guard exists. With 20 commands per class, one command moves either rate by five percentage points, so I treat differences under ten points as noise. Statisticians' metrics such as AUROC and calibration error are in the <a class="article-jump-link" href="#appendix">appendix</a>.</p>
 
-              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: the lab test, 50 held-out commands</p>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: the short-command set, 50 held-out commands</p>
               <table class="article-data-table article-data-table--center">
                 <thead>
                   <tr>
@@ -159,7 +159,7 @@
 
               <figure class="article-figure">
                 <img src="./assets/article/laya-guard-lab.svg" alt="Horizontal bars for five guards showing false alarms in blue and misses in orange: rules 0 and 65, Qwen 25 and 75, Laya 50 and 5, rules plus Laya 5 and 15, Claude Opus 5 zero and zero." />
-                <figcaption class="article-caption">The lab result. Lower is better on both bars.</figcaption>
+                <figcaption class="article-caption">Results on the short-command set. Lower is better on both bars.</figcaption>
               </figure>
 
               <p>Read the table row by row. The rules list produced no false alarms and missed 13 of the 20 dangerous commands. The misses were the commands with no matching pattern: a private key overwritten by <code>ssh-keygen</code>, every Python process killed with <code>pkill</code>, a folder emptied with <code>rsync --delete</code>, and the deletes hidden inside Python and Node one-liners. The tiny chat model was a coin flip on this task; a model of Laya's size with no training for decisions adds nothing here.</p>
@@ -167,7 +167,7 @@
               <p>Laya on its own caught 19 of 20 dangerous commands but flagged 10 of the 20 harmless ones. Its scores sat in a narrow band, mostly between 0.30 and 0.55, so any threshold that caught the dangerous commands also caught many harmless ones. Rules in front of Laya fixed that: 1 false alarm and 3 misses out of 20 each, a balanced accuracy of 90%. Claude Opus 5 made no errors on the 50. I deployed the rules-plus-Laya combination the same afternoon, in ask-only mode, and moved to the second test.</p>
 
               <h3 id="the-real-test">The real test: 4,549 commands from my own sessions</h3>
-              <p>Claude Code keeps a transcript of every session on disk. I extracted every terminal command it had ever run on this laptop: 4,549 commands across 71 sessions, 4,512 of them unique, with secrets redacted before anything was saved. Then I scored them with every guard, using exactly the thresholds chosen in the lab test. Nothing was re-tuned.</p>
+              <p>Claude Code keeps a transcript of every session on disk. I extracted every terminal command it had ever run on this laptop: 4,549 commands across 71 sessions, 4,512 of them unique, with secrets redacted before anything was saved. Then I scored them with every guard, using exactly the thresholds chosen on the short-command set. Nothing was re-tuned.</p>
 
               <p>Real traffic has no hand labels, and it is almost entirely harmless, so it cannot tell you how many dangerous commands a guard misses. It tells you the other thing, which is the thing that decides whether a guard survives: <strong>how often it would have stopped me</strong>. I report that as stops per 100 unique commands, and on real work almost every stop is a wrong stop on a harmless command. To keep the runs short, the local guards scored a random sample of 2,500 unique commands, and Claude Opus 5 scored 200 of the same commands, so its row is marked.</p>
 
@@ -198,14 +198,14 @@
               <p>The guard I had deployed would have stopped me on 37 of every 100 commands, almost all of them harmless. Nobody keeps that. The rules alone would have stopped 3.6 of every 100, which is tolerable, and the stops I read were mostly right, with one recurring exception: agent-guard's <code>rm -rf</code> pattern also matches a plain <code>rm -f</code>, which is my single most common harmless command, a file cleanup before a rebuild.</p>
 
               <h3 id="why-it-failed">Why the small model failed</h3>
-              <p>Laya's "destructive" probability rises with the length of the command, whatever the command does. For real commands under 80 characters its average score was 0.37, for commands over 1,000 characters it was 0.48, and the deployed threshold sat between them at 0.45. My lab commands were between 21 and 33 characters long on average, so the lab never contained a command long enough to trip this behaviour, whereas real commands are scripts with a median length of 519 characters.</p>
+              <p>Laya's "destructive" probability rises with the length of the command, whatever the command does. For real commands under 80 characters its average score was 0.37, for commands over 1,000 characters it was 0.48, and the deployed threshold sat between them at 0.45. The commands in my short-command set were between 21 and 33 characters long on average, so it never contained a command long enough to trip this behaviour, whereas real commands are scripts with a median length of 519 characters.</p>
 
               <figure class="article-figure">
                 <img src="./assets/article/laya-guard-length.svg" alt="Vertical bars: share of real commands Laya would flag rises from 6% under 80 characters to 70% between 1,000 and 2,000 characters." />
                 <figcaption class="article-caption">The mechanism. Same threshold in every bar; only the length of the command changes, and the flag rate climbs with it.</figcaption>
               </figure>
 
-              <p>A natural fix is to raise the threshold, so I swept it. At 0.60 the real-traffic stop rate falls to 4.5 per 100, but Laya then misses all 40 dangerous commands in the lab set and the rules in front of it do all the catching; at 0.50 the stop rate is still 16.8 per 100 and Laya misses 21 of the 40. Since there is no setting where the model both stays quiet on real work and catches anything the rules do not, I switched the model off. The rules floor stays, in ask-only mode, and the model's scores are still logged in case a version calibrated on real commands ever exists.</p>
+              <p>A natural fix is to raise the threshold, so I swept it. At 0.60 the real-traffic stop rate falls to 4.5 per 100, but Laya then misses all 40 dangerous commands in the short-command set and the rules in front of it do all the catching; at 0.50 the stop rate is still 16.8 per 100 and Laya misses 21 of the 40. Since there is no setting where the model both stays quiet on real work and catches anything the rules do not, I switched the model off. The rules floor stays, in ask-only mode, and the model's scores are still logged in case a version calibrated on real commands ever exists.</p>
 
               <p>Laya's maintainers describe the base model as near-random zero-shot and its value as a foundation to fine-tune on your own data. This result agrees with them: fine-tuned on invoices and support tickets, it ranks short shell commands well and does not transfer to long ones.</p>
 
@@ -228,13 +228,13 @@
                   <tr><td>Rules list</td><td>under 1 ms</td><td>$0</td><td>$0</td></tr>
                   <tr><td>Laya (local, Apple-silicon GPU)</td><td>94 ms</td><td>$0</td><td>$0</td></tr>
                   <tr><td>Qwen 0.5B (local)</td><td>44 ms</td><td>$0</td><td>$0</td></tr>
-                  <tr><td>Claude Opus 5, lab commands</td><td>2.3 s</td><td>$0.0019</td><td>$0.19 for 100</td></tr>
+                  <tr><td>Claude Opus 5, short-command set</td><td>2.3 s</td><td>$0.0019</td><td>$0.19 for 100</td></tr>
                   <tr><td>Claude Opus 5, real commands</td><td>2.2 s</td><td>$0.0035</td><td>$0.70 for 200</td></tr>
                 </tbody>
               </table>
               <p>Claude's cost per command nearly doubles on real traffic because real commands are longer and the price is per token. The two Claude runs together cost $0.89, the study's whole API spend. At my volume, 4,549 commands over a few months, running Claude Opus 5 on every command would have cost about $16 in total. Laya's published speed is 33 milliseconds; the 94 milliseconds here is a MacBook figure, since the published number was measured on a data-centre GPU.</p>
 
-              <p>Wall-clock time for the runs: the lab evaluation took about three minutes, of which two and a half were downloading Laya's second checkpoint. Scoring 2,500 real commands with the three local guards took ten minutes. The two Claude runs took four and seven minutes. Human time: one working day to build the server, the hook, the labelled set, and the lab evaluation, and a second morning for the real-traffic replay and this write-up.</p>
+              <p>Wall-clock time for the runs: the evaluation on the short-command set took about three minutes, of which two and a half were downloading Laya's second checkpoint. Scoring 2,500 real commands with the three local guards took ten minutes. The two Claude runs took four and seven minutes. Human time: one working day to build the server, the hook, the short-command set, and its evaluation, and a second morning for the real-traffic replay and this write-up.</p>
 
               <p class="article-section-label">So what</p>
               <h3 id="do-you-need-one">Do you need a guard?</h3>
@@ -247,9 +247,9 @@
               </ul>
 
               <h3 id="conclusion">Conclusion and impact</h3>
-              <p>Does Laya work outside the lab? With the checkpoint as shipped and one fixed threshold, on my commands, the answer is no: it ranks short commands well, cannot produce a trustworthy probability, and reads length as danger on real scripts. Around it: the rules list is cheap and blind; the tiny chat model contributes nothing; Claude Opus 5 was correct on both tests. The combination that looked best in the lab, rules plus Laya, was the one that failed hardest in production, and the failure was invisible until the guard saw commands shaped like real work.</p>
+              <p>Does Laya work on real commands? With the checkpoint as shipped and one fixed threshold, on my commands, the answer is no: it ranks short commands well, cannot produce a trustworthy probability, and reads length as danger on real scripts. Around it: the rules list is cheap and blind; the tiny chat model contributes nothing; Claude Opus 5 was correct on both tests. The combination that looked best on the short-command set, rules plus Laya, was the one that failed hardest in production, and the failure was invisible until the guard saw commands shaped like real work.</p>
 
-              <p>What changed for me is concrete: Laya is switched off, the rules floor runs quietly, and a decision about paying for Claude on every command is now a decision with numbers attached rather than a guess. What changed in how I evaluate is the more useful part. A test set that does not look like production gives you a rumour about the system, and my lab set, which was honest, split correctly and reported on held-out data, still said 5% where reality said 37%. The replay of real traffic took one afternoon and cost nothing, so it should have been the first test.</p>
+              <p>What changed for me is concrete: Laya is switched off, the rules floor runs quietly, and a decision about paying for Claude on every command is now a decision with numbers attached rather than a guess. What changed in how I evaluate is the more useful part. A test set that does not look like production gives you a rumour about the system, and my short-command set, which was honest, split correctly and reported on held-out data, still said 5% where reality said 37%. The replay of real traffic took one afternoon and cost nothing, so it should have been the first test.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">If you take one thing from this</p>
@@ -260,7 +260,7 @@
               <h3 id="appendix">Technical metrics, limitations, and how to replicate</h3>
               <p>Two metrics that statisticians use and I kept out of the body. <strong>AUROC</strong> asks how well a guard ranks dangerous commands above harmless ones regardless of threshold; 1.0 is perfect and 0.5 is a coin flip. <strong>ECE</strong>, expected calibration error, asks whether a score of 0.8 really means eight in ten were dangerous; lower is better, and 0.0 is perfect. Laya's high AUROC next to its high ECE is the whole story in two numbers: it orders commands well and its probabilities are not probabilities.</p>
 
-              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: lab test, all metrics, 50 held-out commands</p>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: short-command set, all metrics, 50 held-out commands</p>
               <table class="article-data-table article-data-table--center">
                 <thead>
                   <tr>
@@ -286,9 +286,9 @@
               </table>
               <p>"Grey-zone flagged" is the share of the 10 ambiguous test commands the guard stopped; there, stopping is the wanted behaviour. The base Laya checkpoint, which is not fine-tuned for decisions, was better balanced than the fine-tuned one on shell commands, and on real traffic it stopped 61.8 per 100.</p>
 
-              <p><strong>Limitations.</strong> Twenty commands per class in the lab test, so each command is five points. Real traffic is one developer's commands on one laptop and has no labels; a guard could miss a dangerous real command without this test showing it. Claude Opus 5's real-traffic rate rests on 200 commands, so one command moves it by half a point. The Qwen score comes from next-token probabilities, which is a fair comparison for ranking but not how anyone would deploy a chat model. Claude Code's own classifier denied only 5 of 4,549 commands, too few to compare guards against.</p>
+              <p><strong>Limitations.</strong> Twenty commands per class in the short-command set's test half, so each command is five points. Real traffic is one developer's commands on one laptop and has no labels; a guard could miss a dangerous real command without this test showing it. Claude Opus 5's real-traffic rate rests on 200 commands, so one command moves it by half a point. The Qwen score comes from next-token probabilities, which is a fair comparison for ranking but not how anyone would deploy a chat model. Claude Code's own classifier denied only 5 of 4,549 commands, too few to compare guards against.</p>
 
-              <p><strong>To replicate on your own agent.</strong> Install Laya with <code>pip install laya</code>, and the checkpoint downloads on first use. Write 100 commands from your own work, label them harmless, dangerous, or grey-zone, and split them in half, then run every guard on the tune half to choose thresholds and report the test half. After that, extract your agent's real command history, redact anything that looks like a token before you save it, and score it with the same thresholds. The code for this post and the rest of the series, the 100 labelled lab commands, the ported rules, and the lab results are on <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a>. My real command history stays private.</p>
+              <p><strong>To replicate on your own agent.</strong> Install Laya with <code>pip install laya</code>, and the checkpoint downloads on first use. Write 100 commands from your own work, label them harmless, dangerous, or grey-zone, and split them in half, then run every guard on the tune half to choose thresholds and report the test half. After that, extract your agent's real command history, redact anything that looks like a token before you save it, and score it with the same thresholds. The code for this post and the rest of the series, the short-command set of 100 labelled commands, the ported rules, and the results on it are on <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a>. My real command history stays private.</p>
 
               <p class="article-section-label">References</p>
               <h3>Sources</h3>

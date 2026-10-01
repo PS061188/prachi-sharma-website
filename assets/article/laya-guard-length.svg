@@ -35,4 +35,4 @@
 <text x="675.0" y="382" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b" text-anchor="middle">over 2,000</text>
 <text x="675.0" y="400" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">404 commands</text>
 <line x1="70" y1="360" x2="740" y2="360" stroke="#bbb" stroke-width="1"/>
-<text x="24" y="436" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">Same threshold (0.45) everywhere. My lab commands were 21-33 characters long; my real ones have a median of 519.</text></svg>
+<text x="24" y="436" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">Same threshold (0.45) everywhere. Short-command set: 21-33 characters on average; my real commands: median 519.</text></svg>

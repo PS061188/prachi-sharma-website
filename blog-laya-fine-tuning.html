@@ -82,7 +82,7 @@
                 <p class="article-callout-label">Part of this series</p>
                 <ul>
                   <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and shares 100 coins among the answers, in pictures.</li>
-                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work outside the lab?</a> Laya as a safety check on my coding agent's commands: few errors on 50 short test commands, but it would have wrongly stopped about a third of my real, harmless ones.</li>
+                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work on real commands?</a> Laya as a safety check on my coding agent's commands: few errors on 50 short test commands, but it would have wrongly stopped about a third of my real, harmless ones.</li>
                   <li><strong>Part 3 (this post): Teaching Laya my real commands.</strong> What changed after training it on 800 of my own commands labelled by Claude.</li>
                 </ul>
               </div>
@@ -91,9 +91,9 @@
                 Training every layer on my real commands cut Laya's false alarms from 38 in 100 to 6, and it caught 15 of the 19 destructive commands instead of 12. Training only its final layers changed almost nothing.
               </blockquote>
 
-              <p>In <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> I put Laya in front of my AI coding agent as a safety check: before any terminal command runs, Laya says how likely it is to be destructive. On a lab test of 50 short, hand-written commands it looked good. Replayed on 4,549 commands from my own sessions, the same set-up would have stopped me on about 37 in every 100, nearly all of them harmless work, because Laya's danger score rose with the length of a command, and real commands are long scripts.</p>
+              <p>In <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> I put Laya in front of my AI coding agent as a safety check: before any terminal command runs, Laya says how likely it is to be destructive. On a set of 50 short commands I built for the test, it looked good. Replayed on 4,549 commands from my own sessions, the same set-up would have stopped me on about 37 in every 100, nearly all of them harmless work, because Laya's danger score rose with the length of a command, and real commands are long scripts.</p>
 
-              <p>One thing I had not done in Part 2 was train Laya. I used it exactly as its makers published it and only chose one cut-off score, on the short lab commands. Its makers present it as a base to fine-tune on your own data, so the fair next question was: what happens if I train it on my real commands? This post is that experiment.</p>
+              <p>One thing I had not done in Part 2 was train Laya. I used it exactly as its makers published it and only chose one cut-off score, on the short-command set. Its makers present it as a base to fine-tune on your own data, so the fair next question was: what happens if I train it on my real commands? This post is that experiment.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">At a glance</p>
@@ -101,8 +101,8 @@
                   <li><strong>The data.</strong> Claude Opus labelled 1,200 of my real terminal commands as destructive or not; 62 were destructive. I held back 400 commands, 19 of them destructive, as a test that no model trained on.</li>
                   <li><strong>Three ways of training Laya.</strong> Only its final decision layers; those plus the top 8 of its 28 reading layers; or every layer. Twenty to thirty minutes each on a MacBook, scoring included.</li>
                   <li><strong>Result.</strong> Training every layer cut false alarms on the 400 test commands from 38% of harmless commands to 6%, raised destructive commands caught from 12 of 19 to 15, and removed the length problem. Training only the final layers left false alarms at 30% and 24% and caught nothing extra.</li>
-                  <li><strong>The cost.</strong> The fully trained model now flags 6 of 20 harmless commands in the short lab set. It learned the shape of my real commands and lost some of the lab ones.</li>
-                  <li><strong>A simpler rival.</strong> A classic word-counting classifier, trained in 2 seconds on the same labels, caught 17 of 19 but wrongly stopped 23% of harmless real commands and 18 of 20 harmless lab commands.</li>
+                  <li><strong>The cost.</strong> The fully trained model now flags 6 of 20 harmless commands in the short-command set. It learned the shape of my real commands and lost some accuracy on short ones.</li>
+                  <li><strong>A simpler rival.</strong> A classic word-counting classifier, trained in 2 seconds on the same labels, caught 17 of 19 but wrongly stopped 23% of harmless real commands and 18 of 20 harmless commands in the short-command set.</li>
                 </ul>
               </div>
 
@@ -117,8 +117,8 @@
               <p class="article-section-label">How I measured</p>
               <h3 id="splits">What was trained on, and what was kept apart</h3>
               <ul>
-                <li><strong>Test set: 400 commands, 19 destructive.</strong> These were drawn at random from my history before anything else happened, and no model saw them during training, so every real-command number in this post comes from these 400, plus the 50-command lab test from Part 2.</li>
-                <li><strong>Training set: 800 commands, 43 destructive.</strong> 400 picked at random and 400 that contain a risky word such as <code>rm</code>, <code>kill</code> or <code>--force</code>, so that training would see enough destructive examples. I also added the 40 clear-cut commands from the lab set's tuning half.</li>
+                <li><strong>Test set: 400 commands, 19 destructive.</strong> These were drawn at random from my history before anything else happened, and no model saw them during training, so every real-command number in this post comes from these 400, plus the 50 test commands of Part 2's short-command set.</li>
+                <li><strong>Training set: 800 commands, 43 destructive.</strong> 400 picked at random and 400 that contain a risky word such as <code>rm</code>, <code>kill</code> or <code>--force</code>, so that training would see enough destructive examples. I also added the 40 clear-cut commands from the short-command set's tuning half.</li>
                 <li><strong>Validation set: 159 of those 800, 8 destructive.</strong> Held back from training and used to choose the cut-off score, with the same rule as in Part 2, and to pick which pass through the data to keep.</li>
               </ul>
               <p>Two figures matter, both on real commands: how many of the 381 harmless commands the guard wrongly stopped (false alarms), and how many of the 19 destructive ones it caught. With 19 destructive commands, one command moves the catch rate by about five points, so I treat a difference of one or two commands as noise. Each check keeps the rules list from Part 2 in front of the model, as the deployed guard did.</p>
@@ -162,10 +162,10 @@
 
               <p class="article-section-label">Pass by pass</p>
               <h3 id="curves">What each pass through the data did</h3>
-              <p>Each version saw the training commands three or four times; each full sweep is a <strong>pass</strong>. After every pass I scored the validation set, the lab test and the real test, so the figure below shows how each metric moved. Pass 0 is the model as shipped. "Loss" is the training error the model tries to reduce: lower is better. The "50-coin cut-off" rows use the natural cut-off of 50 out of 100, with no tuning.</p>
+              <p>Each version saw the training commands three or four times; each full sweep is a <strong>pass</strong>. After every pass I scored the validation set, the short-command set and the real test, so the figure below shows how each metric moved. Pass 0 is the model as shipped. "Loss" is the training error the model tries to reduce: lower is better. The "50-coin cut-off" rows use the natural cut-off of 50 out of 100, with no tuning.</p>
 
               <figure class="article-figure">
-                <img src="./assets/article/laya-ft-epochs.svg" alt="Twelve small charts: rows are loss, ranking quality, real-test catch and false-alarm rates, and lab-test catch and false-alarm rates; columns are head only, head plus top 8 layers, and every layer. Only the every-layer column improves clearly across passes." />
+                <img src="./assets/article/laya-ft-epochs.svg" alt="Twelve small charts: rows are loss, ranking quality, real-test catch and false-alarm rates, and short-command set catch and false-alarm rates; columns are head only, head plus top 8 layers, and every layer. Only the every-layer column improves clearly across passes." />
                 <figcaption class="article-caption">Measured after every pass. Left to right: head only, head + top 8 layers, every layer. Only the last column learns: its loss falls from 0.89 to 0.17 and its real-test ranking rises from 0.67 to 0.94.</figcaption>
               </figure>
 
@@ -196,11 +196,11 @@
 
               <p class="article-section-label">The flip</p>
               <h3 id="mirror">Training on long real commands made the models worse on short ones</h3>
-              <p>Part 2 had a lab test as well as the real one: 50 short commands I wrote by hand, 20 harmless, 20 destructive and 10 in a grey zone, none longer than a line. In Part 2, Laya as shipped did well on that lab test and badly on my long real commands. Training on my real commands flipped that around, and this section shows the flip.</p>
+              <p>Part 2 had a second test besides the real one: the short-command set, 50 commands I built for Laya, 20 harmless, 20 destructive and 10 in a grey zone, none longer than a line. In Part 2, Laya as shipped did well on that set and badly on my long real commands. Training on my real commands flipped that around, and this section shows the flip.</p>
 
-              <p>Take Laya first. The head-only and top-8 versions changed little, so on the lab test they kept Part 2's record: with the rules in front, 1 of the 20 harmless commands wrongly stopped and 17 of the 20 destructive ones caught. The fully trained version, the one that did so well on real commands, did worse on the lab test: 6 of 20 harmless commands wrongly stopped and 16 of 20 destructive caught. One example is <code>git log --oneline -20</code>, a command that only prints recent history, which it now scores at 1.1%, just above its 0.9% cut-off. In learning my long real commands it forgot a little about short ones.</p>
+              <p>Take Laya first. The head-only and top-8 versions changed little, so on the short-command set they kept Part 2's record: with the rules in front, 1 of the 20 harmless commands wrongly stopped and 17 of the 20 destructive ones caught. The fully trained version, the one that did so well on real commands, did worse on the short-command set: 6 of 20 harmless commands wrongly stopped and 16 of 20 destructive caught. One example is <code>git log --oneline -20</code>, a command that only prints recent history, which it now scores at 1.1%, just above its 0.9% cut-off. In learning my long real commands it forgot a little about short ones.</p>
 
-              <p>The word-counting classifier shows the same flip in a starker form: it wrongly stopped 18 of the 20 harmless lab commands. To see why, it helps to walk through how it scores a command, because it is much simpler than Laya.</p>
+              <p>The word-counting classifier shows the same flip in a starker form: it wrongly stopped 18 of the 20 harmless commands in the short-command set. To see why, it helps to walk through how it scores a command, because it is much simpler than Laya.</p>
 
               <ul>
                 <li><strong>It keeps a list of clues, not meanings.</strong> A clue is any short run of two to five characters, such as <code>kill</code>, <code>.pdf</code> or <code>.py</code>. The classifier understands nothing about what a command does; it only knows which clues are in it.</li>
@@ -209,11 +209,11 @@
                 <li><strong>The guard stops the command if that percentage is above the cut-off.</strong> The cut-off was chosen automatically on the validation set, as described earlier, and came out at 17%.</li>
               </ul>
 
-              <p>The starting number is where the lab commands get caught. It is what the classifier assumes before it has seen a single clue. Left to itself it would assume "probably harmless", because about twelve of every thirteen training commands were harmless. But a classifier that assumes "harmless" and learns little else is right 92% of the time and useless, so I told it during training to treat each destructive example as worth twelve harmless ones. That made it learn to look for danger, and it had a side effect: the starting assumption rose from about one in ten to 33% destructive.</p>
+              <p>The starting number is where the short commands get caught. It is what the classifier assumes before it has seen a single clue. Left to itself it would assume "probably harmless", because about twelve of every thirteen training commands were harmless. But a classifier that assumes "harmless" and learns little else is right 92% of the time and useless, so I told it during training to treat each destructive example as worth twelve harmless ones. That made it learn to look for danger, and it had a side effect: the starting assumption rose from about one in ten to 33% destructive.</p>
 
               <p>Now put <code>ls -la</code> through those steps. Its clues are things like <code>ls</code>, <code>s -</code> and <code>-la</code>. Some of them did appear in training, but inside long scripts full of file paths and Python code, where they were neither a sign of danger nor of safety, so they carry almost no points. With nothing to add or subtract, the total stays close to the starting number, 33%, and the command scores 29%. That is above the 17% cut-off, so the command is stopped. A long harmless command from my own history is the opposite case: it is full of clues that earned minus points in training, they pull the total far below 17%, and it passes.</p>
 
-              <p>Put the two parts together and the picture is symmetrical. In Part 2, Laya arrived trained by its makers on text such as invoices and support tickets. On my short lab commands, which look like the examples in a manual, it made few errors, but on my long real commands, which look nothing like its training, it stopped 37 in every 100. In this post I trained Laya and the word counter on those long real commands only. Both now do well on real commands: 6% and 23% false alarms. Both do worse on the short lab commands: 30% and 90% false alarms. Each model is good on the kind of input it was trained on and poor on the kind it was not, and neither of them knows which kind it is looking at.</p>
+              <p>Put the two parts together and the picture is symmetrical. In Part 2, Laya arrived trained by its makers on text such as invoices and support tickets. On the short commands I built, which look like the examples in a manual, it made few errors, but on my long real commands, which look nothing like its training, it stopped 37 in every 100. In this post I trained Laya and the word counter on those long real commands only. Both now do well on real commands: 6% and 23% false alarms. Both do worse on the short-command set: 30% and 90% false alarms. Each model is good on the kind of input it was trained on and poor on the kind it was not, and neither of them knows which kind it is looking at.</p>
 
               <p>Two practical rules follow. Test a model on inputs shaped like the ones it will meet in use, because a test built from a different shape tells you nothing about the deployment. And if a model must handle both shapes, as a guard for a coding agent must, train it on both, which for me means adding short commands to the training set next time.</p>
 
@@ -239,7 +239,7 @@
               <h3 id="conclusion">Conclusion and impact</h3>
               <p>Can Laya be trained into a usable guard for my coding agent? With 800 labelled commands, closer than I expected. Trained through every layer, it wrongly stops 6 of 100 harmless real commands instead of 38, catches 15 of 19 destructive ones instead of 12, and no longer reads length as danger. The two cheaper kinds of training, which leave the reading layers untouched, changed almost nothing; whatever makes a shell command dangerous lives deep in how the command is read, and the layers that read it have to move.</p>
 
-              <p>Three things stop me from switching it on today. Six false alarms in 100 harmless commands still means a wrong stop every fifteen commands or so; it flags 6 of 20 harmless commands in the short lab set, so its judgement is tied to the shape of my own history; and its cut-off sits at 1 in 100 coins, so its probabilities are not yet ones I can read at face value. Until those are fixed, the rules list runs alone, and the next steps are more labelled destructive examples, a larger validation set, and a refitted temperature. For anyone evaluating a small model, Part 2 and this post together make one point: a lab test built from one kind of input says little about another kind, and training on your own data moves the model to your data and away from the lab's.</p>
+              <p>Three things stop me from switching it on today. Six false alarms in 100 harmless commands still means a wrong stop every fifteen commands or so; it flags 6 of 20 harmless commands in the short-command set, so its judgement is tied to the shape of my own history; and its cut-off sits at 1 in 100 coins, so its probabilities are not yet ones I can read at face value. Until those are fixed, the rules list runs alone, and the next steps are more labelled destructive examples, a larger validation set, and a refitted temperature. For anyone evaluating a small model, Part 2 and this post together make one point: a test set built from one kind of input says little about another kind, and training on your own data moves the model to your data and away from the short-command set.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">If you take one thing from this</p>
@@ -248,7 +248,7 @@
 
               <p class="article-section-label">Appendix</p>
               <h3 id="appendix">Ranking scores, limitations, and how to replicate</h3>
-              <p>AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect and 0.5 is a coin flip. On the 400 real test commands, with the rules list in front: Laya as shipped 0.71, head trained 0.71, top 8 layers trained 0.75, every layer trained 0.93, word-counting classifier 0.90. On the lab test: 0.94 for the first three, 0.88 for every layer trained, 0.81 for the word counter.</p>
+              <p>AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect and 0.5 is a coin flip. On the 400 real test commands, with the rules list in front: Laya as shipped 0.71, head trained 0.71, top 8 layers trained 0.75, every layer trained 0.93, word-counting classifier 0.90. On the short-command set: 0.94 for the first three, 0.88 for every layer trained, 0.81 for the word counter.</p>
 
               <p><strong>Limitations.</strong></p>
               <ul>
