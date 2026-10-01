@@ -158,6 +158,8 @@
 
               <p>Training the head, or the head plus eight layers, reduced false alarms a little and caught nothing extra: the changes of one command are noise. Training every layer is a different result. False alarms fell from 143 to 22 of the 381 harmless commands, and it caught 15 of the 19 destructive commands instead of 12. On the 2,101 real commands from Part 2's replay that no model trained on, which carry no labels, the fully trained model would have stopped me on 7 in 100, against 38 as shipped.</p>
 
+              <p><strong>Laya on its own.</strong> Without the rules list in front, Laya ranked the 400 real test commands at 0.67 as shipped and 0.94 once every layer was trained. At its cut-off, the shipped model caught all 19 destructive commands only by wrongly stopping 349 of the 381 harmless ones; the fully trained model wrongly stopped 10 and caught 12. In the table above, the rules list supplies the other 3 catches and 12 of the 22 false alarms. Only 43 of the 800 training commands were destructive, so these numbers are early evidence: one destructive test command moves the catch rate by about 5 points.</p>
+
               <p>The word-counting classifier caught 17 of the 19 destructive commands, but it wrongly stopped nearly one harmless command in four to do it. Ranked against Claude's labels (AUROC, explained in the appendix), the fully trained Laya scores 0.93 and the word counter 0.90, where 1.0 is perfect and 0.5 is no better than random guessing. So the labels carry a strong signal, and Laya can learn it once its reading layers are allowed to change.</p>
 
               <p class="article-section-label">Pass by pass</p>
