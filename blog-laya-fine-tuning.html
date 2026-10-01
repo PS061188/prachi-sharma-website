@@ -93,7 +93,7 @@
 
               <p>In <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> I put Laya in front of my AI coding agent as a safety check: before any terminal command runs, Laya says how likely it is to be destructive. On a set of 50 short commands I built for the test, it looked good. Replayed on 4,549 commands from my own sessions, the same set-up would have stopped me on about 37 in every 100, nearly all of them harmless work, because Laya's danger score rose with the length of a command, and real commands are long scripts.</p>
 
-              <p>One thing I had not done in Part 2 was train Laya. I used it exactly as its makers published it and only chose one cut-off score, on the short terminal command set (Part 2's set of 100 standard, single-line terminal commands that I built and labelled). <a class="article-reference-inline" href="#ref-1">Its makers present it</a> as a base to fine-tune on your own data, so the fair next question was: what happens if I train it on my real commands? This post is that experiment.</p>
+              <p>One thing I had not done in Part 2 was train Laya. I used it exactly as its makers published it and only chose one cut-off score, on the short terminal command set (Part 2's set of 100 standard, single-line terminal commands that I built and labelled). Its makers present it as a base to fine-tune on your own data (<a class="article-reference-inline" href="#ref-1">Laya&#39;s model card</a>), so the fair next question was: what happens if I train it on my real commands? This post is that experiment.</p>
 
               <div class="article-callout">
                 <p class="article-callout-label">At a glance</p>
@@ -131,7 +131,7 @@
                 <li><strong>Head plus the top 8 reading layers</strong> (125 million numbers). The last layers of reading can learn what matters in a shell command.</li>
                 <li><strong>Every layer</strong> (370 million numbers). Everything can change.</li>
               </ul>
-              <p>As a rival I trained a classic <strong><a class="article-reference-inline" href="#ref-2">word-counting classifier</a></strong> on the same labels. It counts short runs of characters, such as <code>rm -</code> or <code>pkill</code>, and learns which ones go with destructive labels. It understands nothing about language, trains in 2 seconds and scores a command in under a millisecond. If it matches Laya, the amount of data is the limit. If it beats Laya, the labels carry a signal that Laya is not picking up.</p>
+              <p>As a rival I trained a classic <strong>word-counting classifier</strong>, built with <a class="article-reference-inline" href="#ref-2">scikit-learn</a>, on the same labels. It counts short runs of characters, such as <code>rm -</code> or <code>pkill</code>, and learns which ones go with destructive labels. It understands nothing about language, trains in 2 seconds and scores a command in under a millisecond. If it matches Laya, the amount of data is the limit. If it beats Laya, the labels carry a signal that Laya is not picking up.</p>
 
               <p class="article-section-label">Results</p>
               <h3 id="results">Training the whole model works; training the top alone does little</h3>

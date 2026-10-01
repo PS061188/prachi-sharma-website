@@ -209,7 +209,7 @@
               <p>Think of an exam: the chat model is a student writing an essay answer one word after another, while Laya is a student with a multiple-choice sheet, deciding how much to trust each printed option. Everything below follows that picture.</p>
 
               <h3 id="the-example">The example used throughout</h3>
-              <p>An <strong>AI coding agent</strong> is a program that writes and runs code for you, and mine (Claude Code) runs terminal commands on my laptop. Some commands delete things. Throughout this post the situation is one such command and the question is whether it is destructive. Every number in the figures is <a class="article-reference-inline" href="#ref-8">Laya&#39;s real output</a>, produced on my MacBook.</p>
+              <p>An <strong>AI coding agent</strong> is a program that writes and runs code for you, and mine (Claude Code) runs terminal commands on my laptop. Some commands delete things. Throughout this post the situation is one such command and the question is whether it is destructive. Every number in the figures is Laya's real output, produced on my MacBook with my <a class="article-reference-inline" href="#ref-8">laya-guard code</a>.</p>
 
               <p>Laya comes in three saved versions. A saved version of a trained model is called a <strong>checkpoint</strong>, and the three differ in what extra training they received. I use the one named <code>typed-decisions</code>, which its makers trained further on four kinds of business decision: customer-service messages, invoices, security incidents and logs of what AI agents did. The last two are the closest to my question. The other two are the base English version and a multilingual version.</p>
 
@@ -244,7 +244,7 @@
 
               <p class="article-section-label">Step 2</p>
               <h3 id="one-read">One read, twenty-eight rounds</h3>
-              <p>The reading network is an existing open model called <a class="article-reference-inline" href="#ref-3">ModernBERT-large</a>, published in December 2024, which Laya's makers built on rather than starting from scratch. It has 28 <strong>layers</strong>. Picture each layer as one round of re-reading the whole sheet. In every round, each token looks at other tokens and adjusts what it "means" in this context. In most rounds a token looks at the 128 tokens around it; in every third round it looks at the whole sheet.</p>
+              <p>The reading network is an existing open model called ModernBERT-large (<a class="article-reference-inline" href="#ref-3">Warner et al., 2024</a>), which Laya's makers built on rather than starting from scratch. It has 28 <strong>layers</strong>. Picture each layer as one round of re-reading the whole sheet. In every round, each token looks at other tokens and adjusts what it "means" in this context. In most rounds a token looks at the 128 tokens around it; in every third round it looks at the whole sheet.</p>
 
               <p>The tokens it is reading are the ones in the text above, nothing else. Here are all 97 of them for my example, written the way a Python program would list them; a leading space inside a token means it began a new word:</p>
               <pre><code>tokens = [
@@ -301,10 +301,6 @@
 
               <p>Two things follow. The temperature can make the model more modest, but it cannot create a gap the scorer did not find, which is why the <code>rm -rf</code> answer stays at an even split. And Part 3 of this series shows what happens when the temperature is left unfitted after new training: the probabilities stop meaning what they say, even when the ranking of commands is good.</p>
 
-              <p class="article-section-label">Why it cannot invent answers</p>
-              <h3 id="no-inventing">It can be wrong, but it cannot make things up</h3>
-              <p>Laya only divides probability between the answers printed on the sheet. It has no way to write an answer that is not on the sheet. That removes one whole class of failure that chat models have, inventing a plausible-sounding answer, which people call hallucination. It can still be wrong, by giving the wrong answer the higher probability. My example shows exactly that kind of failure: a 50% chance of "false" for a command that deletes a folder.</p>
-
               <p class="article-section-label">How it learned</p>
               <h3 id="honesty">A forecaster paid for honesty</h3>
               <p>A model's numbers come from <strong>training</strong>: showing it many examples and nudging its internal numbers (Laya has 421 million of them, called parameters) so that its answers improve. Laya's makers used <strong>reinforcement learning</strong>, which means learning by trial and reward: the model answers a practice question, gets a reward that depends on how good the answer was, and adjusts to earn more reward next time.</p>
@@ -313,7 +309,7 @@
               <ul>
                 <li><strong>Try.</strong> Laya answers a practice question whose right answer is already known. During practice it adds a little random noise to its scores, so it answers the same question several times, sharing the probability slightly differently each time.</li>
                 <li><strong>Score.</strong> Each try is marked with a proper scoring rule, explained below. The less probability a try gave the right answer, the more points it loses.</li>
-                <li><strong>Compare.</strong> The tries are compared with their own average. A try that lost fewer points than the average is encouraged, and one that lost more is discouraged. Learning from "better than my usual", rather than from the raw score, keeps training steady; it is the idea behind <a class="article-reference-inline" href="#ref-13">GRPO</a>, a method also used to train reasoning models.</li>
+                <li><strong>Compare.</strong> The tries are compared with their own average. A try that lost fewer points than the average is encouraged, and one that lost more is discouraged. Learning from "better than my usual", rather than from the raw score, keeps training steady; it is the idea behind GRPO (<a class="article-reference-inline" href="#ref-13">Shao et al., 2024</a>), a method also used to train reasoning models.</li>
                 <li><strong>Adjust.</strong> Laya's parameters move a little toward the tries that did better, and the next practice question begins. The round repeats over thousands of questions.</li>
               </ul>
 
@@ -359,11 +355,11 @@
 
               <p class="article-section-label">Laya and Jev</p>
               <h3 id="jev">Is Laya the same as Jev?</h3>
-              <p><strong>Jev</strong> is a decision model from a company called TypeSafe AI, <a class="article-reference-inline" href="#ref-4">announced on 15 September 2026</a> and named after the economist William Stanley Jevons. It takes the same kind of input and returns the same kind of output as Laya: a situation and typed questions in, probabilities out, no text. TypeSafe calls its models "System One" models, and Laya's author describes Laya as the same idea. Laya's server even accepts requests in Jev's format, so code written for one can call the other.</p>
+              <p><strong>Jev</strong> is a decision model from a company called TypeSafe AI, announced on 15 September 2026 in <a class="article-reference-inline" href="#ref-4">TypeSafe&#39;s launch post</a> and named after the economist William Stanley Jevons. It takes the same kind of input and returns the same kind of output as Laya: a situation and typed questions in, probabilities out, no text. TypeSafe calls its models "System One" models, and Laya's author describes Laya as the same idea. Laya's server even accepts requests in Jev's format, so code written for one can call the other.</p>
 
-              <p>Laya's author is <strong>Nandakishor M</strong>, <a class="article-reference-inline" href="#ref-10">founder and CEO</a> of Convai Innovations, a company in Kasaragod, Kerala, India. He traces Laya back to two papers he published before Jev existed. The first, in March 2025, described <a class="article-reference-inline" href="#ref-11">SalesRLAgent</a>, a model trained by reinforcement learning to predict how likely a sales conversation is to end in a sale. The second, <a class="article-reference-inline" href="#ref-12">in September 2025</a>, was about judging how reliable a language model's answer is likely to be before the model writes it.</p>
+              <p>Laya's author is <strong>Nandakishor M</strong>, founder and CEO of Convai Innovations, a company in Kasaragod, Kerala, India (<a class="article-reference-inline" href="#ref-10">Convai&#39;s About page</a>). He traces Laya back to two papers he published before Jev existed. The first (<a class="article-reference-inline" href="#ref-11">arXiv, March 2025</a>) described SalesRLAgent, a model trained by reinforcement learning to predict how likely a sales conversation is to end in a sale. The second (<a class="article-reference-inline" href="#ref-12">arXiv, September 2025</a>) was about judging how reliable a language model's answer is likely to be before the model writes it.</p>
 
-              <p>Laya itself appeared on 18 September 2026, three days after Jev, when its code and model files were published. In <a class="article-reference-inline" href="#ref-2">a post the same day</a>, written in reply to Jev's launch, he said he had decided to "take everything I learned from my March 2025 and September 2025 papers" and build a completely open decision model. So the idea grew out of his own earlier work, while the release date and the Jev-compatible request format followed Jev's launch. The deal around each model is very different, and the table shows how.</p>
+              <p>Laya itself appeared on 18 September 2026, three days after Jev, when its code and model files were published. In a post the same day on <a class="article-reference-inline" href="#ref-2">Dev.to</a>, written in reply to Jev's launch, he said he had decided to "take everything I learned from my March 2025 and September 2025 papers" and build a completely open decision model. So the idea grew out of his own earlier work, while the release date and the Jev-compatible request format followed Jev's launch. The deal around each model is very different, and the table shows how.</p>
 
               <div class="article-table-scroll">
                 <table class="article-data-table">
@@ -372,18 +368,18 @@
                   </thead>
                   <tbody>
                     <tr><td>Who makes it</td><td>Convai Innovations, released 18 September 2026</td><td>TypeSafe AI, announced 15 September 2026</td></tr>
-                    <tr><td>Question types</td><td>Yes/no, pick one, rate on a scale</td><td>The same three; pick-one takes up to <a class="article-reference-inline" href="#ref-5">255 options</a></td></tr>
-                    <tr><td>Can you download it?</td><td>Yes, open weights under Apache 2.0</td><td>No, paid API only (TypeSafe or <a class="article-reference-inline" href="#ref-6">Cloudflare Workers AI</a>)</td></tr>
-                    <tr><td>What is inside</td><td>Published: ModernBERT-large reader plus a trained head, 421 million parameters</td><td>Not published; <a class="article-reference-inline" href="#ref-5">described as transformer-based</a> and not a large language model</td></tr>
-                    <tr><td>How it was trained</td><td>Reinforcement learning with proper scoring rules, visible in its code</td><td>A method TypeSafe calls <a class="article-reference-inline" href="#ref-5">RLCD</a>; details not published</td></tr>
-                    <tr><td>Speed claim</td><td>39.5 ms per question on a T4 GPU, on your own hardware</td><td><a class="article-reference-inline" href="#ref-5">70 to 500 ms</a> end to end, over the internet</td></tr>
-                    <tr><td>How much text it reads</td><td>1,024 tokens for the checkpoint used here (up to 8,000 for the multilingual one)</td><td><a class="article-reference-inline" href="#ref-6">32,000 tokens</a></td></tr>
+                    <tr><td>Question types</td><td>Yes/no, pick one, rate on a scale</td><td>The same three; pick-one takes up to 255 options</td></tr>
+                    <tr><td>Can you download it?</td><td>Yes, open weights under Apache 2.0</td><td>No, paid API only (TypeSafe or Cloudflare Workers AI)</td></tr>
+                    <tr><td>What is inside</td><td>Published: ModernBERT-large reader plus a trained head, 421 million parameters</td><td>Not published; described as transformer-based and not a large language model</td></tr>
+                    <tr><td>How it was trained</td><td>Reinforcement learning with proper scoring rules, visible in its code</td><td>A method TypeSafe calls RLCD; details not published</td></tr>
+                    <tr><td>Speed claim</td><td>39.5 ms per question on a T4 GPU, on your own hardware</td><td>70 to 500 ms end to end, over the internet</td></tr>
+                    <tr><td>How much text it reads</td><td>1,024 tokens for the checkpoint used here (up to 8,000 for the multilingual one)</td><td>32,000 tokens</td></tr>
                     <tr><td>Many options (Banking77, 77 intents)</td><td>0.425</td><td>0.870</td></tr>
-                    <tr><td>Price</td><td>Free, plus your own hardware</td><td><a class="article-reference-inline" href="#ref-6">$0.042 per million input tokens</a>; output free</td></tr>
+                    <tr><td>Price</td><td>Free, plus your own hardware</td><td>$0.042 per million input tokens; output free</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p>A few table words explained. "Weights" are the model's parameters, so "open weights" means you can download the trained model itself. An "API" is a paid web service you send requests to. "Transformer" is the family of neural network that both chat models and Laya's reader belong to. The two speed figures are not a fair race: Laya's is measured on a local graphics card, and Jev's includes the trip over the internet. The Banking77 row comes from Laya's own model card; it measures how well each model picks the right one of 77 customer intents.</p>
+              <p>A few table words explained. "Weights" are the model's parameters, so "open weights" means you can download the trained model itself. An "API" is a paid web service you send requests to. "Transformer" is the family of neural network that both chat models and Laya's reader belong to. The two speed figures are not a fair race: Laya's is measured on a local graphics card, and Jev's includes the trip over the internet. The Banking77 row comes from Laya's own model card; it measures how well each model picks the right one of 77 customer intents. The rest of the Jev column comes from <a class="article-reference-inline" href="#ref-4">TypeSafe&#39;s launch post</a>, <a class="article-reference-inline" href="#ref-5">MarkTechPost&#39;s report</a> and <a class="article-reference-inline" href="#ref-6">Cloudflare&#39;s model page</a>.</p>
 
               <p>In short: pick Jev if you want a hosted service that handles long inputs and many options; pick Laya if you want to see inside the model, run it on your own machine, and train it on your own data.</p>
 
