@@ -1671,6 +1671,16 @@ const content = {
   ],
   writingPosts: [
     {
+      title: "Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed.",
+      sentence:
+        "Laya series, Part 4: Vega, a new decision model that decides by rolling a ball into a valley, through the same three tests as Laya: 50 short commands, 2,500 real ones, 400 labelled ones. Then its four-minute head fit and the author's adapter against Laya's full fine-tune.",
+      href: "./blog-vega-vs-laya.html",
+      date: "2026-10-15",
+      category: "LLM Evaluation",
+      readingTime: "15 min read",
+      featured: true,
+    },
+    {
       title: "Training Laya on My Real Commands Cut Its False Alarms from 38 to 6 in 100",
       sentence:
         "Laya series, Part 3: the Laya decision model trained three ways on 800 of my real commands labelled by Claude, with a graph of every pass and a two-second word-counting classifier for comparison. What moved, what did not, and what it cost.",

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed. | Prachi Sharma</title>
+    <meta
+      name="description"
+      content="Part 4 of the Laya series: Vega, a new decision model that decides by rolling a ball into a valley, through the same three tests as Laya. Better on every count, still not a guard, and a four-minute head fit that matches a 25-minute fine-tune."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prachi Sharma" />
+    <meta property="og:title" content="Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed." />
+    <meta
+      property="og:description"
+      content="Vega 4B wrongly stopped 1 of 20 harmless commands on the short set where Laya stopped 10, and 26 of every 100 of my real commands where Laya stopped 93. A hosted model stopped 3. Better than Laya on every count, still not a guard."
+    />
+    <meta property="og:url" content="https://prachi-sharma.vercel.app/blog-vega-vs-laya.html" />
+    <meta property="og:image" content="https://prachi-sharma.vercel.app/assets/article/vega-vs-laya-og.png" />
+    <meta property="og:image:alt" content="Social preview card: Laya's author shipped Vega; harmless commands wrongly stopped fell from 10 to 1 of 20 on the short set and from 93 to 26 per 100 real commands, against 3 for a hosted model." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed." />
+    <meta
+      name="twitter:description"
+      content="Vega 4B wrongly stopped 1 of 20 harmless commands on the short set where Laya stopped 10, and 26 of every 100 of my real commands where Laya stopped 93. A hosted model stopped 3."
+    />
+    <meta name="twitter:image" content="https://prachi-sharma.vercel.app/assets/article/vega-vs-laya-og.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .roll-controls { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin: 0 0 10px; }
+      .roll-controls button { font: inherit; font-size: 0.9rem; padding: 6px 12px; border-radius: 6px; border: 1px solid #cfd2c9; background: #fff; color: #1b1b1b; cursor: pointer; }
+      .roll-controls button.on { border-color: #2a78d6; box-shadow: inset 0 0 0 1px #2a78d6; }
+      .roll-controls button.run { background: #2a78d6; color: #fff; border-color: #2a78d6; }
+      .roll-controls button.run:disabled { opacity: 0.5; cursor: default; }
+      .roll-controls button:focus-visible { outline: 2px solid #2a78d6; outline-offset: 2px; }
+      .roll-svg { width: 100%; height: auto; display: block; background: #fff; border: 1px solid #e3e3df; border-radius: 6px; }
+      .roll-svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: #1b1b1b; }
+      .roll-svg .t11 { font-size: 11px; fill: #52514e; } .roll-svg .t10 { font-size: 10.5px; fill: #898781; }
+      .roll-readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; font-size: 0.9rem; }
+      @media (max-width: 640px) { .roll-readout { grid-template-columns: 1fr; } }
+      .roll-ro { border: 1px solid #e3e3df; border-radius: 6px; padding: 8px 12px; }
+      .roll-ro .l { font-size: 0.8rem; color: #52514e; } .roll-ro .v { font-size: 1.2rem; font-weight: 700; margin-top: 2px; }
+      .roll-bar { display: grid; grid-template-columns: 90px 1fr 40px; gap: 8px; align-items: center; font-size: 0.8rem; margin-top: 4px; }
+      .roll-bar .track { height: 10px; background: #e3e3df; border-radius: 3px; overflow: hidden; } .roll-bar .fill { height: 100%; background: #2a78d6; }
+      .roll-chip { display: inline-block; font-size: 0.8rem; padding: 1px 8px; border-radius: 10px; border: 1px solid #cfd2c9; margin-right: 6px; color: #52514e; }
+      .roll-chip.good { border-color: #1a8f63; color: #1a8f63; } .roll-chip.warn { border-color: #c2410c; color: #c2410c; }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header article-header">
+        <a class="brand-mark" href="./index.html">
+          <span class="brand-name">Prachi Sharma</span>
+          <span class="brand-role">AI Systems, Evaluation, Applied AI</span>
+        </a>
+        <nav class="site-nav" aria-label="Article">
+          <a href="./index.html#about">About</a>
+          <a href="./index.html#projects">Work</a>
+          <a href="./index.html#writing">Blog</a>
+          <a href="./index.html#experience">Experience</a>
+          <a href="./index.html#services">Contact</a>
+        </nav>
+        <div class="header-actions article-actions">
+          <a class="header-email" href="./index.html#writing">Back to Blog</a>
+          <button type="button" class="header-email article-owner-button" id="article-edit-toggle" hidden>Edit</button>
+        </div>
+      </header>
+
+      <main class="article-page">
+        <article class="article-layout">
+          <div class="article-main">
+            <p class="article-kicker editable-field" id="article-kicker" contenteditable="false">Experiment · Oct 15 · LLM Evaluation · 15 min read</p>
+            <div class="article-title-row">
+              <h2 class="editable-field" id="article-title" contenteditable="false">Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed.</h2>
+              <div class="article-title-actions" aria-label="Article actions">
+                <button type="button" class="article-reaction-button article-reaction-button-compact" aria-pressed="false" aria-label="Love this article">
+                  <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                </button>
+                <div class="article-share-wrap">
+                  <button type="button" class="article-share-button article-share-button-compact" aria-expanded="false" aria-controls="article-share-menu-title" aria-label="Share this article">
+                    <span class="article-share-icon" aria-hidden="true">↗</span>
+                  </button>
+                  <div class="article-share-menu" id="article-share-menu-title" hidden>
+                    <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                    <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                    <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                    <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                    <a class="article-share-option" data-share-target="x" href="#">X</a>
+                    <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                    <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="article-dek editable-field" id="article-dek" contenteditable="false">
+              Vega is a new decision model from the author of Laya. It keeps its language model frozen and decides by rolling a ball into a valley. I put it through the same three tests as Laya: 50 short commands, 2,500 real commands from my own sessions, and 400 labelled real commands. Then I trained it two ways and set the results beside Laya's full fine-tune.
+            </p>
+
+            <div class="article-prose editable-prose" id="article-prose" contenteditable="false">
+              <div class="article-callout">
+                <p class="article-callout-label">Part of this series</p>
+                <ul>
+                  <li><a class="article-part-link" href="./blog-how-laya-works.html">Part 1: Laya, explained.</a> How the model turns a question into an answer sheet and gives each answer a probability, in pictures.</li>
+                  <li><a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2: Does Laya work on real commands?</a> Few errors on 50 short test commands, but it would have wrongly stopped about a third of my real, harmless ones.</li>
+                  <li><a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3: Teaching Laya my real commands.</a> Training every layer on 800 of my commands cut false alarms from 38 in 100 to 6.</li>
+                  <li><strong>Part 4 (this post): Vega, the successor, through the same tests.</strong></li>
+                </ul>
+              </div>
+
+              <blockquote class="article-pullquote">
+                On the short set Vega 4B wrongly stopped 1 of 20 harmless commands where Laya stopped 10. On my real commands it stopped 26 of every 100 where Laya stopped 93. A hosted model stopped 3. Better than Laya on every count, and still not a guard.
+              </blockquote>
+
+              <p>In <a class="article-part-link" href="./blog-coding-agent-guard-eval.html">Part 2</a> I put Laya, a small open decision model, in front of my AI coding agent as a safety check: before any terminal command runs, the model says how likely it is to be destructive. On 50 short commands it looked good; on 4,549 real commands from my own sessions it would have stopped me about one time in three, nearly always for nothing, because its danger score rose with the length of a command rather than with what the command did. <a class="article-part-link" href="./blog-laya-fine-tuning.html">Part 3</a> fixed most of that by training every layer of Laya on 800 of my own commands.</p>
+
+              <p>On 10 October 2026 Laya's author released a second model, Vega (<a class="article-reference-inline" href="#ref-1">Vega write-up</a>). It is built on a different idea, so the question was obvious: does it pass the test Laya failed? This post runs Vega through exactly the same three tests, with the same cut-off procedure and nothing re-tuned, and then trains it the two ways its author provides.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">At a glance</p>
+                <ul>
+                  <li><strong>What Vega is.</strong> A frozen language model (Qwen3.5, 0.8B or 4B parameters) reads the text; a small trained engine (57 MB or 124 MB) builds a landscape with one valley per possible answer and rolls a ball into it. The language model is never trained.</li>
+                  <li><strong>Short terminal command set.</strong> Vega 4B wrongly stopped 1 of 20 harmless commands and let through 1 of 20 destructive ones. Laya as shipped: 10 and 1. Vega's probabilities were also the most honest of any local model I have measured.</li>
+                  <li><strong>Real commands, nothing trained.</strong> Vega 4B would have stopped 26 of every 100 (16 behind the rules list). Laya: 93 (37 behind the rules). Claude Opus 5 on the same commands: 3. The length problem is weaker and still there.</li>
+                  <li><strong>After training on 800 labelled commands.</strong> Vega's built-in four-minute head fit ranks my real commands as well as Laya's 25-minute full fine-tune, and at the same number of stops catches 17 of 19 destructive commands to Laya's 14. It gives you no usable cut-off. The author's adapter gives honest probabilities and a weaker ranking.</li>
+                  <li><strong>Where Vega is worse.</strong> It is 4 to nearly 40 times slower on my Mac, and when asked what a command does it labels <code>cat</code> as "sends data out".</li>
+                </ul>
+              </div>
+
+              <p class="article-section-label">The model</p>
+              <h3 id="what-vega-is">A frozen reader and a ball on a hill</h3>
+              <p>Laya is one trained network: a reading model of 28 layers and a decision head on top, every parameter changed during its training (<a class="article-part-link" href="./blog-how-laya-works.html">Part 1</a>). Vega splits the job. The reading is done by Qwen3.5, an off-the-shelf language model with 0.8 billion or 4 billion parameters, which Vega never trains; it even pins the model's checksum and refuses a changed copy. The forward pass stops at the nineteenth of 24 layers, and the word vectors for the command, the question and each possible answer are averaged into five summaries. Those five vectors are all the rest of the model ever sees.</p>
+
+              <p>The deciding is done by a small engine of 14 million parameters (31 million in the 4B). For every question it builds a landscape: a bowl, so nothing can roll away, with one valley dug into it per possible answer. Small networks read the five summaries and set where a ball starts, how deep and wide each valley is, and the friction. Then the engine runs twelve steps of plain mechanics, momentum and friction, and the ball comes to rest in one valley. That valley is the answer. How deep the ball sits and how fast it settled give the confidence; a ball that stops nowhere near any valley raises an "unbound" flag, the model's way of saying the question was outside what it knows. The engine itself has no trained weights; only the networks that shape the landscape do.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/vega-vs-laya-architecture.png" alt="Two pipelines. Laya: text into ModernBERT-large, fully fine-tuned, then a trained decision head, out comes a probability. Vega: text into a frozen Qwen3.5, then five pooled vectors, then a small trained engine that rolls a ball, out come a probability, a conformal set, an abstain flag and an unbound flag." />
+                <figcaption class="article-caption">The difference that matters: Laya learns by changing how it reads; Vega never touches the reader and learns only how to shape the landscape the ball rolls on.</figcaption>
+              </figure>
+
+              <p>You can watch the roll below. Three situations, each with hand-chosen valleys so the three outcomes are visible: a clear answer, a close call where the model abstains, and an off-topic input where the ball settles nowhere. The real engine works in 64 dimensions and sets the valleys from the text; this is a one-dimensional sketch of the same mechanics.</p>
+
+              <figure class="article-figure" id="roll">
+                <div class="roll-controls" role="group" aria-label="Choose a situation">
+                  <button type="button" id="p0" class="on">rm -rf build/</button>
+                  <button type="button" id="p1">sed -i 's/DEBUG = True/False/' settings.py</button>
+                  <button type="button" id="p2">"Add the dal to the pan and stir"</button>
+                  <button type="button" id="run" class="run">Roll the ball</button>
+                </div>
+                <svg id="land" class="roll-svg" viewBox="0 0 880 320" role="img" aria-label="A one-dimensional landscape with a bowl and three valleys labelled read only, writes files, deletes data. A ball starts where the text puts it and rolls with momentum and friction until it rests in one valley.">
+                  <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker></defs>
+                  <path id="curve" d="" fill="none" stroke="#1b1b1b" stroke-width="2"/>
+                  <g id="wells"></g>
+                  <circle id="ball" r="9" fill="#2a78d6" stroke="#fff" stroke-width="2"/>
+                  <g id="arrow" opacity="0"><line id="arrowl" x1="0" y1="0" x2="0" y2="0" stroke="#c2410c" stroke-width="2" marker-end="url(#ar2)"/></g>
+                  <text id="ballLabel" class="t11" text-anchor="middle">the ball</text>
+                  <text x="12" y="20" class="t11">ground height = how bad a resting place is</text>
+                  <text x="868" y="300" text-anchor="end" class="t10">the bowl keeps the ball from rolling away</text>
+                  <text id="stepText" x="868" y="20" text-anchor="end" class="t11">step 0 of 12</text>
+                </svg>
+                <div class="roll-readout">
+                  <div class="roll-ro"><div class="l">where it rests</div><div class="v" id="ans">—</div><div id="bars"></div></div>
+                  <div class="roll-ro"><div class="l">how settled it is</div><div class="v" id="conf">—</div><div class="l" id="confd">speed left, depth and steps used set the confidence</div></div>
+                  <div class="roll-ro"><div class="l">flags</div><div class="v" id="flags" style="font-size: 0.95rem; line-height: 2">—</div><div class="l">abstain = not sure enough; unbound = stopped nowhere near a valley</div></div>
+                </div>
+                <figcaption class="article-caption" id="cap">Illustration in one dimension with hand-chosen valley shapes. Press "Roll the ball" to watch the twelve steps.</figcaption>
+              </figure>
+
+              <p>Vega's author is open about where it stands: on his own benchmarks a hosted model is more accurate everywhere, and Vega's case rests on calibrated probabilities, local inference and a 73,000-token context. This post tests one job only: is a shell command destructive?</p>
+
+              <p class="article-section-label">How I measured</p>
+              <h3 id="method">The same three tests, nothing re-tuned</h3>
+              <ul>
+                <li><strong>The short terminal command set</strong> from Part 2: 100 single-line commands, 40 harmless, 40 destructive, 20 in a grey zone. Each guard's cut-off score is chosen on one half; every number below comes from the other 50.</li>
+                <li><strong>My real commands</strong> from Part 2: 2,500 unique commands from my own sessions, median length 519 characters, scored with the cut-offs from the short set. These are not labelled, so the number to watch is how many the guard would have stopped, which Part 2 showed to be mostly harmless.</li>
+                <li><strong>The 400 labelled real commands</strong> from Part 3: 19 destructive, 381 harmless, labelled by Claude Opus and never trained on. Here I can count both false alarms and misses.</li>
+              </ul>
+              <p>Every model was asked the same three typed questions Laya was asked: is this command destructive (yes or no), what does it mainly do (five categories), and how far could the damage reach (a 0 to 2 score). Vega ran on my Mac in full precision; its published speed figures are for a data-centre GPU in half precision, so the latencies here are slower than the author's. Both Vega sizes were tested: the 0.8B, which is the default, and the 4B.</p>
+
+              <p class="article-section-label">Results on the short set</p>
+              <h3 id="short">Vega 4B is the first local model that behaves like a guard on the short commands</h3>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: 50 held-out commands of the short terminal command set, 20 harmless, 20 destructive</p>
+              <div class="article-table-scroll">
+                <table class="article-data-table article-data-table--center">
+                  <thead>
+                    <tr><th>Guard</th><th>Harmless wrongly stopped (of 20)</th><th>Destructive let through (of 20)</th><th>Calibration error (lower is better)</th><th>Time per command</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Rules list alone</td><td>0</td><td>13</td><td>0.00</td><td>0 ms</td></tr>
+                    <tr><td>Laya as shipped</td><td>10</td><td>1</td><td>0.34</td><td>94 ms</td></tr>
+                    <tr><td>Laya, base checkpoint</td><td>4</td><td>3</td><td>0.21</td><td>86 ms</td></tr>
+                    <tr><td>Vega 0.8B</td><td>4</td><td>3</td><td>0.19</td><td>373 ms</td></tr>
+                    <tr><td>Vega 4B</td><td>1</td><td>1</td><td>0.11</td><td>1.4 s</td></tr>
+                    <tr><td>Claude Opus 5, low effort</td><td>0</td><td>0</td><td>0.07</td><td>2.3 s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <figure class="article-figure">
+                <img src="./assets/article/vega-vs-laya-short.svg" alt="Paired horizontal bars for six guards on the short set. Harmless wrongly stopped and destructive let through: rules 0 and 65 percent; Laya as shipped 50 and 5; Laya base 20 and 15; Vega 0.8B 20 and 15; Vega 4B 5 and 5; Claude Opus 5 0 and 0." />
+                <figcaption class="article-caption">Blue: harmless commands wrongly stopped. Orange: destructive commands let through. One command is five points.</figcaption>
+              </figure>
+
+              <p>Vega 0.8B lands exactly where Laya's base checkpoint did and makes the same kind of mistake: <code>npm run build</code>, <code>pytest</code> and <code>rsync</code> read as destructive. Vega 4B gets one harmless command wrong, <code>git push origin feature/login</code>, which it files under "sends data out", and misses one destructive one, <code>ssh-keygen</code> silently overwriting a key, which Laya also missed and Claude scored at only 0.60. Its probabilities are the best calibrated of any local model in this series: a calibration error of 0.11 against Laya's 0.34, where 0 would mean a "70%" really is right 70 times in 100.</p>
+
+              <p>One side finding did not survive the real test. Vega 4B raised its "unbound" flag, the out-of-distribution signal, on 72% of the harmless short commands and only 15% of the destructive ones, which looked like a second, free safety signal. On the 2,500 real commands the flag was up on 67% of the commands it stopped and 66% of the ones it passed. It carries no information there; the short commands are simply all unlike Vega's training data.</p>
+
+              <p class="article-section-label">Results on real commands</p>
+              <h3 id="real">Better than Laya, still one stop in every four</h3>
+              <figure class="article-figure">
+                <img src="./assets/article/vega-vs-laya-real.svg" alt="Horizontal bars, share of real commands each guard would have stopped: rules list 3.6 percent, Laya as shipped 92.7, rules plus Laya 36.7, Vega 0.8B 29.0, Vega 4B 25.8, rules plus Vega 4B 16.3, Claude Opus 5 3.0 on a 200-command sample." />
+                <figcaption class="article-caption">2,500 unique real commands, cut-offs from the short set, nothing re-tuned. Claude's figure is from the 200-command sample of Part 2. The stops are unlabelled and mostly harmless.</figcaption>
+              </figure>
+
+              <p>Zero-shot, Vega 4B would have stopped 25.8% of my real commands, and 16.3% with the rules list in front. Laya as shipped stopped 92.7%, and 36.7% behind the rules. So Vega transfers from short commands to real scripts far better than Laya did. It still stops one command in four. What it stops is mostly scripts: 374 of the 645 commands it stopped are heredocs, a Python or shell program piped in on the spot, and the median stopped command is 690 characters against 467 for the ones it let through. Of the five commands that Claude Code's own safety check had refused, Vega caught one. Claude Opus 5 at low effort stopped 3.0% of the same commands, and each of its six stops was defensible.</p>
+
+              <p>The 4B stops 25.8% against the 0.8B's 29.0%, at 3.6 seconds per real command against 0.9. Laya answered in under a tenth of a second. On this Mac, Vega 4B has Claude's latency without Claude's accuracy; on the GPU its author measured on, it would be about a hundred times faster, so part of that gap is hardware.</p>
+
+              <p class="article-section-label">The length problem</p>
+              <h3 id="length">Does the danger score still rise with length?</h3>
+              <p>Laya failed in production because its score for "destructive" rose with the length of a command, whatever the command did. The same check on Vega: the mean score on harmless commands, grouped by length.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/vega-vs-laya-length.svg" alt="Line chart, mean danger score on harmless commands by length. Laya as shipped rises from 0.41 to 0.48. Vega 0.8B sits around 0.44 to 0.49. Vega 4B rises from 0.10 under 80 characters to 0.28 over 1,000." />
+                <figcaption class="article-caption">Laya measured on the 381 harmless labelled commands (Part 3); Vega on all 2,500 real commands, unlabelled and mostly harmless. A flat line is what you want.</figcaption>
+              </figure>
+
+              <p>Vega 4B's mean score goes from 0.10 on commands under 80 characters to 0.28 on commands over 1,000, and the share it stops from 10% to 31%. The absolute scores are lower than Laya's, so fewer commands cross the cut-off, but the slope is there. The 0.8B's mean is flatter, 0.44 to 0.49, yet its stop rate still climbs from 26% to 37%, because long commands get more extreme scores in both directions. Vega did not learn to read length as danger the way Laya did; it still reads long scripts as more dangerous than they are.</p>
+
+              <p class="article-section-label">Training</p>
+              <h3 id="training">A four-minute head fit matches a 25-minute fine-tune in ranking</h3>
+              <p>Part 3 trained Laya on 800 of my labelled commands three ways and found that only training every layer, all 421 million parameters, worked: 25 minutes on this Mac, and AUROC on the 400 held-out commands rose from 0.67 to 0.93. (AUROC measures how well a guard ranks destructive commands above harmless ones, whatever the cut-off: 1.0 is perfect, 0.5 is guessing.)</p>
+
+              <p>Vega offers two ways to learn from your data, and neither touches the language model. The first is built in: <code>fit()</code> runs each labelled command once through the frozen reader, keeps the five summaries, and fits a small classifier on them. On the same 800 commands this took 4 minutes for the 0.8B and 18 for the 4B. The second is the author's own recipe: train a small adapter, 0.84 million parameters, inside the engine, with a gate that learns when the adapter should apply, and refit the calibration afterwards on held-out commands so the probabilities keep meaning something. I ran that on the same 681 training and 159 validation commands Part 3 used; once the reader's summaries were cached, training took 24 seconds.</p>
+
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: 400 real test commands, 19 destructive, 381 harmless; each model's own cut-off; no rules list in front</p>
+              <div class="article-table-scroll">
+                <table class="article-data-table article-data-table--center">
+                  <thead>
+                    <tr><th>Model state</th><th>Stopped (of 400)</th><th>Destructive missed (of 19)</th><th>Harmless wrongly stopped (of 381)</th><th>AUROC</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Laya as shipped</td><td>92.0%</td><td>0</td><td>349</td><td>0.67</td></tr>
+                    <tr><td>Laya, every layer trained (25 min)</td><td>5.5%</td><td>7</td><td>10</td><td>0.94</td></tr>
+                    <tr><td>Vega 0.8B, nothing trained</td><td>31.2%</td><td>9</td><td>115</td><td>0.63</td></tr>
+                    <tr><td>Vega 4B, nothing trained</td><td>24.8%</td><td>6</td><td>86</td><td>0.82</td></tr>
+                    <tr><td>Vega 0.8B, fitted head (4 min)</td><td>2.0%</td><td>15</td><td>4</td><td>0.93</td></tr>
+                    <tr><td>Vega 4B, fitted head (18 min)</td><td>2.5%</td><td>14</td><td>5</td><td>0.94</td></tr>
+                    <tr><td>Vega 0.8B, gated adapter (24 s), cut-off 0.5</td><td>2.2%</td><td>15</td><td>5</td><td>0.90</td></tr>
+                    <tr><td>Vega 0.8B, gated adapter, cut-off 0.1</td><td>13.8%</td><td>6</td><td>42</td><td>0.90</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>A cut-off can hide or flatter a model, and the fitted heads show it: 2% stopped and 15 of 19 missed is a cut-off placed badly, not a model that cannot see danger. The fair comparison fixes the number of stops and asks who catches more. Give every model the 37 stops that Laya's trained model shipped with, 9.2% of the 400, and count the destructive commands caught.</p>
+
+              <figure class="article-figure">
+                <img src="./assets/article/vega-vs-laya-trained.svg" alt="Horizontal bars, destructive commands caught of 19 at the same 9.2 percent stop rate: Laya every layer trained 14; Vega 0.8B fitted head 17; Vega 4B fitted head 16; Vega 0.8B gated adapter 9; Vega 4B nothing trained 6; Laya nothing trained 5." />
+                <figcaption class="article-caption">Same 37 stops for every model, no rules list in front. One command is five points.</figcaption>
+              </figure>
+
+              <p>At the same stop rate, Laya's every-layer fine-tune catches 14 of 19, Vega 0.8B's four-minute head catches 17 and the 4B's 16. The frozen Qwen summaries already separate destructive from harmless in my scripts; Laya's reader had to be rewritten to get there. What the head does not give you is a cut-off: it has no calibration, its author says so, and the threshold it fitted on the training commands stopped 2% and missed 15. It also learned the shape of my scripts and lost the short commands: on the short terminal command set it missed 17 of 20 destructive ones. Part 3's fine-tune regressed there the same way, less sharply.</p>
+
+              <p class="article-section-label">The adapter</p>
+              <h3 id="adapter">The author's gated adapter: honest probabilities, weaker ranking</h3>
+              <p>The adapter is the mirror image. Against the base engine through the identical path, it lifted AUROC from 0.61 to 0.90 and cut the calibration error from 0.42 to 0.02, so a probability from it means what it says: at the natural cut-off of 0.5 it stops 2.2% of the test commands, and 2.8% of all 2,500 real commands, with 5 false alarms in 381. Lower the cut-off to 0.1 and it stops 13.8% and misses 6 of 19. On the short set at 0.5 it wrongly stops 3 of 20 harmless commands and misses 2 of 20 destructive, which the fitted head could not manage. The gate works as designed: it opened on every prompt asking the destructive question and on none of the same commands asking the category question. But its ranking is weaker than the head's: at the matched 37 stops it catches 9 of 19. It compresses harmless scores toward zero and leaves a thin tail of harmless scripts above the destructive ones. And the cut-off rule from Part 3, fitted on 8 validation positives, lands at 0.03 and stops 23.8%: the same lesson as Laya's 0.9% cut-off, too few examples to place a threshold on a model this skewed.</p>
+
+              <p class="article-section-label">Where it is worse</p>
+              <h3 id="weaker">Where Vega is weaker than Laya</h3>
+              <ul>
+                <li><strong>The category answer.</strong> Of 13 harmless short commands that are plainly read-only (<code>ls</code>, <code>cat</code>, <code>grep</code>, <code>git status</code>), Laya labelled 8 as read-only, both Vega sizes 4. Vega 0.8B answered "writes files" for 81 of the 100 short commands and 89% of the real ones; Vega 4B files <code>cat</code> under "sends data out". The stop decision would be right more often than Laya's; the reason shown with it would be wrong more often.</li>
+                <li><strong>Speed.</strong> Laya: under 0.1 seconds. Vega 0.8B: 0.4 seconds on short commands, 0.9 on real ones. Vega 4B: 1.4 and 3.6. Vega's published figure is 22 milliseconds on a T4 GPU in half precision.</li>
+                <li><strong>Zero-shot misses that matter.</strong> Vega 0.8B scored the AppleScript that deletes every reminder in a list at 0.17, and two <code>git add</code> commands that staged a whole set of files under 0.2. Those are the commands a guard exists for.</li>
+                <li><strong>Abstaining.</strong> Vega 0.8B declined to answer on 30% of the short commands and 18% of the real ones. Honest, and useless to a hook that must say allow or ask.</li>
+              </ul>
+
+              <p class="article-section-label">Cost and time</p>
+              <h3 id="cost">What it cost and how long it took</h3>
+              <p class="article-callout-label" style="text-align: center; font-weight: 700;">Measured: time on a MacBook with 48 GB of memory</p>
+              <div class="article-table-scroll">
+                <table class="article-data-table article-data-table--center">
+                  <thead><tr><th>Step</th><th>Time</th><th>Money</th></tr></thead>
+                  <tbody>
+                    <tr><td>Downloading the weights (1.6 GB for the 0.8B, 8 GB for the 4B)</td><td>about 15 min</td><td>$0</td></tr>
+                    <tr><td>Short set, 100 commands, both sizes</td><td>3 min</td><td>$0</td></tr>
+                    <tr><td>2,500 real commands, Vega 0.8B</td><td>36 min</td><td>$0</td></tr>
+                    <tr><td>2,500 real commands, Vega 4B</td><td>2.5 hours</td><td>$0</td></tr>
+                    <tr><td>Fitted head on 800 commands, 0.8B and 4B</td><td>4 min and 18 min</td><td>$0</td></tr>
+                    <tr><td>Gated adapter: caching the reader's summaries for 4,640 prompts, then training</td><td>40 min, then 24 s</td><td>$0</td></tr>
+                    <tr><td>Claude Opus 5 on 200 real commands (Part 2)</td><td>7 min</td><td>$0.70</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="article-section-label">So what</p>
+              <h3 id="conclusion">Conclusion and impact</h3>
+              <p>Is Vega the local guard Laya was not? Closer, on every count I measured, and still no. On the short commands Vega 4B is the first local model that behaves like a guard, with honest probabilities to go with it. On real commands it stops one in four unprompted, Claude stops one in thirty, and the length bias that sank Laya is weaker rather than gone. The gap between a short test set and production shrank, from Laya's 5% of harmless commands wrongly stopped on the short set against 37% in use, to Vega 4B's 5% against 26%. It did not close. Cut-offs fitted on 21-character commands still do not describe 519-character scripts.</p>
+
+              <p>The design result is the one worth carrying away. A frozen reader plus a tiny trained decider reached the ranking quality that Laya reached only by retraining every one of its 421 million parameters, in four minutes instead of 25. Calibration and ranking then came apart: the adapter keeps the probabilities honest, the head keeps the better order, and neither alone is a guard yet. My guard stays where Part 3 left it: rules list on, local model off, a hosted model as the soft layer.</p>
+
+              <div class="article-callout">
+                <p class="article-callout-label">If you take one thing from this</p>
+                <p>When a new model arrives claiming to fix the last one, rerun the same tests, including the one the last model failed in production. Vega's short-set numbers are better than Laya's and would have told the same flattering story Laya's did. The 2,500 real commands are what separate "better model" from "usable guard".</p>
+              </div>
+
+              <p class="article-section-label">Appendix</p>
+              <h3 id="appendix">Limitations and how to replicate</h3>
+              <p><strong>Limitations.</strong></p>
+              <ul>
+                <li><strong>Few destructive commands to test on.</strong> Twenty per class on the short set and 19 in the real test set, so one command moves a number by five points.</li>
+                <li><strong>Labels from a model.</strong> The real-command labels are Claude Opus's, so where Vega and Claude disagree, Claude is the reference, not the truth.</li>
+                <li><strong>One Mac, full precision.</strong> Vega's latency here is fp32 with fallback kernels for Qwen3.5's attention; its published 22 ms is fp16 on a T4.</li>
+                <li><strong>One seed, one setting.</strong> Each training run was done once. The adapter was trained on 681 commands with 55 destructive; the author's recipe uses 16,000 rows.</li>
+                <li><strong>Vega's shipped adapters were on.</strong> Zero-shot figures use the model as installed, in the author's "engine" mode, one reading per command, no test-time averaging.</li>
+                <li><strong>Jev, the hosted model Laya and Vega are both compared with, is not in this post.</strong> The scorer is written; it needs a paid API key.</li>
+              </ul>
+
+              <p><strong>To replicate.</strong> The code for all four posts is on <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a>. Vega needs Python 3.10 or newer, so it runs in its own environment (<code>.venv-vega</code>, set up with two commands in the README). <code>vega_eval.py</code> runs the short set, <code>vega_history.py</code> the real commands, the labelled set and the head fit, <code>vega_adapter.py</code> the author's adapter recipe in three stages, and <code>vega_report.py</code> renders the full comparison report (<code>docs/vega_report.html</code>). The interactive version of the roll above, with every part of the picture named in technical terms, is <code>docs/vega_mechanism.html</code>; the same page with the explanation written out is <code>docs/vega_explained.html</code>. The real commands and the labelled set stay private; run the scripts on your own history to reproduce that half.</p>
+
+              <p class="article-section-label">References</p>
+              <h3>Sources</h3>
+              <ol class="article-references">
+                <li id="ref-1">Nandakishor M. "Vega: a decision model that rolls a ball down a hill", 10 October 2026, and the vegaml code and weights, Apache 2.0. <a href="https://www.nandakishorm.com/writing/vega" target="_blank" rel="noreferrer">Write-up</a> · <a href="https://github.com/NandhaKishorM/vegaml" target="_blank" rel="noreferrer">GitHub</a> · <a href="https://huggingface.co/nandakishorm/vega-08b-public-intents" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-2">Convai Innovations. "Laya" model card, weights and code, Apache 2.0, September 2026. <a href="https://huggingface.co/convaiinnovations/laya" target="_blank" rel="noreferrer">Hugging Face</a></li>
+                <li id="ref-3">Greydanus, S., Dzamba, M., Yosinski, J. "Hamiltonian Neural Networks." NeurIPS 2019 (the family of models Vega's engine belongs to). <a href="https://arxiv.org/abs/1906.01563" target="_blank" rel="noreferrer">arXiv</a></li>
+                <li id="ref-4">Prachi Sharma. "laya-guard": the code for this series. <a href="https://github.com/PS061188/laya-guard" target="_blank" rel="noreferrer">GitHub</a></li>
+              </ol>
+
+              <section class="article-endcap" aria-label="Reader response and author links">
+                <div class="article-engagement-bar">
+                  <button type="button" class="article-reaction-button" aria-pressed="false" aria-label="Love this article">
+                    <span class="article-reaction-icon" aria-hidden="true">♥</span>
+                    <span class="article-reaction-count">0</span>
+                  </button>
+                  <div class="article-share-wrap">
+                    <button type="button" class="article-share-button" aria-expanded="false" aria-controls="article-share-menu-bottom" aria-label="Share this article">
+                      <span class="article-share-icon" aria-hidden="true">↗</span>
+                    </button>
+                    <div class="article-share-menu" id="article-share-menu-bottom" hidden>
+                      <a class="article-share-option" data-share-target="whatsapp" href="#">WhatsApp</a>
+                      <a class="article-share-option" data-share-target="facebook" href="#">Facebook</a>
+                      <a class="article-share-option" data-share-target="linkedin" href="#">LinkedIn</a>
+                      <a class="article-share-option" data-share-target="instagram" href="#">Instagram</a>
+                      <a class="article-share-option" data-share-target="x" href="#">X</a>
+                      <a class="article-share-option" data-share-target="email" href="#">Email</a>
+                      <button type="button" class="article-share-option article-share-copy" data-share-target="copy">Copy link</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="article-response-block">
+                  <label class="article-response-label" for="article-response-input">Leave a response</label>
+                  <div class="article-response-meta">
+                    <input type="text" id="article-response-name" placeholder="Your name" />
+                    <label class="article-response-anon">
+                      <input type="checkbox" id="article-response-anonymous" />
+                      <span>Post anonymously</span>
+                    </label>
+                  </div>
+                  <div class="article-response-form">
+                    <textarea id="article-response-input" rows="3" placeholder="Add a short thought, question, or reaction..."></textarea>
+                    <button type="button" class="article-response-submit" id="article-response-submit">Post</button>
+                  </div>
+                  <p class="article-response-status" id="article-response-status" aria-live="polite"></p>
+                  <div class="article-response-list" id="article-response-list"></div>
+                </div>
+
+                <div class="article-mini-contact">
+                  <a class="article-mini-contact-link" href="./index.html#services">Invite me to speak</a>
+                  <a class="article-mini-contact-link" href="mailto:psharma3@ee.iitr.ac.in">Email</a>
+                  <a
+                    class="article-mini-contact-link"
+                    href="https://www.linkedin.com/in/prachi-sharma-ph-d-a78a6b71/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="./analytics-config.js"></script>
+    <script src="./analytics.js"></script>
+    <script src="./blog-editor.js"></script>
+    <script>
+(function(){
+  const L=40,R=840,T=44,B=236;
+  const xmin=-4,xmax=4,sigma=0.62;let k=0.12;
+  const centres=[-2.4,1.2,2.7], names=["read only","writes files","deletes data"];
+  const presets=[
+    {a:[0.25,0.6,2.6], k:0.12, x0:1.3, p0:0.9, cap:"The text says delete. The deletes-data valley is deep, the ball starts near it and rolls in. Confident, no flags."},
+    {a:[0.3,0.9,0.85], k:0.12, x0:1.9, p0:-0.4, cap:"An in-place edit of a config file. Two valleys of similar depth; the ball rests in one of them but not deeply, so the probability is close to even and the engine abstains."},
+    {a:[0.12,0.1,0.12], k:0.2, x0:-0.2, p0:0.5, cap:"A cooking instruction has nothing to do with any answer. Every valley is shallow, the bowl wins, and the ball stops between valleys: unbound, an out-of-distribution signal."}
+  ];
+  let cur=0, anim=null;
+  const $=id=>document.getElementById(id);
+  if(!$("land"))return;
+  const sx=x=>L+(x-xmin)/(xmax-xmin)*(R-L);
+  function U(x,a){let u=0.5*k*x*x;for(let i=0;i<3;i++)u-=a[i]*Math.exp(-((x-centres[i])**2)/(2*sigma*sigma));return u;}
+  function F(x,a){let f=-k*x;for(let i=0;i<3;i++)f-=a[i]*(x-centres[i])/(sigma*sigma)*Math.exp(-((x-centres[i])**2)/(2*sigma*sigma));return Math.max(-6,Math.min(6,f));}
+  let ymin,ymax;const sy=u=>B-(u-ymin)/(ymax-ymin)*(B-T);
+  function draw(a){
+    const pts=[];ymin=1e9;ymax=-1e9;
+    for(let i=0;i<=220;i++){const x=xmin+(xmax-xmin)*i/220,u=U(x,a);pts.push([x,u]);ymin=Math.min(ymin,u);ymax=Math.max(ymax,u);}
+    ymin-=0.25;ymax+=0.35;
+    $("curve").setAttribute("d","M"+pts.map(([x,u])=>sx(x).toFixed(1)+","+sy(u).toFixed(1)).join(" L"));
+    const g=$("wells");g.innerHTML="";
+    centres.forEach((c,i)=>{
+      const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("x",sx(c));t.setAttribute("y",sy(U(c,a))+24);t.setAttribute("text-anchor","middle");t.setAttribute("class","t11");t.textContent=names[i];g.appendChild(t);
+      const t2=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t2.setAttribute("x",sx(c));t2.setAttribute("y",sy(U(c,a))+38);t2.setAttribute("text-anchor","middle");t2.setAttribute("class","t10");t2.textContent="depth "+a[i].toFixed(1);g.appendChild(t2);
+    });
+  }
+  function place(x,a){$("ball").setAttribute("cx",sx(x));$("ball").setAttribute("cy",sy(U(x,a))-9);$("ballLabel").setAttribute("x",sx(x));$("ballLabel").setAttribute("y",sy(U(x,a))-22);}
+  function simulate(p){const a=p.a;let x=p.x0,m=p.p0;const dt=0.42;const steps=[{x,m}];
+    for(let s=0;s<12;s++){m=(1-0.28)*m+dt*F(x,a);x+=dt*m;steps.push({x,m});if(Math.abs(m)<0.03&&Math.abs(F(x,a))<0.05)break;}return steps;}
+  function result(steps,a){const x=steps[steps.length-1].x,m=steps[steps.length-1].m;
+    const depth=centres.map((c,i)=>a[i]*Math.exp(-((x-c)**2)/(2*sigma*sigma)));
+    const tau=0.6+0.9*Math.abs(m)+0.25*(steps.length-1)/12;
+    const ex=depth.map(d=>Math.exp(d/tau)),Z=ex.reduce((u,v)=>u+v,0),pr=ex.map(e=>e/Z);
+    const best=pr.indexOf(Math.max(...pr));const conf=pr[best];const dist=Math.min(...centres.map(c=>Math.abs(x-c)));
+    return {x,m,pr,best,conf,unbound:dist>0.7,abstain:conf<0.7,steps:steps.length-1};}
+  function show(r){$("ans").textContent=r.unbound?"nowhere":names[r.best];
+    $("bars").innerHTML=names.map((n,i)=>`<div class="roll-bar"><span>${n}</span><div class="track"><div class="fill" style="width:${(r.pr[i]*100).toFixed(0)}%"></div></div><span>${(r.pr[i]*100).toFixed(0)}%</span></div>`).join("");
+    $("conf").textContent=(r.conf*100).toFixed(0)+"%";$("confd").textContent=`settled in ${r.steps} of 12 steps, speed left ${Math.abs(r.m).toFixed(2)}`;
+    $("flags").innerHTML=(r.abstain?'<span class="roll-chip warn">abstain</span>':'<span class="roll-chip good">confident</span>')+(r.unbound?'<span class="roll-chip warn">unbound</span>':'<span class="roll-chip good">in a valley</span>');}
+  function reset(){const p=presets[cur];k=p.k;draw(p.a);place(p.x0,p.a);$("stepText").textContent="step 0 of 12";$("cap").textContent=p.cap;
+    $("ans").textContent="—";$("bars").innerHTML="";$("conf").textContent="—";$("confd").textContent="speed left, depth and steps used set the confidence";$("flags").textContent="—";$("arrow").setAttribute("opacity",0);
+    if(anim){cancelAnimationFrame(anim);anim=null;}$("run").disabled=false;}
+  function run(){const p=presets[cur],a=p.a,steps=simulate(p),r=result(steps,a);
+    const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;$("run").disabled=true;
+    if(reduce){place(r.x,a);$("stepText").textContent=`step ${r.steps} of 12`;show(r);$("run").disabled=false;return;}
+    let t0=null;const per=380;
+    function frame(t){if(t0===null)t0=t;const el=t-t0;const s=Math.min(steps.length-1,Math.floor(el/per));const f=Math.min(1,(el-s*per)/per);
+      const x0=steps[s].x,x1=steps[Math.min(s+1,steps.length-1)].x;const x=x0+(x1-x0)*(1-Math.pow(1-f,2));
+      place(x,a);$("stepText").textContent=`step ${Math.min(s+1,steps.length-1)} of 12`;
+      const m=steps[Math.min(s+1,steps.length-1)].m;const al=$("arrowl");
+      al.setAttribute("x1",sx(x));al.setAttribute("y1",sy(U(x,a))-9);al.setAttribute("x2",sx(x)+m*40);al.setAttribute("y2",sy(U(x,a))-9);$("arrow").setAttribute("opacity",Math.abs(m)>0.05?1:0);
+      if(s<steps.length-1){anim=requestAnimationFrame(frame);}else{anim=null;$("arrow").setAttribute("opacity",0);show(r);$("run").disabled=false;}}
+    anim=requestAnimationFrame(frame);}
+  [0,1,2].forEach(i=>$("p"+i).addEventListener("click",()=>{cur=i;[0,1,2].forEach(j=>$("p"+j).classList.toggle("on",j===i));reset();}));
+  $("run").addEventListener("click",run);
+  reset();
+})();
+    </script>
+  </body>
+</html>

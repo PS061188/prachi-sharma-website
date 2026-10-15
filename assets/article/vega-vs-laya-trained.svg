@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="Destructive commands caught of 19, at the same stop rate"><rect width="900" height="400" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">Same number of stops, who catches more?</text>
+<line x1="300.0" y1="50" x2="300.0" y2="342" stroke="#dddbd5"/>
+<text x="300.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">0 of 19</text>
+<line x1="426.3157894736842" y1="50" x2="426.3157894736842" y2="342" stroke="#dddbd5"/>
+<text x="426.3157894736842" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">5 of 19</text>
+<line x1="552.6315789473684" y1="50" x2="552.6315789473684" y2="342" stroke="#dddbd5"/>
+<text x="552.6315789473684" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">10 of 19</text>
+<line x1="678.9473684210527" y1="50" x2="678.9473684210527" y2="342" stroke="#dddbd5"/>
+<text x="678.9473684210527" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">15 of 19</text>
+<line x1="780.0" y1="50" x2="780.0" y2="342" stroke="#dddbd5"/>
+<text x="780.0" y="360" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">19 of 19</text>
+<text x="286" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Laya, every layer trained (25 min)</text>
+<rect x="300" y="64" width="353.7" height="20" fill="#c2410c"/>
+<text x="659.7" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">14 of 19</text>
+<text x="286" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 0.8B, fitted head (4 min)</text>
+<rect x="300" y="108" width="429.5" height="20" fill="#2a78d6"/>
+<text x="735.5" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">17 of 19</text>
+<text x="286" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 4B, fitted head (18 min)</text>
+<rect x="300" y="152" width="404.2" height="20" fill="#2a78d6"/>
+<text x="710.2" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">16 of 19</text>
+<text x="286" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 0.8B, gated adapter (24 s)</text>
+<rect x="300" y="196" width="227.4" height="20" fill="#7fb0e8"/>
+<text x="533.4" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">9 of 19</text>
+<text x="286" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 4B, nothing trained</text>
+<rect x="300" y="240" width="151.6" height="20" fill="#b8b6ad"/>
+<text x="457.6" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">6 of 19</text>
+<text x="286" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Laya, nothing trained</text>
+<rect x="300" y="284" width="126.3" height="20" fill="#b8b6ad"/>
+<text x="432.3" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">5 of 19</text>
+<line x1="300" y1="50" x2="300" y2="342" stroke="#bbb"/>
+<text x="24" y="386" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">400 real test commands, 19 destructive, never trained on. Every model allowed 37 stops (9.2%, what Laya's trained model shipped with). No rules list in front. One command = 5 points.</text></svg>

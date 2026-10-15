@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 444" width="880" height="444" role="img" aria-label="My real commands: share each guard would have stopped"><rect width="880" height="444" fill="#ffffff"/>
+<text x="24" y="34" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="20" font-weight="700" fill="#1b1b1b">My real commands: share each guard would have stopped</text>
+<line x1="270.0" y1="50" x2="270.0" y2="386" stroke="#dddbd5" stroke-width="1"/>
+<text x="270.0" y="404" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">0%</text>
+<line x1="395.0" y1="50" x2="395.0" y2="386" stroke="#dddbd5" stroke-width="1"/>
+<text x="395.0" y="404" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">25%</text>
+<line x1="520.0" y1="50" x2="520.0" y2="386" stroke="#dddbd5" stroke-width="1"/>
+<text x="520.0" y="404" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">50%</text>
+<line x1="645.0" y1="50" x2="645.0" y2="386" stroke="#dddbd5" stroke-width="1"/>
+<text x="645.0" y="404" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">75%</text>
+<line x1="770.0" y1="50" x2="770.0" y2="386" stroke="#dddbd5" stroke-width="1"/>
+<text x="770.0" y="404" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b" text-anchor="middle">100%</text>
+<text x="256" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules list</text>
+<rect x="270" y="64" width="17.8" height="20" fill="#6b6b6b"/>
+<text x="293.8" y="79" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">3.6%</text>
+<text x="256" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Laya (as shipped)</text>
+<rect x="270" y="108" width="463.4" height="20" fill="#c2410c"/>
+<text x="739.4" y="123" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">92.7%</text>
+<text x="256" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules + Laya</text>
+<rect x="270" y="152" width="183.6" height="20" fill="#c2410c"/>
+<text x="459.6" y="167" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">36.7%</text>
+<text x="256" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 0.8B</text>
+<rect x="270" y="196" width="144.8" height="20" fill="#2a78d6"/>
+<text x="420.8" y="211" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">29.0%</text>
+<text x="256" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Vega 4B</text>
+<rect x="270" y="240" width="129.0" height="20" fill="#2a78d6"/>
+<text x="405.0" y="255" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">25.8%</text>
+<text x="256" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Rules + Vega 4B</text>
+<rect x="270" y="284" width="81.6" height="20" fill="#2a78d6"/>
+<text x="357.6" y="299" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">16.3%</text>
+<text x="256" y="343" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="14" fill="#1b1b1b" text-anchor="end">Claude Opus 5 (200-command sample)</text>
+<rect x="270" y="328" width="15.0" height="20" fill="#1a8f63"/>
+<text x="291.0" y="343" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="13" fill="#1b1b1b">3.0%</text>
+<line x1="270" y1="50" x2="270" y2="386" stroke="#bbb" stroke-width="1"/>
+<text x="24" y="430" font-family='system-ui, -apple-system, Segoe UI, sans-serif' font-size="12" fill="#6b6b6b">2,500 unique commands from my own sessions, cut-offs from the short set, nothing re-tuned. Lower is better; the stops are unlabelled and mostly harmless.</text></svg>
