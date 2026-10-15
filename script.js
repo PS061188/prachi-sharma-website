@@ -1671,7 +1671,7 @@ const content = {
   ],
   writingPosts: [
     {
-      title: "Laya's Author Shipped Vega. I Ran It Through the Test Laya Failed.",
+      title: "Does Vega Work on Real Commands? Laya's Successor in Front of My Coding Agent",
       sentence:
         "Laya series, Part 4: Vega, a new decision model that decides by rolling a ball into a valley, through the same three tests as Laya: 50 short commands, 2,500 real ones, 400 labelled ones. Then its four-minute head fit and the author's adapter against Laya's full fine-tune.",
       href: "./blog-vega-vs-laya.html",
